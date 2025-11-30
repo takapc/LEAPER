@@ -1,0 +1,253 @@
+[
+  {
+    "id": 1,
+    "word": "agree",
+    "meaning": "[自] ①賛成する ②（主語の中で）意見が一致する ③（with ～）（気候，食べ物が）（～に）合う"
+  },
+  {
+    "id": 2,
+    "word": "oppose",
+    "meaning": "[他] ～に反対する"
+  },
+  {
+    "id": 3,
+    "word": "advise",
+    "meaning": "[他] ～に忠告する"
+  },
+  {
+    "id": 4,
+    "word": "tip",
+    "meaning": "[名] ①助言，ヒント ②チップ ③（足や山などの）先，先端（いずれも〈可算〉）"
+  },
+  {
+    "id": 5,
+    "word": "discuss",
+    "meaning": "[他] ①～について話し合う，議論する ②～を話題に出す"
+  },
+  {
+    "id": 6,
+    "word": "blame",
+    "meaning": "[他] ～に責任があるとする"
+  },
+  {
+    "id": 7,
+    "word": "argue",
+    "meaning": "[他] ①（that SV）～と主張する [自] ②（with ～）（～と）言い争う"
+  },
+  {
+    "id": 8,
+    "word": "claim",
+    "meaning": "[他] ①（that SV）～と主張する ②～を要求する，主張する [名] ③主張，要求"
+  },
+  {
+    "id": 9,
+    "word": "complain",
+    "meaning": "[自] ①文句を言う，苦情を言う ②（of ～）（病気などを）訴える"
+  },
+  {
+    "id": 10,
+    "word": "offer",
+    "meaning": "[他] ①～を申し出る [名] ②申し出 ③値引き"
+  },
+  {
+    "id": 11,
+    "word": "suggest",
+    "meaning": "[他] ①～を示唆する ②～を提案する"
+  },
+  {
+    "id": 12,
+    "word": "insist",
+    "meaning": "[自] ①（on ～）～を主張する [他] ②（that SV）～と主張する"
+  },
+  {
+    "id": 13,
+    "word": "demand",
+    "meaning": "[他] ①～を要求する [名] ②要求 ③需要"
+  },
+  {
+    "id": 14,
+    "word": "request",
+    "meaning": "[他] ①～を依頼する [名] ②依頼，要請"
+  },
+  {
+    "id": 15,
+    "word": "require",
+    "meaning": "[他] ①～を必要とする ②～を要求する"
+  },
+  {
+    "id": 16,
+    "word": "refuse",
+    "meaning": "[他] ①～を断る [自] ②拒否する"
+  },
+  {
+    "id": 17,
+    "word": "accept",
+    "meaning": "[他] ①～を受け入れる ②～を承認する"
+  },
+  {
+    "id": 18,
+    "word": "reject",
+    "meaning": "[他] ①～を拒否する ②～を却下する"
+  },
+  {
+    "id": 19,
+    "word": "admit",
+    "meaning": "[他] ①～を認める ②～を許す ③～を入れる"
+  },
+  {
+    "id": 20,
+    "word": "deny",
+    "meaning": "[他] ①～を否定する ②～を拒否する"
+  },
+  {
+    "id": 21,
+    "word": "allow",
+    "meaning": "[他] ①～を許す ②～を可能にする"
+  },
+  {
+    "id": 22,
+    "word": "permit",
+    "meaning": "[他] ①～を許可する [名] ②許可証"
+  },
+  {
+    "id": 23,
+    "word": "forbid",
+    "meaning": "[他] ①～を禁じる"
+  },
+  {
+    "id": 24,
+    "word": "prohibit",
+    "meaning": "[他] ①～を禁止する"
+  },
+  {
+    "id": 25,
+    "word": "prevent",
+    "meaning": "[他] ①～を防ぐ ②～を妨げる"
+  },
+  {
+    "id": 26,
+    "word": "protect",
+    "meaning": "[他] ①～を守る ②～を保護する"
+  },
+  {
+    "id": 27,
+    "word": "defend",
+    "meaning": "[他] ①～を守る ②～を弁護する"
+  },
+  {
+    "id": 28,
+    "word": "attack",
+    "meaning": "[他] ①～を攻撃する [名] ②攻撃"
+  },
+  {
+    "id": 29,
+    "word": "defeat",
+    "meaning": "[他] ①～を打ち負かす [名] ②敗北"
+  },
+  {
+    "id": 30,
+    "word": "win",
+    "meaning": "[他] ①～を勝ち取る [自] ②勝つ [名] ③勝利"
+  },
+  {
+    "id": 31,
+    "word": "lose",
+    "meaning": "[他] ①～を失う ②～に負ける [自] ③負ける"
+  },
+  {
+    "id": 32,
+    "word": "achieve",
+    "meaning": "[他] ①～を達成する ②～を成し遂げる"
+  },
+  {
+    "id": 33,
+    "word": "accomplish",
+    "meaning": "[他] ①～を達成する ②～を完成させる"
+  },
+  {
+    "id": 34,
+    "word": "succeed",
+    "meaning": "[自] ①成功する ②～に続く"
+  },
+  {
+    "id": 35,
+    "word": "fail",
+    "meaning": "[自] ①失敗する ②～に失敗する [他] ③～を落第させる"
+  },
+  {
+    "id": 36,
+    "word": "attempt",
+    "meaning": "[他] ①～を試みる [名] ②試み"
+  },
+  {
+    "id": 37,
+    "word": "try",
+    "meaning": "[他] ①～を試す ②～を試みる [自] ③努力する"
+  },
+  {
+    "id": 38,
+    "word": "manage",
+    "meaning": "[他] ①～を管理する ②～を何とかする [自] ③何とかする"
+  },
+  {
+    "id": 39,
+    "word": "handle",
+    "meaning": "[他] ①～を扱う ②～を処理する [名] ③取っ手"
+  },
+  {
+    "id": 40,
+    "word": "deal",
+    "meaning": "[自] ①（with ～）～を扱う [名] ②取引 ③量"
+  },
+  {
+    "id": 41,
+    "word": "treat",
+    "meaning": "[他] ①～を扱う ②～を治療する [名] ③もてなし"
+  },
+  {
+    "id": 42,
+    "word": "consider",
+    "meaning": "[他] ①～を考慮する ②～を考える"
+  },
+  {
+    "id": 43,
+    "word": "regard",
+    "meaning": "[他] ①～を～と見なす ②～を考慮する [名] ③考慮"
+  },
+  {
+    "id": 44,
+    "word": "view",
+    "meaning": "[他] ①～を見る ②～を～と見なす [名] ③見解"
+  },
+  {
+    "id": 45,
+    "word": "observe",
+    "meaning": "[他] ①～を観察する ②～を守る"
+  },
+  {
+    "id": 46,
+    "word": "notice",
+    "meaning": "[他] ①～に気づく [名] ②通知"
+  },
+  {
+    "id": 47,
+    "word": "recognize",
+    "meaning": "[他] ①～を認識する ②～を認める"
+  },
+  {
+    "id": 48,
+    "word": "realize",
+    "meaning": "[他] ①～を実現する ②～に気づく"
+  },
+  {
+    "id": 49,
+    "word": "understand",
+    "meaning": "[他] ①～を理解する ②～を推測する"
+  },
+  {
+    "id": 50,
+    "word": "comprehend",
+    "meaning": "[他] ①～を理解する"
+  }
+]
+
