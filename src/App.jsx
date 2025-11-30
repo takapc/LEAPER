@@ -32,9 +32,8 @@ import {
   SimpleGrid,
 } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
-import { getWordDataFromLocalStorage, saveWordDataToLocalStorage } from './utils/wordData'
+import { fetchWordData } from './utils/wordData'
 import { DataImporter } from './components/DataImporter'
-import wordData from './data/words.json'
 
 function App() {
   const [words, setWords] = useState([]) // 全単語データ
@@ -104,13 +103,9 @@ function App() {
     setError(null)
 
     try {
-      // まずローカルストレージから取得を試みる（ユーザーがインポートしたデータ）
-      let loadedData = getWordDataFromLocalStorage()
-      
-      // ローカルストレージにデータがない場合は、JSONファイルから読み込む
-      if (!loadedData || loadedData.length === 0) {
-        loadedData = wordData
-      }
+      // 毎回サイトから取得
+      const url = 'https://ukaru-eigo.com/leap-modified-list/'
+      const loadedData = await fetchWordData(url)
 
       if (loadedData && loadedData.length > 0) {
         setWords(loadedData)
@@ -118,11 +113,11 @@ function App() {
         // 最初の単語をランダムに選択
         selectRandomWord(loadedData)
       } else {
-        setError('単語データを読み込めませんでした。')
+        setError('単語データを取得できませんでした。')
       }
     } catch (err) {
       console.error('データ読み込みエラー:', err)
-      setError('データの読み込みに失敗しました。')
+      setError('データの読み込みに失敗しました。CORSの問題がある可能性があります。')
     } finally {
       setLoading(false)
     }

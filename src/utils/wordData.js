@@ -17,7 +17,7 @@ export function parseWordDataFromHTML(html) {
   
   rows.forEach((row, index) => {
     // ヘッダー行をスキップ
-    if (row.includes('<th') || row.includes('No')) {
+    if (row.includes('<th') || row.toLowerCase().includes('no') && row.toLowerCase().includes('単語') && row.toLowerCase().includes('意味')) {
       return;
     }
     
@@ -28,9 +28,15 @@ export function parseWordDataFromHTML(html) {
     
     while ((match = cellRegex.exec(row)) !== null) {
       // HTMLタグを除去し、テキストのみを抽出
-      const text = match[1]
+      let text = match[1]
         .replace(/<[^>]+>/g, '') // HTMLタグを除去
         .replace(/&nbsp;/g, ' ') // &nbsp;をスペースに変換
+        .replace(/&amp;/g, '&') // &amp;を&に変換
+        .replace(/&lt;/g, '<') // &lt;を<に変換
+        .replace(/&gt;/g, '>') // &gt;を>に変換
+        .replace(/&quot;/g, '"') // &quot;を"に変換
+        .replace(/&#39;/g, "'") // &#39;を'に変換
+        .replace(/\s+/g, ' ') // 連続する空白を1つに
         .trim();
       cells.push(text);
     }
@@ -41,11 +47,15 @@ export function parseWordDataFromHTML(html) {
       const word = cells[1].trim();
       const meaning = cells[2].trim();
       
-      if (id && word && meaning) {
+      // idが有効な数値で、wordとmeaningが空でない場合のみ追加
+      if (!isNaN(id) && id > 0 && word && meaning) {
         words.push({ id, word, meaning });
       }
     }
   });
+  
+  // idでソート（念のため）
+  words.sort((a, b) => a.id - b.id);
   
   return words;
 }
@@ -57,23 +67,51 @@ export function parseWordDataFromHTML(html) {
  */
 export async function fetchWordData(url) {
   try {
-    // CORSの問題を回避するため、プロキシを使用するか、
-    // またはローカルにデータを保存する方法を検討
-    // ここでは直接取得を試みます
-    const response = await fetch(url, {
-      mode: 'cors',
-    });
+    // まずViteのプロキシ経由で取得を試みる（開発環境）
+    const proxyUrls = [
+      '/api/proxy', // Viteプロキシ（開発環境）
+      url, // 直接取得
+      `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, // CORSプロキシ
+    ];
+
+    let lastError = null;
     
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    for (const fetchUrl of proxyUrls) {
+      try {
+        const response = await fetch(fetchUrl, {
+          mode: 'cors',
+          headers: {
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const html = await response.text();
+        const words = parseWordDataFromHTML(html);
+        
+        // データが取得できた場合（最低限の単語数がある場合）
+        if (words.length > 100) {
+          console.log(`単語データを取得しました: ${words.length}語`);
+          return words;
+        } else {
+          console.warn(`取得したデータが少なすぎます: ${words.length}語`);
+        }
+      } catch (error) {
+        lastError = error;
+        console.warn(`取得方法 ${fetchUrl} での取得に失敗:`, error);
+        // 次の方法を試す
+        continue;
+      }
     }
     
-    const html = await response.text();
-    return parseWordDataFromHTML(html);
+    // すべての方法で失敗した場合
+    throw lastError || new Error('すべての取得方法が失敗しました');
   } catch (error) {
     console.error('データの取得に失敗しました:', error);
-    // フォールバック: サンプルデータを返す
-    return getSampleWordData();
+    throw error;
   }
 }
 
