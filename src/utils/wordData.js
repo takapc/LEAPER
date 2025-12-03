@@ -1,6 +1,7 @@
 /**
  * 単語データを取得・パースするユーティリティ関数
  */
+import wordsJson from '../data/words.json'
 
 /**
  * HTMLテーブルから単語データを抽出
@@ -61,57 +62,20 @@ export function parseWordDataFromHTML(html) {
 }
 
 /**
- * 指定されたURLから単語データを取得
- * @param {string} url - データを取得するURL
- * @returns {Promise<Array>} - 単語データの配列
+ * ローカルの JSON ファイルから単語データを取得
+ * - CORS の影響を受けない安定した取得方法
+ * - 必要に応じて words.json を更新することでデータを最新化する
+ * @returns {Array<{id: number, word: string, meaning: string}>} - 単語データの配列
  */
-export async function fetchWordData(url) {
+export function getLocalWordData() {
   try {
-    // まずViteのプロキシ経由で取得を試みる（開発環境）
-    const proxyUrls = [
-      '/api/proxy', // Viteプロキシ（開発環境）
-      url, // 直接取得
-      `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`, // CORSプロキシ
-    ];
-
-    let lastError = null;
-    
-    for (const fetchUrl of proxyUrls) {
-      try {
-        const response = await fetch(fetchUrl, {
-          mode: 'cors',
-          headers: {
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          },
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const html = await response.text();
-        const words = parseWordDataFromHTML(html);
-        
-        // データが取得できた場合（最低限の単語数がある場合）
-        if (words.length > 100) {
-          console.log(`単語データを取得しました: ${words.length}語`);
-          return words;
-        } else {
-          console.warn(`取得したデータが少なすぎます: ${words.length}語`);
-        }
-      } catch (error) {
-        lastError = error;
-        console.warn(`取得方法 ${fetchUrl} での取得に失敗:`, error);
-        // 次の方法を試す
-        continue;
-      }
-    }
-    
-    // すべての方法で失敗した場合
-    throw lastError || new Error('すべての取得方法が失敗しました');
+    // 念のため id でソートしておく（words.json 側の順番が変わっても安定）
+    const words = [...wordsJson].sort((a, b) => a.id - b.id)
+    console.log(`ローカルJSONから単語データを読み込みました: ${words.length}語`)
+    return words
   } catch (error) {
-    console.error('データの取得に失敗しました:', error);
-    throw error;
+    console.error('ローカルJSONからの読み込みに失敗しました:', error)
+    throw error
   }
 }
 

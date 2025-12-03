@@ -32,7 +32,7 @@ import {
   SimpleGrid,
 } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
-import { fetchWordData } from './utils/wordData'
+import { getLocalWordData } from './utils/wordData'
 import { DataImporter } from './components/DataImporter'
 
 function App() {
@@ -103,9 +103,8 @@ function App() {
     setError(null)
 
     try {
-      // 毎回サイトから取得
-      const url = 'https://ukaru-eigo.com/leap-modified-list/'
-      const loadedData = await fetchWordData(url)
+      // CORS の影響を受けないように、ローカルの JSON からデータを読み込む
+      const loadedData = getLocalWordData()
 
       if (loadedData && loadedData.length > 0) {
         setWords(loadedData)
@@ -117,7 +116,7 @@ function App() {
       }
     } catch (err) {
       console.error('データ読み込みエラー:', err)
-      setError('データの読み込みに失敗しました。CORSの問題がある可能性があります。')
+      setError('データの読み込みに失敗しました。ローカルJSONを確認してください。')
     } finally {
       setLoading(false)
     }
