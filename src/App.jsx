@@ -31,8 +31,14 @@ import {
   TabPanel,
   SimpleGrid,
 } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
-import { getLocalWordData } from './utils/wordData'
+import {
+  getLocalWordData,
+  getUsedWordIdsFromLocalStorage,
+  saveUsedWordIdsToLocalStorage,
+  clearUsedWordIdsFromLocalStorage,
+} from './utils/wordData'
 import { DataImporter } from './components/DataImporter'
 
 function App() {
@@ -43,6 +49,12 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [quizMode, setQuizMode] = useState('en-to-ja') // 'en-to-ja' または 'ja-to-en'
+  const [usedWordIds, setUsedWordIds] = useState(() => {
+    // 一度出題された単語IDをローカルストレージから復元
+    // - 復元に失敗した場合でもアプリが落ちないように空配列を返す
+    return getUsedWordIdsFromLocalStorage()
+  })
+  const toast = useToast() // モダンなトースト通知用
   
   // 範囲指定の状態
   const [startRange, setStartRange] = useState('')
@@ -109,7 +121,7 @@ function App() {
       if (loadedData && loadedData.length > 0) {
         setWords(loadedData)
         setFilteredWords(loadedData)
-        // 最初の単語をランダムに選択
+        // 現在のキャッシュ情報に基づいて最初の単語をランダムに選択
         selectRandomWord(loadedData)
       } else {
         setError('単語データを取得できませんでした。')
@@ -126,6 +138,10 @@ function App() {
   const handleDataImported = (importedWords) => {
     setWords(importedWords)
     setError(null)
+    // データセットが変わったタイミングで出題済みキャッシュをクリア
+    // - 古いIDが新しいデータとずれている可能性があるため
+    setUsedWordIds([])
+    clearUsedWordIdsFromLocalStorage()
     // Partが選択されている場合は、Partの範囲を再適用
     if (selectedParts.length > 0) {
       const maxId = importedWords.length > 0 ? Math.max(...importedWords.map(w => w.id)) : 0
@@ -238,10 +254,58 @@ function App() {
   // ランダムに単語を選択
   const selectRandomWord = (wordList = filteredWords) => {
     if (wordList.length === 0) return
-    
-    const randomIndex = Math.floor(Math.random() * wordList.length)
-    setCurrentWord(wordList[randomIndex])
+
+    // 既に出題済みの単語IDを除外したリストを作成
+    const availableWords = wordList.filter((word) => !usedWordIds.includes(word.id))
+
+    // 現在の範囲内の全単語が出題済みの場合
+    if (availableWords.length === 0) {
+      // すべて出題し切ったので、自動でキャッシュをリセットしてユーザーに通知
+      clearUsedWordIdsFromLocalStorage()
+      setUsedWordIds([])
+
+      toast({
+        title: 'すべての単語を出題しました',
+        description: 'キャッシュをリセットして、同じ範囲から再度出題を開始します。',
+        status: 'info',
+        duration: 4000,
+        isClosable: true,
+        position: 'top',
+      })
+
+      // リセット後は、その範囲（または全体）から改めてランダムに1問出題
+      const randomIndex = Math.floor(Math.random() * wordList.length)
+      const nextWord = wordList[randomIndex]
+
+      setCurrentWord(nextWord)
+      setShowAnswer(false)
+
+      // 新しいキャッシュとして、この単語だけを出題済みとして保存
+      setUsedWordIds(() => {
+        const updated = [nextWord.id]
+        saveUsedWordIdsToLocalStorage(updated)
+        return updated
+      })
+
+      return
+    }
+
+    // まだ出題されていない単語の中からランダムに選択
+    const randomIndex = Math.floor(Math.random() * availableWords.length)
+    const nextWord = availableWords[randomIndex]
+
+    setCurrentWord(nextWord)
     setShowAnswer(false)
+
+    // 出題済みIDをキャッシュに追加してローカルストレージにも保存
+    setUsedWordIds((prev) => {
+      if (prev.includes(nextWord.id)) {
+        return prev
+      }
+      const updated = [...prev, nextWord.id]
+      saveUsedWordIdsToLocalStorage(updated)
+      return updated
+    })
   }
 
   // クイズモードを切り替え
@@ -262,6 +326,18 @@ function App() {
   // 答えを表示/非表示
   const handleToggleAnswer = () => {
     setShowAnswer(!showAnswer)
+  }
+
+  // 出題済みキャッシュをリセット
+  const handleResetCache = () => {
+    // ローカル状態とローカルストレージの両方をクリア
+    setUsedWordIds([])
+    clearUsedWordIdsFromLocalStorage()
+
+    // 現在の範囲から改めてランダムに1問出題
+    if (filteredWords.length > 0) {
+      selectRandomWord(filteredWords)
+    }
   }
 
   if (loading) {
@@ -476,6 +552,15 @@ function App() {
               minW="150px"
             >
               次の問題
+            </Button>
+            <Button
+              onClick={handleResetCache}
+              colorScheme="red"
+              variant="outline"
+              size="lg"
+              minW="150px"
+            >
+              キャッシュをリセット
             </Button>
           </HStack>
 

@@ -119,3 +119,53 @@ export function getWordDataFromLocalStorage() {
   return null;
 }
 
+/**
+ * 出題済み単語IDのキャッシュをローカルストレージに保存
+ * - 一度出てきた単語が再度出題されないようにするためのキャッシュ
+ * @param {number[]} usedIds - 出題済みの単語ID配列
+ */
+export function saveUsedWordIdsToLocalStorage(usedIds) {
+  try {
+    // 配列のみ保存する（余計な情報は持たない）
+    localStorage.setItem('leapUsedWordIds', JSON.stringify(usedIds || []));
+  } catch (error) {
+    console.error('出題済み単語IDの保存に失敗しました:', error);
+  }
+}
+
+/**
+ * 出題済み単語IDのキャッシュをローカルストレージから取得
+ * @returns {number[]} 出題済み単語ID配列（存在しない場合は空配列）
+ */
+export function getUsedWordIdsFromLocalStorage() {
+  try {
+    const data = localStorage.getItem('leapUsedWordIds');
+    if (!data) return [];
+
+    const parsed = JSON.parse(data);
+    // 配列でない場合は無視して空配列を返す
+    if (!Array.isArray(parsed)) return [];
+
+    // 数値のみをフィルタリングして返す（安全性のため）
+    return parsed
+      .map((id) => Number(id))
+      .filter((id) => Number.isInteger(id) && id > 0);
+  } catch (error) {
+    console.error('出題済み単語IDの読み込みに失敗しました:', error);
+    return [];
+  }
+}
+
+/**
+ * 出題済み単語IDのキャッシュをクリア
+ * - ユーザーの操作でキャッシュをリセットしたいときに使用
+ */
+export function clearUsedWordIdsFromLocalStorage() {
+  try {
+    localStorage.removeItem('leapUsedWordIds');
+  } catch (error) {
+    console.error('出題済み単語IDキャッシュのクリアに失敗しました:', error);
+  }
+}
+
+
