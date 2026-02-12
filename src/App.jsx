@@ -30,6 +30,7 @@ import {
   Tab,
   TabPanel,
   SimpleGrid,
+  Stack,
 } from '@chakra-ui/react'
 import { useToast } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
@@ -377,15 +378,21 @@ function App() {
   }
 
   return (
-    <Box minH="100vh" bg={bgColor} py={10}>
-      <Container maxW="container.md">
+    <Box minH="100vh" bg={bgColor} py={{ base: 6, md: 10 }}>
+      <Container maxW="container.md" px={{ base: 4, md: 0 }}>
         <VStack spacing={6} align="stretch">
           {/* ヘッダー */}
           <Box textAlign="center">
             <Heading as="h1" size="xl" mb={2}>
               LEAP 英単語クイズ
             </Heading>
-            <HStack justify="center" spacing={4} mb={2}>
+            <Stack
+              direction={{ base: 'column', md: 'row' }}
+              justify="center"
+              align="center"
+              spacing={{ base: 2, md: 4 }}
+              mb={2}
+            >
               <Text color="gray.600" fontSize="sm">
                 {isRangeActive ? (
                   <>
@@ -404,7 +411,7 @@ function App() {
                 )}
               </Text>
               <DataImporter onDataImported={handleDataImported} />
-            </HStack>
+            </Stack>
             {isRangeActive && (
               <HStack justify="center" mb={2}>
                 <Badge colorScheme="blue">
@@ -427,7 +434,13 @@ function App() {
           </Box>
 
           {/* クイズモード切り替え */}
-          <HStack justify="center" spacing={4} mb={2}>
+          <Stack
+            direction={{ base: 'column', sm: 'row' }}
+            justify="center"
+            align="center"
+            spacing={4}
+            mb={2}
+          >
             <Button
               onClick={() => handleModeChange('en-to-ja')}
               colorScheme={quizMode === 'en-to-ja' ? 'blue' : 'gray'}
@@ -444,12 +457,12 @@ function App() {
             >
               日本語 → 英語
             </Button>
-          </HStack>
+          </Stack>
 
           {/* 単語カード */}
           {currentWord && (
             <Card bg={cardBg} boxShadow="lg">
-              <CardBody p={8}>
+              <CardBody p={{ base: 4, md: 8 }}>
                 <VStack spacing={6} align="stretch">
                   {/* 単語番号 */}
                   <Text fontSize="sm" color="gray.500" textAlign="right">
@@ -461,7 +474,12 @@ function App() {
                     <>
                       {/* 英単語 */}
                       <Box textAlign="center" py={4}>
-                        <Text fontSize="4xl" fontWeight="bold" letterSpacing="wide">
+                        <Text
+                          fontSize={{ base: '3xl', md: '4xl' }}
+                          fontWeight="bold"
+                          letterSpacing="wide"
+                          wordBreak="break-word"
+                        >
                           {currentWord.word}
                         </Text>
                       </Box>
@@ -479,7 +497,11 @@ function App() {
                             <Box flex="1" overflowY="auto">
                               <VStack align="stretch" spacing={2}>
                                 {formatMeaning(currentWord.meaning).map((line, index) => (
-                                  <Text key={index} fontSize="lg" lineHeight="tall">
+                                  <Text
+                                    key={index}
+                                    fontSize={{ base: 'md', md: 'lg' }}
+                                    lineHeight="tall"
+                                  >
                                     {line}
                                   </Text>
                                 ))}
@@ -505,7 +527,11 @@ function App() {
                         <Box flex="1" overflowY="auto">
                           <VStack align="stretch" spacing={2}>
                             {formatMeaning(currentWord.meaning).map((line, index) => (
-                              <Text key={index} fontSize="lg" lineHeight="tall">
+                              <Text
+                                key={index}
+                                fontSize={{ base: 'md', md: 'lg' }}
+                                lineHeight="tall"
+                              >
                                 {line}
                               </Text>
                             ))}
@@ -519,7 +545,12 @@ function App() {
                       {/* 英単語（答え） */}
                       <Box textAlign="center" py={4} minH="80px" display="flex" alignItems="center" justifyContent="center">
                         {showAnswer ? (
-                          <Text fontSize="4xl" fontWeight="bold" letterSpacing="wide">
+                          <Text
+                            fontSize={{ base: '3xl', md: '4xl' }}
+                            fontWeight="bold"
+                            letterSpacing="wide"
+                            wordBreak="break-word"
+                          >
                             {currentWord.word}
                           </Text>
                         ) : (
@@ -536,12 +567,17 @@ function App() {
           )}
 
           {/* ボタン */}
-          <HStack spacing={4} justify="center">
+          <Stack
+            direction={{ base: 'column', sm: 'row' }}
+            spacing={4}
+            justify="center"
+            align="stretch"
+          >
             <Button
               onClick={handleToggleAnswer}
               colorScheme={showAnswer ? 'gray' : 'blue'}
               size="lg"
-              minW="150px"
+              w={{ base: '100%', sm: 'auto' }}
             >
               {showAnswer ? '答えを隠す' : '答えを表示'}
             </Button>
@@ -549,7 +585,7 @@ function App() {
               onClick={handleNext}
               colorScheme="teal"
               size="lg"
-              minW="150px"
+              w={{ base: '100%', sm: 'auto' }}
             >
               次の問題
             </Button>
@@ -558,11 +594,11 @@ function App() {
               colorScheme="red"
               variant="outline"
               size="lg"
-              minW="150px"
+              w={{ base: '100%', sm: 'auto' }}
             >
               キャッシュをリセット
             </Button>
-          </HStack>
+          </Stack>
 
           {/* 範囲指定パネル */}
           <Card bg={cardBg} boxShadow="md">
@@ -580,7 +616,7 @@ function App() {
                       <Text fontSize="sm" fontWeight="bold" color="gray.700">
                         Partを選択
                       </Text>
-                      <SimpleGrid columns={4} spacing={3}>
+                      <SimpleGrid columns={{ base: 2, md: 4 }} spacing={3}>
                         {Object.entries(partRanges).map(([key, part]) => {
                           const isSelected = selectedParts.includes(key)
                           
@@ -617,7 +653,11 @@ function App() {
                       <Text fontSize="sm" fontWeight="bold" color="gray.700">
                         出題範囲を指定（No.）
                       </Text>
-                      <HStack spacing={4}>
+                      <Stack
+                        direction={{ base: 'column', md: 'row' }}
+                        spacing={4}
+                        align={{ base: 'stretch', md: 'flex-end' }}
+                      >
                         <FormControl>
                           <FormLabel fontSize="xs">開始No.</FormLabel>
                           <NumberInput
@@ -636,7 +676,12 @@ function App() {
                             </NumberInputStepper>
                           </NumberInput>
                         </FormControl>
-                        <Text pt={6}>～</Text>
+                        <Text
+                          pt={{ base: 0, md: 6 }}
+                          textAlign="center"
+                        >
+                          ～
+                        </Text>
                         <FormControl>
                           <FormLabel fontSize="xs">終了No.</FormLabel>
                           <NumberInput
@@ -655,7 +700,7 @@ function App() {
                             </NumberInputStepper>
                           </NumberInput>
                         </FormControl>
-                        <Box pt={6}>
+                        <Box pt={{ base: 0, md: 6 }}>
                           <HStack spacing={2}>
                             <Button
                               onClick={() => applyRange()}
@@ -677,7 +722,7 @@ function App() {
                             )}
                           </HStack>
                         </Box>
-                      </HStack>
+                      </Stack>
                       {words.length > 0 && (
                         <Text fontSize="xs" color="gray.500">
                           利用可能な範囲: No. 1 ～ {Math.max(...words.map(w => w.id))}
