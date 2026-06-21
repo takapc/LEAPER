@@ -55,6 +55,9 @@ function App() {
     // - 復元に失敗した場合でもアプリが落ちないように空配列を返す
     return getUsedWordIdsFromLocalStorage()
   })
+  const [navigation, setNavigation] = useState({ history: [], index: -1 })
+  const { history: wordHistory, index: historyIndex } = navigation
+  const canGoPrevious = historyIndex > 0
   const toast = useToast() // モダンなトースト通知用
   
   // 範囲指定の状態
@@ -143,6 +146,7 @@ function App() {
     // - 古いIDが新しいデータとずれている可能性があるため
     setUsedWordIds([])
     clearUsedWordIdsFromLocalStorage()
+    resetNavigation()
     // Partが選択されている場合は、Partの範囲を再適用
     if (selectedParts.length > 0) {
       const maxId = importedWords.length > 0 ? Math.max(...importedWords.map(w => w.id)) : 0
@@ -200,6 +204,7 @@ function App() {
     setError(null)
     setStartRange(minId.toString())
     setEndRange(maxId.toString())
+    resetNavigation()
     selectRandomWord(filtered)
   }
 
@@ -249,7 +254,27 @@ function App() {
     setSelectedParts([])
     setFilteredWords(words)
     setError(null)
+    resetNavigation()
     selectRandomWord(words)
+  }
+
+  // 出題履歴をリセット
+  const resetNavigation = () => {
+    setNavigation({ history: [], index: -1 })
+  }
+
+  // 単語を表示（必要に応じて履歴にも追加）
+  const showWord = (word, { addToHistory = false } = {}) => {
+    setCurrentWord(word)
+    setShowAnswer(false)
+
+    if (addToHistory) {
+      setNavigation(({ history, index }) => {
+        const truncated = history.slice(0, index + 1)
+        const newHistory = [...truncated, word]
+        return { history: newHistory, index: newHistory.length - 1 }
+      })
+    }
   }
 
   // ランダムに単語を選択
@@ -278,8 +303,7 @@ function App() {
       const randomIndex = Math.floor(Math.random() * wordList.length)
       const nextWord = wordList[randomIndex]
 
-      setCurrentWord(nextWord)
-      setShowAnswer(false)
+      showWord(nextWord, { addToHistory: true })
 
       // 新しいキャッシュとして、この単語だけを出題済みとして保存
       setUsedWordIds(() => {
@@ -295,8 +319,7 @@ function App() {
     const randomIndex = Math.floor(Math.random() * availableWords.length)
     const nextWord = availableWords[randomIndex]
 
-    setCurrentWord(nextWord)
-    setShowAnswer(false)
+    showWord(nextWord, { addToHistory: true })
 
     // 出題済みIDをキャッシュに追加してローカルストレージにも保存
     setUsedWordIds((prev) => {
@@ -319,8 +342,26 @@ function App() {
     }
   }
 
+  // 前の問題へ
+  const handlePrevious = () => {
+    if (!canGoPrevious) return
+
+    const newIndex = historyIndex - 1
+    setNavigation({ history: wordHistory, index: newIndex })
+    setCurrentWord(wordHistory[newIndex])
+    setShowAnswer(false)
+  }
+
   // 次の問題へ
   const handleNext = () => {
+    if (historyIndex < wordHistory.length - 1) {
+      const newIndex = historyIndex + 1
+      setNavigation({ history: wordHistory, index: newIndex })
+      setCurrentWord(wordHistory[newIndex])
+      setShowAnswer(false)
+      return
+    }
+
     selectRandomWord(filteredWords)
   }
 
@@ -334,6 +375,7 @@ function App() {
     // ローカル状態とローカルストレージの両方をクリア
     setUsedWordIds([])
     clearUsedWordIdsFromLocalStorage()
+    resetNavigation()
 
     // 現在の範囲から改めてランダムに1問出題
     if (filteredWords.length > 0) {
@@ -580,6 +622,16 @@ function App() {
               w={{ base: '100%', sm: 'auto' }}
             >
               {showAnswer ? '答えを隠す' : '答えを表示'}
+            </Button>
+            <Button
+              onClick={handlePrevious}
+              colorScheme="gray"
+              variant="outline"
+              size="lg"
+              w={{ base: '100%', sm: 'auto' }}
+              isDisabled={!canGoPrevious}
+            >
+              前の問題
             </Button>
             <Button
               onClick={handleNext}
