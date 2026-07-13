@@ -168,4 +168,40 @@ export function clearUsedWordIdsFromLocalStorage() {
   }
 }
 
+const CHECKED_WORD_IDS_COOKIE = 'leapCheckedWordIds'
+const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365
+
+export function getCheckedWordIdsFromCookie() {
+  try {
+    const cookie = document.cookie
+      .split('; ')
+      .find((entry) => entry.startsWith(`${CHECKED_WORD_IDS_COOKIE}=`))
+
+    if (!cookie) return []
+
+    const parsed = JSON.parse(decodeURIComponent(cookie.split('=').slice(1).join('=')))
+    if (!Array.isArray(parsed)) return []
+
+    return parsed
+      .map((id) => Number(id))
+      .filter((id) => Number.isInteger(id) && id > 0)
+  } catch (error) {
+    console.error('チェック済み単語のCookie読み込みに失敗しました:', error)
+    return []
+  }
+}
+
+export function saveCheckedWordIdsToCookie(ids) {
+  try {
+    const value = encodeURIComponent(JSON.stringify(ids || []))
+    document.cookie = `${CHECKED_WORD_IDS_COOKIE}=${value}; Max-Age=${ONE_YEAR_IN_SECONDS}; Path=/; SameSite=Lax`
+  } catch (error) {
+    console.error('チェック済み単語のCookie保存に失敗しました:', error)
+  }
+}
+
+export function clearCheckedWordIdsFromCookie() {
+  document.cookie = `${CHECKED_WORD_IDS_COOKIE}=; Max-Age=0; Path=/; SameSite=Lax`
+}
+
 
