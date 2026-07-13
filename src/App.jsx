@@ -21,7 +21,6 @@ import {
   NumberDecrementStepper,
   FormControl,
   FormLabel,
-  Badge,
   IconButton,
 
   Tabs,
@@ -31,6 +30,7 @@ import {
   TabPanel,
   SimpleGrid,
   Stack,
+  Switch,
 } from '@chakra-ui/react'
 import { useToast } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
@@ -39,6 +39,9 @@ import {
   getUsedWordIdsFromLocalStorage,
   saveUsedWordIdsToLocalStorage,
   clearUsedWordIdsFromLocalStorage,
+  getCheckedWordIdsFromCookie,
+  saveCheckedWordIdsToCookie,
+  clearCheckedWordIdsFromCookie,
 } from './utils/wordData'
 import { DataImporter } from './components/DataImporter'
 
@@ -64,6 +67,8 @@ function App() {
   const [startRange, setStartRange] = useState('')
   const [endRange, setEndRange] = useState('')
   const [isRangeActive, setIsRangeActive] = useState(false)
+  const [isCheckedOnlyActive, setIsCheckedOnlyActive] = useState(false)
+  const [checkedWordIds, setCheckedWordIds] = useState(() => getCheckedWordIdsFromCookie())
   const [selectedParts, setSelectedParts] = useState([]) // ['part1', 'part2', ...] 複数選択可能
 
   // Partの範囲定義
@@ -142,6 +147,9 @@ function App() {
   const handleDataImported = (importedWords) => {
     setWords(importedWords)
     setError(null)
+    setCheckedWordIds([])
+    clearCheckedWordIdsFromCookie()
+    setIsCheckedOnlyActive(false)
     // データセットが変わったタイミングで出題済みキャッシュをクリア
     // - 古いIDが新しいデータとずれている可能性があるため
     setUsedWordIds([])
@@ -201,11 +209,50 @@ function App() {
     
     setFilteredWords(filtered)
     setIsRangeActive(true)
+    setIsCheckedOnlyActive(false)
     setError(null)
     setStartRange(minId.toString())
     setEndRange(maxId.toString())
     resetNavigation()
     selectRandomWord(filtered)
+  }
+
+  const toggleCurrentWordChecked = () => {
+    if (!currentWord) return
+
+    setCheckedWordIds((ids) => {
+      const updatedIds = ids.includes(currentWord.id)
+        ? ids.filter((id) => id !== currentWord.id)
+        : [...ids, currentWord.id]
+      saveCheckedWordIdsToCookie(updatedIds)
+      return updatedIds
+    })
+  }
+
+  const selectCheckedWords = () => {
+    const checkedWords = words.filter((word) => checkedWordIds.includes(word.id))
+
+    if (checkedWords.length === 0) {
+      toast({
+        title: '間違えた問題がありません',
+        description: '単語カード左上のバツボタンから、出題したい問題を選んでください。',
+        status: 'info',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      })
+      return
+    }
+
+    setFilteredWords(checkedWords)
+    setIsRangeActive(true)
+    setIsCheckedOnlyActive(true)
+    setSelectedParts([])
+    setStartRange('')
+    setEndRange('')
+    setError(null)
+    resetNavigation()
+    selectRandomWord(checkedWords)
   }
 
   // Partを選択/解除して範囲を適用
@@ -251,6 +298,7 @@ function App() {
     setStartRange('')
     setEndRange('')
     setIsRangeActive(false)
+    setIsCheckedOnlyActive(false)
     setSelectedParts([])
     setFilteredWords(words)
     setError(null)
@@ -292,7 +340,7 @@ function App() {
 
       toast({
         title: 'すべての単語を出題しました',
-        description: 'キャッシュをリセットして、同じ範囲から再度出題を開始します。',
+        description: '履歴を削除して、同じ範囲から再度出題を開始します。',
         status: 'info',
         duration: 4000,
         isClosable: true,
@@ -428,17 +476,12 @@ function App() {
             <Heading as="h1" size="xl" mb={2}>
               LEAP 英単語クイズ
             </Heading>
-            <Stack
-              direction={{ base: 'column', md: 'row' }}
-              justify="center"
-              align="center"
-              spacing={{ base: 2, md: 4 }}
-              mb={2}
-            >
-              <Text color="gray.600" fontSize="sm">
+            <Text color="gray.600" fontSize="sm">
                 {isRangeActive ? (
                   <>
-                    {selectedParts.length > 0 ? (
+                    {isCheckedOnlyActive ? (
+                      <>間違えた{filteredWords.length}問から出題</>
+                    ) : selectedParts.length > 0 ? (
                       <>
                         {selectedParts.map(key => partRanges[key].label).join(' + ')} ({filteredWords.length}語)
                       </>
@@ -451,73 +494,52 @@ function App() {
                 ) : (
                   <>全{words.length}語からランダムに出題</>
                 )}
-              </Text>
-              <DataImporter onDataImported={handleDataImported} />
-            </Stack>
-            {isRangeActive && (
-              <HStack justify="center" mb={2}>
-                <Badge colorScheme="blue">
-                  範囲指定中: {selectedParts.length > 0 
-                    ? selectedParts.map(key => partRanges[key].label).join(' + ')
-                    : `No. ${startRange}～${endRange}`}
-                </Badge>
-                <IconButton
-                  aria-label="範囲をリセット"
-                  icon={<CloseIcon />}
-                  size="xs"
-                  onClick={resetRange}
-                  variant="ghost"
-                />
-              </HStack>
-            )}
-            <Text fontSize="xs" color="gray.500" textAlign="center">
-              データを更新する場合は「データをインポート」ボタンからJSONファイルをインポートできます
             </Text>
           </Box>
 
           {/* クイズモード切り替え */}
-          <Stack
-            direction={{ base: 'column', sm: 'row' }}
-            justify="center"
-            align="center"
-            spacing={4}
-            mb={2}
-          >
-            <Button
-              onClick={() => handleModeChange('en-to-ja')}
-              colorScheme={quizMode === 'en-to-ja' ? 'blue' : 'gray'}
-              variant={quizMode === 'en-to-ja' ? 'solid' : 'outline'}
-              size="md"
-            >
+          <HStack justify="center" spacing={3} mb={2}>
+            <Text fontSize="sm" color={quizMode === 'en-to-ja' ? 'blue.600' : 'gray.500'}>
               英語 → 日本語
-            </Button>
-            <Button
-              onClick={() => handleModeChange('ja-to-en')}
-              colorScheme={quizMode === 'ja-to-en' ? 'blue' : 'gray'}
-              variant={quizMode === 'ja-to-en' ? 'solid' : 'outline'}
-              size="md"
-            >
+            </Text>
+            <Switch
+              size="lg"
+              colorScheme="blue"
+              isChecked={quizMode === 'ja-to-en'}
+              onChange={(event) => handleModeChange(event.target.checked ? 'ja-to-en' : 'en-to-ja')}
+              aria-label="出題方向を切り替える"
+            />
+            <Text fontSize="sm" color={quizMode === 'ja-to-en' ? 'blue.600' : 'gray.500'}>
               日本語 → 英語
-            </Button>
-          </Stack>
+            </Text>
+          </HStack>
 
           {/* 単語カード */}
           {currentWord && (
             <Card bg={cardBg} boxShadow="lg">
-              <CardBody p={{ base: 4, md: 8 }}>
-                <VStack spacing={6} align="stretch">
+              <CardBody p={{ base: 3, md: 8 }}>
+                <VStack spacing={{ base: 4, md: 6 }} align="stretch">
                   {/* 単語番号 */}
-                  <Text fontSize="sm" color="gray.500" textAlign="right">
-                    No. {currentWord.id}
-                  </Text>
+                  <HStack justify="space-between">
+                    <IconButton
+                      aria-label={checkedWordIds.includes(currentWord.id) ? '間違えた問題から外す' : 'この問題を間違えた問題に追加'}
+                      icon={<CloseIcon />}
+                      colorScheme={checkedWordIds.includes(currentWord.id) ? 'red' : 'gray'}
+                      variant={checkedWordIds.includes(currentWord.id) ? 'solid' : 'outline'}
+                      onClick={toggleCurrentWordChecked}
+                    />
+                    <Text fontSize="sm" color="gray.500">
+                      No. {currentWord.id}
+                    </Text>
+                  </HStack>
 
                   {/* 問題部分 */}
                   {quizMode === 'en-to-ja' ? (
                     <>
                       {/* 英単語 */}
-                      <Box textAlign="center" py={4}>
+                      <Box textAlign="center" py={{ base: 2, md: 4 }}>
                         <Text
-                          fontSize={{ base: '3xl', md: '4xl' }}
+                          fontSize={{ base: '2xl', md: '4xl' }}
                           fontWeight="bold"
                           letterSpacing="wide"
                           wordBreak="break-word"
@@ -530,7 +552,7 @@ function App() {
                       <Box borderTop="1px" borderColor="gray.200" />
 
                       {/* 意味（答え） */}
-                      <Box h="200px" display="flex" flexDirection="column">
+                      <Box h={{ base: '140px', md: '200px' }} display="flex" flexDirection="column">
                         {showAnswer ? (
                           <>
                             <Text fontSize="sm" color="gray.500" mb={2}>
@@ -562,7 +584,7 @@ function App() {
                   ) : (
                     <>
                       {/* 意味（問題） */}
-                      <Box h="200px" display="flex" flexDirection="column">
+                      <Box h={{ base: '140px', md: '200px' }} display="flex" flexDirection="column">
                         <Text fontSize="sm" color="gray.500" mb={2}>
                           意味
                         </Text>
@@ -585,10 +607,10 @@ function App() {
                       <Box borderTop="1px" borderColor="gray.200" />
 
                       {/* 英単語（答え） */}
-                      <Box textAlign="center" py={4} minH="80px" display="flex" alignItems="center" justifyContent="center">
+                      <Box textAlign="center" py={{ base: 2, md: 4 }} minH={{ base: '60px', md: '80px' }} display="flex" alignItems="center" justifyContent="center">
                         {showAnswer ? (
                           <Text
-                            fontSize={{ base: '3xl', md: '4xl' }}
+                            fontSize={{ base: '2xl', md: '4xl' }}
                             fontWeight="bold"
                             letterSpacing="wide"
                             wordBreak="break-word"
@@ -608,27 +630,15 @@ function App() {
             </Card>
           )}
 
-          {/* ボタン */}
-          <Stack
-            direction={{ base: 'column', sm: 'row' }}
-            spacing={4}
-            justify="center"
-            align="stretch"
-          >
-            <Button
-              onClick={handleToggleAnswer}
-              colorScheme={showAnswer ? 'gray' : 'blue'}
-              size="lg"
-              w={{ base: '100%', sm: 'auto' }}
-            >
-              {showAnswer ? '答えを隠す' : '答えを表示'}
-            </Button>
+          {/* 単語カード直下の問題移動 */}
+          <HStack spacing={3} justify="center" w="full">
             <Button
               onClick={handlePrevious}
               colorScheme="gray"
               variant="outline"
-              size="lg"
-              w={{ base: '100%', sm: 'auto' }}
+              size="md"
+              flex="1"
+              maxW="220px"
               isDisabled={!canGoPrevious}
             >
               前の問題
@@ -636,21 +646,36 @@ function App() {
             <Button
               onClick={handleNext}
               colorScheme="teal"
-              size="lg"
-              w={{ base: '100%', sm: 'auto' }}
+              size="md"
+              flex="1"
+              maxW="220px"
             >
               次の問題
+            </Button>
+          </HStack>
+
+          {/* 補助操作 */}
+          <HStack spacing={3} justify="center" flexWrap="nowrap" w="full">
+            <Button
+              onClick={handleToggleAnswer}
+              colorScheme={showAnswer ? 'gray' : 'blue'}
+              size="md"
+              flex="1"
+              maxW="220px"
+            >
+              {showAnswer ? '答えを隠す' : '答えを表示'}
             </Button>
             <Button
               onClick={handleResetCache}
               colorScheme="red"
               variant="outline"
-              size="lg"
-              w={{ base: '100%', sm: 'auto' }}
+              size="md"
+              flex="1"
+              maxW="220px"
             >
-              キャッシュをリセット
+              履歴を削除
             </Button>
-          </Stack>
+          </HStack>
 
           {/* 範囲指定パネル */}
           <Card bg={cardBg} boxShadow="md">
@@ -659,6 +684,7 @@ function App() {
                 <TabList>
                   <Tab>Part選択</Tab>
                   <Tab>詳細範囲</Tab>
+                  <Tab>間違えた問題</Tab>
                 </TabList>
 
                 <TabPanels>
@@ -782,17 +808,34 @@ function App() {
                       )}
                     </VStack>
                   </TabPanel>
+                  <TabPanel>
+                    <VStack spacing={4} align="stretch">
+                      <Text fontSize="sm" fontWeight="bold" color="gray.700">
+                        間違えた問題だけを出題
+                      </Text>
+                      <Text fontSize="sm" color="gray.500">
+                        単語カード左上のバツボタンで選んだ問題を出題します（{checkedWordIds.length}問）。
+                      </Text>
+                      <Button onClick={selectCheckedWords} colorScheme="green">
+                        間違えた問題を出題
+                      </Button>
+                    </VStack>
+                  </TabPanel>
                 </TabPanels>
               </Tabs>
             </CardBody>
           </Card>
 
           {/* フッター情報 */}
-          <Box textAlign="center" mt={4}>
+          <VStack spacing={2} textAlign="center" mt={4}>
+            <DataImporter onDataImported={handleDataImported} />
+            <Text fontSize="xs" color="gray.500">
+              データを更新する場合は「データをインポート」からJSONファイルを読み込めます
+            </Text>
             <Text fontSize="xs" color="gray.500">
               データ出典: 受かる英語 - LEAP 改訂版 単語一覧
             </Text>
-          </Box>
+          </VStack>
         </VStack>
       </Container>
     </Box>
