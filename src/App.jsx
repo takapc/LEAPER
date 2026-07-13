@@ -573,9 +573,16 @@ function App() {
                             </Box>
                           </>
                         ) : (
-                          <Box flex="1" display="flex" alignItems="center" justifyContent="center">
+                          <Box
+                            flex="1"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            cursor="pointer"
+                            onClick={handleToggleAnswer}
+                          >
                             <Text color="gray.400" fontSize="lg" textAlign="center">
-                              答えを表示するにはボタンをクリック
+                              ここをタップして答えを表示
                             </Text>
                           </Box>
                         )}
@@ -607,7 +614,16 @@ function App() {
                       <Box borderTop="1px" borderColor="gray.200" />
 
                       {/* 英単語（答え） */}
-                      <Box textAlign="center" py={{ base: 2, md: 4 }} minH={{ base: '60px', md: '80px' }} display="flex" alignItems="center" justifyContent="center">
+                      <Box
+                        textAlign="center"
+                        py={{ base: 2, md: 4 }}
+                        minH={{ base: '60px', md: '80px' }}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        cursor={showAnswer ? 'default' : 'pointer'}
+                        onClick={showAnswer ? undefined : handleToggleAnswer}
+                      >
                         {showAnswer ? (
                           <Text
                             fontSize={{ base: '2xl', md: '4xl' }}
@@ -619,7 +635,7 @@ function App() {
                           </Text>
                         ) : (
                           <Text color="gray.400" fontSize="lg" textAlign="center">
-                            答えを表示するにはボタンをクリック
+                            ここをタップして答えを表示
                           </Text>
                         )}
                       </Box>
@@ -657,20 +673,11 @@ function App() {
           {/* 補助操作 */}
           <HStack spacing={3} justify="center" flexWrap="nowrap" w="full">
             <Button
-              onClick={handleToggleAnswer}
-              colorScheme={showAnswer ? 'gray' : 'blue'}
-              size="md"
-              flex="1"
-              maxW="220px"
-            >
-              {showAnswer ? '答えを隠す' : '答えを表示'}
-            </Button>
-            <Button
               onClick={handleResetCache}
               colorScheme="red"
               variant="outline"
               size="md"
-              flex="1"
+              w="calc(50% - 6px)"
               maxW="220px"
             >
               履歴を削除
