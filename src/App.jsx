@@ -31,6 +31,7 @@ import {
   SimpleGrid,
   Stack,
   Switch,
+  Progress,
 } from '@chakra-ui/react'
 import { useToast } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
@@ -182,6 +183,26 @@ function App() {
   const applyRange = (wordList = words, start = null, end = null) => {
     const startNum = start !== null ? start : parseInt(startRange)
     let endNum = end !== null ? end : parseInt(endRange)
+
+    // 裏技: 開始2009 / 終了213 で感謝カードを表示
+    if (startNum === 2009 && endNum === 213) {
+      const thankYouWord = {
+        id: 2009213,
+        word: 'Thank you for using!',
+        meaning: 'ご利用ありがとうございました！',
+      }
+
+      setFilteredWords([thankYouWord])
+      setIsRangeActive(true)
+      setIsCheckedOnlyActive(false)
+      setSelectedParts([])
+      setError(null)
+      setStartRange('2009')
+      setEndRange('213')
+      resetNavigation()
+      showWord(thankYouWord, { addToHistory: true })
+      return
+    }
     
     // Part4の場合、endNumがnullの場合は最大値を使用
     if (endNum === null && words.length > 0) {
@@ -431,6 +452,11 @@ function App() {
     }
   }
 
+  // 現在の出題範囲における進捗
+  const completedInRange = filteredWords.filter((word) => usedWordIds.includes(word.id)).length
+  const totalInRange = filteredWords.length
+  const progressPercent = totalInRange > 0 ? (completedInRange / totalInRange) * 100 : 0
+
   if (loading) {
     return (
       <Box minH="100vh" bg={bgColor} py={10}>
@@ -495,6 +521,24 @@ function App() {
                   <>全{words.length}語からランダムに出題</>
                 )}
             </Text>
+            {totalInRange > 0 && (
+              <Box mt={3} mx="auto" maxW="280px" w="full">
+                <HStack justify="space-between" mb={1}>
+                  <Text fontSize="xs" color="gray.500">
+                    進捗
+                  </Text>
+                  <Text fontSize="xs" color="gray.500">
+                    {completedInRange} / {totalInRange}
+                  </Text>
+                </HStack>
+                <Progress
+                  value={progressPercent}
+                  size="xs"
+                  colorScheme="teal"
+                  borderRadius="full"
+                />
+              </Box>
+            )}
           </Box>
 
           {/* クイズモード切り替え */}
@@ -539,7 +583,7 @@ function App() {
                       {/* 英単語 */}
                       <Box textAlign="center" py={{ base: 2, md: 4 }}>
                         <Text
-                          fontSize={{ base: '2xl', md: '4xl' }}
+                          fontSize={{ base: '3xl', md: '5xl' }}
                           fontWeight="bold"
                           letterSpacing="wide"
                           wordBreak="break-word"
@@ -626,7 +670,7 @@ function App() {
                       >
                         {showAnswer ? (
                           <Text
-                            fontSize={{ base: '2xl', md: '4xl' }}
+                            fontSize={{ base: '3xl', md: '5xl' }}
                             fontWeight="bold"
                             letterSpacing="wide"
                             wordBreak="break-word"
