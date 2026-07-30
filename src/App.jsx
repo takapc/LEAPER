@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   Box,
   Container,
@@ -45,6 +45,7 @@ import {
   clearCheckedWordIdsFromCookie,
 } from './utils/wordData'
 import { DataImporter } from './components/DataImporter'
+import { PronounceButton } from './components/PronounceButton'
 
 function App() {
   const [words, setWords] = useState([]) // 全単語データ
@@ -71,43 +72,85 @@ function App() {
   const [isCheckedOnlyActive, setIsCheckedOnlyActive] = useState(false)
   const [checkedWordIds, setCheckedWordIds] = useState(() => getCheckedWordIdsFromCookie())
   const [selectedParts, setSelectedParts] = useState([]) // ['part1', 'part2', ...] 複数選択可能
+  const [isAutoPlay, setIsAutoPlay] = useState(false)
+  const [autoPlayProgress, setAutoPlayProgress] = useState(0)
+  const handleNextRef = useRef(() => {})
+  const AUTO_PLAY_MS = 3000
+  const AUTO_PLAY_REVEAL_MS = 1500
 
   // Partの範囲定義
   const partRanges = {
     part1: { start: 1, end: 400, label: 'Part 1' },
     part2: { start: 401, end: 1000, label: 'Part 2' },
     part3: { start: 1001, end: 1400, label: 'Part 3' },
-    part4: { start: 1401, end: null, label: 'Part 4' }, // nullの場合は最大値まで
+    part4: { start: 1401, end: 2000, label: 'Part 4' },
+    partExtra: { start: 2001, end: 2300, label: '＋α' },
   }
 
-  // 意味をフォーマット（①、②、③などで改行）
+  // 意味をフォーマット
+  // - [名][他]などの品詞タグがあれば、その前で改行
+  // - 品詞タグの直後の最初の丸数字（①など）は同じ行に残し、②③以降は丸数字で改行
+  // - 品詞タグがなければ、①②③すべての前で改行
   const formatMeaning = (meaning) => {
     if (!meaning) return ['']
-    
-    // ①、②、③、④、⑤、⑥、⑦、⑧、⑨、⑩の前で分割
-    // 最初の項目の前には改行を入れないようにする
-    const parts = meaning.split(/([①②③④⑤⑥⑦⑧⑨⑩])/)
-    const lines = []
-    let currentLine = ''
-    
-    for (let i = 0; i < parts.length; i++) {
-      const part = parts[i]
-      // 丸数字の場合は新しい行を開始
-      if (/[①②③④⑤⑥⑦⑧⑨⑩]/.test(part)) {
-        if (currentLine.trim()) {
-          lines.push(currentLine.trim())
+
+    const posLookahead = /(?=\[(?:自|他|名|形|前|副|接|助|動|熟)\])/
+    const hasPosTag = /\[(?:自|他|名|形|前|副|接|助|動|熟)\]/.test(meaning)
+
+    if (!hasPosTag) {
+      const parts = meaning.split(/([①②③④⑤⑥⑦⑧⑨⑩])/)
+      const lines = []
+      let currentLine = ''
+
+      for (let i = 0; i < parts.length; i++) {
+        const part = parts[i]
+        if (/[①②③④⑤⑥⑦⑧⑨⑩]/.test(part)) {
+          if (currentLine.trim()) {
+            lines.push(currentLine.trim())
+          }
+          currentLine = part
+        } else {
+          currentLine += part
         }
-        currentLine = part
-      } else {
-        currentLine += part
       }
+
+      if (currentLine.trim()) {
+        lines.push(currentLine.trim())
+      }
+
+      return lines.length > 0 ? lines : [meaning]
     }
-    
-    // 最後の行を追加
-    if (currentLine.trim()) {
-      lines.push(currentLine.trim())
-    }
-    
+
+    const segments = meaning
+      .split(posLookahead)
+      .map((segment) => segment.trim())
+      .filter(Boolean)
+
+    const lines = []
+
+    segments.forEach((segment) => {
+      const circleParts = segment.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/)
+
+      // 丸数字がなければそのまま
+      if (circleParts.length === 1) {
+        lines.push(segment)
+        return
+      }
+
+      // 品詞タグ＋最初の丸数字は同じ行、②③以降は改行
+      const firstLine = `${circleParts[0]}${circleParts[1]}`.trim()
+      if (firstLine) {
+        lines.push(firstLine)
+      }
+
+      for (let i = 2; i < circleParts.length; i++) {
+        const line = circleParts[i].trim()
+        if (line) {
+          lines.push(line)
+        }
+      }
+    })
+
     return lines.length > 0 ? lines : [meaning]
   }
 
@@ -434,6 +477,77 @@ function App() {
     selectRandomWord(filteredWords)
   }
 
+  // 最新の handleNext を ref に保持（自動再生から参照）
+  handleNextRef.current = handleNext
+
+  // 自動再生: 3秒ごとに次のカードへ（2.5秒で答え表示、経過をプログレスバー表示）
+  useEffect(() => {
+    if (!isAutoPlay) {
+      setAutoPlayProgress(0)
+      return undefined
+    }
+
+    setShowAnswer(false)
+    const start = performance.now()
+    let rafId
+    let revealed = false
+    let advanced = false
+
+    const tick = (now) => {
+      const elapsed = now - start
+      setAutoPlayProgress(Math.min(100, (elapsed / AUTO_PLAY_MS) * 100))
+
+      if (elapsed >= AUTO_PLAY_REVEAL_MS && !revealed) {
+        revealed = true
+        setShowAnswer(true)
+      }
+
+      if (elapsed >= AUTO_PLAY_MS && !advanced) {
+        advanced = true
+        handleNextRef.current()
+        return
+      }
+
+      rafId = requestAnimationFrame(tick)
+    }
+
+    rafId = requestAnimationFrame(tick)
+
+    return () => cancelAnimationFrame(rafId)
+  }, [isAutoPlay, currentWord?.id])
+
+  // 自動再生中は、開始クリック以外の操作で停止
+  useEffect(() => {
+    if (!isAutoPlay) return undefined
+
+    let armed = false
+    const armTimer = setTimeout(() => {
+      armed = true
+    }, 0)
+
+    const stopAutoPlay = (event) => {
+      if (!armed) return
+      // 間違えた問題のマーク操作では停止しない
+      if (event.target?.closest?.('[data-auto-play-ignore]')) return
+      setIsAutoPlay(false)
+    }
+
+    document.addEventListener('pointerdown', stopAutoPlay, true)
+    document.addEventListener('keydown', stopAutoPlay, true)
+
+    return () => {
+      clearTimeout(armTimer)
+      document.removeEventListener('pointerdown', stopAutoPlay, true)
+      document.removeEventListener('keydown', stopAutoPlay, true)
+    }
+  }, [isAutoPlay])
+
+  const handleStartAutoPlay = () => {
+    // 再生中のクリックは pointerdown 側で停止する（ここでは再開しない）
+    if (isAutoPlay) return
+    setIsAutoPlay(true)
+  }
+
   // 答えを表示/非表示
   const handleToggleAnswer = () => {
     setShowAnswer(!showAnswer)
@@ -560,12 +674,26 @@ function App() {
 
           {/* 単語カード */}
           {currentWord && (
-            <Card bg={cardBg} boxShadow="lg">
+            <Card bg={cardBg} boxShadow="lg" overflow="hidden">
+              {isAutoPlay && (
+                <Progress
+                  value={autoPlayProgress}
+                  size="xs"
+                  colorScheme="purple"
+                  borderRadius="0"
+                  sx={{
+                    '& > div': {
+                      transition: 'none',
+                    },
+                  }}
+                />
+              )}
               <CardBody p={{ base: 3, md: 8 }}>
                 <VStack spacing={{ base: 4, md: 6 }} align="stretch">
                   {/* 単語番号 */}
                   <HStack justify="space-between">
                     <IconButton
+                      data-auto-play-ignore
                       aria-label={checkedWordIds.includes(currentWord.id) ? '間違えた問題から外す' : 'この問題を間違えた問題に追加'}
                       icon={<CloseIcon />}
                       colorScheme={checkedWordIds.includes(currentWord.id) ? 'red' : 'gray'}
@@ -581,22 +709,40 @@ function App() {
                   {quizMode === 'en-to-ja' ? (
                     <>
                       {/* 英単語 */}
-                      <Box textAlign="center" py={{ base: 2, md: 4 }}>
+                      <Flex
+                        justify="center"
+                        align="center"
+                        gap={2}
+                        py={{ base: 2, md: 4 }}
+                        flexWrap="wrap"
+                      >
                         <Text
+                          as="span"
                           fontSize={{ base: '3xl', md: '5xl' }}
                           fontWeight="bold"
                           letterSpacing="wide"
                           wordBreak="break-word"
+                          textAlign="center"
+                          lineHeight="1"
+                          display="inline-flex"
+                          alignItems="center"
                         >
                           {currentWord.word}
                         </Text>
-                      </Box>
+                        <PronounceButton word={currentWord.word} />
+                      </Flex>
 
                       {/* 区切り線 */}
                       <Box borderTop="1px" borderColor="gray.200" />
 
                       {/* 意味（答え） */}
-                      <Box h={{ base: '140px', md: '200px' }} display="flex" flexDirection="column">
+                      <Box
+                        h={{ base: '140px', md: '200px' }}
+                        display="flex"
+                        flexDirection="column"
+                        cursor="pointer"
+                        onClick={handleToggleAnswer}
+                      >
                         {showAnswer ? (
                           <>
                             <Text fontSize="sm" color="gray.500" mb={2}>
@@ -622,8 +768,6 @@ function App() {
                             display="flex"
                             alignItems="center"
                             justifyContent="center"
-                            cursor="pointer"
-                            onClick={handleToggleAnswer}
                           >
                             <Text color="gray.400" fontSize="lg" textAlign="center">
                               ここをタップして答えを表示
@@ -665,18 +809,26 @@ function App() {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
-                        cursor={showAnswer ? 'default' : 'pointer'}
-                        onClick={showAnswer ? undefined : handleToggleAnswer}
+                        cursor="pointer"
+                        onClick={handleToggleAnswer}
                       >
                         {showAnswer ? (
-                          <Text
-                            fontSize={{ base: '3xl', md: '5xl' }}
-                            fontWeight="bold"
-                            letterSpacing="wide"
-                            wordBreak="break-word"
-                          >
-                            {currentWord.word}
-                          </Text>
+                          <Flex justify="center" align="center" gap={2} flexWrap="wrap">
+                            <Text
+                              as="span"
+                              fontSize={{ base: '3xl', md: '5xl' }}
+                              fontWeight="bold"
+                              letterSpacing="wide"
+                              wordBreak="break-word"
+                              textAlign="center"
+                              lineHeight="1"
+                              display="inline-flex"
+                              alignItems="center"
+                            >
+                              {currentWord.word}
+                            </Text>
+                            <PronounceButton word={currentWord.word} />
+                          </Flex>
                         ) : (
                           <Text color="gray.400" fontSize="lg" textAlign="center">
                             ここをタップして答えを表示
@@ -715,7 +867,17 @@ function App() {
           </HStack>
 
           {/* 補助操作 */}
-          <HStack spacing={3} justify="center" flexWrap="nowrap" w="full">
+          <HStack spacing={3} justify="center" flexWrap="wrap" w="full">
+            <Button
+              onClick={handleStartAutoPlay}
+              colorScheme="purple"
+              variant={isAutoPlay ? 'solid' : 'outline'}
+              size="md"
+              w="calc(50% - 6px)"
+              maxW="220px"
+            >
+              {isAutoPlay ? '自動再生中…' : '自動再生'}
+            </Button>
             <Button
               onClick={handleResetCache}
               colorScheme="red"
@@ -727,6 +889,11 @@ function App() {
               履歴を削除
             </Button>
           </HStack>
+          {isAutoPlay && (
+            <Text fontSize="xs" color="purple.500" textAlign="center">
+              画面を触ると自動再生を停止します
+            </Text>
+          )}
 
           {/* 範囲指定パネル */}
           <Card bg={cardBg} boxShadow="md">
@@ -745,7 +912,7 @@ function App() {
                       <Text fontSize="sm" fontWeight="bold" color="gray.700">
                         Partを選択
                       </Text>
-                      <SimpleGrid columns={{ base: 2, md: 4 }} spacing={3}>
+                      <SimpleGrid columns={{ base: 2, md: 5 }} spacing={3}>
                         {Object.entries(partRanges).map(([key, part]) => {
                           const isSelected = selectedParts.includes(key)
                           
