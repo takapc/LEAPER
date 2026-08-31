@@ -64,6 +64,23 @@ export function filterWordsBySelectedParts(words, selectedParts, partRanges = PA
   )
 }
 
+export function searchEnglishWords(words, query, limit = 10) {
+  const normalizedQuery = query.trim().toLocaleLowerCase('en')
+  if (!normalizedQuery || !/[a-z]/.test(normalizedQuery)) return []
+
+  return words
+    .filter((word) => word.word.toLocaleLowerCase('en').includes(normalizedQuery))
+    .sort((a, b) => {
+      const aWord = a.word.toLocaleLowerCase('en')
+      const bWord = b.word.toLocaleLowerCase('en')
+      const aStartsWith = aWord.startsWith(normalizedQuery)
+      const bStartsWith = bWord.startsWith(normalizedQuery)
+      if (aStartsWith !== bStartsWith) return aStartsWith ? -1 : 1
+      return aWord.localeCompare(bWord, 'en')
+    })
+    .slice(0, limit)
+}
+
 export function pickRandomUnusedWord(words, usedIds, random = Math.random) {
   const usedIdSet = new Set(usedIds)
   const availableWords = words.filter((word) => !usedIdSet.has(word.id))

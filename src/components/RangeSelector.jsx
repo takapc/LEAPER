@@ -13,6 +13,7 @@ import {
   NumberInputStepper,
   SimpleGrid,
   Stack,
+  Switch,
   Tab,
   TabList,
   TabPanel,
@@ -27,11 +28,12 @@ export function RangeSelector({
   checkedWordCount,
   endRange,
   isRangeActive,
+  isCheckedOnlyActive,
   maxWordId,
   onApplyRange,
   onEndRangeChange,
   onResetRange,
-  onSelectCheckedWords,
+  onToggleCheckedOnly,
   onStartRangeChange,
   onTogglePart,
   partRanges,
@@ -41,11 +43,22 @@ export function RangeSelector({
   return (
     <Card bg={cardBg} boxShadow="md">
       <CardBody p={4}>
+        <HStack justify="space-between" mb={4} p={3} bg="gray.50" borderRadius="md">
+          <Box>
+            <Text fontSize="sm" fontWeight="bold">間違えた問題のみ</Text>
+            <Text fontSize="xs" color="gray.500">マーク済み {checkedWordCount}問に絞り込みます</Text>
+          </Box>
+          <Switch
+            colorScheme="red"
+            isChecked={isCheckedOnlyActive}
+            onChange={onToggleCheckedOnly}
+            aria-label="間違えた問題のみの出題を切り替える"
+          />
+        </HStack>
         <Tabs>
           <TabList>
             <Tab>Part選択</Tab>
             <Tab>詳細範囲</Tab>
-            <Tab>間違えた問題</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -121,19 +134,6 @@ export function RangeSelector({
                     利用可能な範囲: No. 1 ～ {maxWordId}
                   </Text>
                 )}
-              </VStack>
-            </TabPanel>
-            <TabPanel>
-              <VStack spacing={4} align="stretch">
-                <Text fontSize="sm" fontWeight="bold" color="gray.700">
-                  間違えた問題だけを出題
-                </Text>
-                <Text fontSize="sm" color="gray.500">
-                  単語カード左上のバツボタンで選んだ問題を出題します（{checkedWordCount}問）。
-                </Text>
-                <Button onClick={onSelectCheckedWords} colorScheme="green">
-                  間違えた問題を出題
-                </Button>
               </VStack>
             </TabPanel>
           </TabPanels>
