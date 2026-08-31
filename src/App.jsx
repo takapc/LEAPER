@@ -14,22 +14,7 @@ import {
   AlertIcon,
   useColorModeValue,
   Flex,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  FormControl,
-  FormLabel,
   IconButton,
-
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  SimpleGrid,
-  Stack,
   Switch,
   Progress,
 } from '@chakra-ui/react'
@@ -46,6 +31,13 @@ import {
 } from './utils/wordData'
 import { DataImporter } from './components/DataImporter'
 import { PronounceButton } from './components/PronounceButton'
+import { RangeSelector } from './components/RangeSelector'
+import {
+  filterWordsBySelectedParts,
+  formatMeaning,
+  PART_RANGES,
+  pickRandomUnusedWord,
+} from './utils/quizLogic'
 
 function App() {
   const [words, setWords] = useState([]) // 全単語データ
@@ -60,11 +52,12 @@ function App() {
     // - 復元に失敗した場合でもアプリが落ちないように空配列を返す
     return getUsedWordIdsFromLocalStorage()
   })
+  const usedWordIdsRef = useRef(usedWordIds)
   const [navigation, setNavigation] = useState({ history: [], index: -1 })
   const { history: wordHistory, index: historyIndex } = navigation
   const canGoPrevious = historyIndex > 0
   const toast = useToast() // モダンなトースト通知用
-  
+
   // 範囲指定の状態
   const [startRange, setStartRange] = useState('')
   const [endRange, setEndRange] = useState('')
@@ -78,81 +71,7 @@ function App() {
   const AUTO_PLAY_MS = 3000
   const AUTO_PLAY_REVEAL_MS = 1500
 
-  // Partの範囲定義
-  const partRanges = {
-    part1: { start: 1, end: 400, label: 'Part 1' },
-    part2: { start: 401, end: 1000, label: 'Part 2' },
-    part3: { start: 1001, end: 1400, label: 'Part 3' },
-    part4: { start: 1401, end: 2000, label: 'Part 4' },
-    partExtra: { start: 2001, end: 2300, label: '＋α' },
-  }
-
-  // 意味をフォーマット
-  // - [名][他]などの品詞タグがあれば、その前で改行
-  // - 品詞タグの直後の最初の丸数字（①など）は同じ行に残し、②③以降は丸数字で改行
-  // - 品詞タグがなければ、①②③すべての前で改行
-  const formatMeaning = (meaning) => {
-    if (!meaning) return ['']
-
-    const posLookahead = /(?=\[(?:自|他|名|形|前|副|接|助|動|熟)\])/
-    const hasPosTag = /\[(?:自|他|名|形|前|副|接|助|動|熟)\]/.test(meaning)
-
-    if (!hasPosTag) {
-      const parts = meaning.split(/([①②③④⑤⑥⑦⑧⑨⑩])/)
-      const lines = []
-      let currentLine = ''
-
-      for (let i = 0; i < parts.length; i++) {
-        const part = parts[i]
-        if (/[①②③④⑤⑥⑦⑧⑨⑩]/.test(part)) {
-          if (currentLine.trim()) {
-            lines.push(currentLine.trim())
-          }
-          currentLine = part
-        } else {
-          currentLine += part
-        }
-      }
-
-      if (currentLine.trim()) {
-        lines.push(currentLine.trim())
-      }
-
-      return lines.length > 0 ? lines : [meaning]
-    }
-
-    const segments = meaning
-      .split(posLookahead)
-      .map((segment) => segment.trim())
-      .filter(Boolean)
-
-    const lines = []
-
-    segments.forEach((segment) => {
-      const circleParts = segment.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/)
-
-      // 丸数字がなければそのまま
-      if (circleParts.length === 1) {
-        lines.push(segment)
-        return
-      }
-
-      // 品詞タグ＋最初の丸数字は同じ行、②③以降は改行
-      const firstLine = `${circleParts[0]}${circleParts[1]}`.trim()
-      if (firstLine) {
-        lines.push(firstLine)
-      }
-
-      for (let i = 2; i < circleParts.length; i++) {
-        const line = circleParts[i].trim()
-        if (line) {
-          lines.push(line)
-        }
-      }
-    })
-
-    return lines.length > 0 ? lines : [meaning]
-  }
+  const partRanges = PART_RANGES
 
   // 背景色とテキスト色の設定
   const bgColor = useColorModeValue('gray.50', 'gray.900')
@@ -196,23 +115,15 @@ function App() {
     setIsCheckedOnlyActive(false)
     // データセットが変わったタイミングで出題済みキャッシュをクリア
     // - 古いIDが新しいデータとずれている可能性があるため
+    usedWordIdsRef.current = []
     setUsedWordIds([])
     clearUsedWordIdsFromLocalStorage()
     resetNavigation()
     // Partが選択されている場合は、Partの範囲を再適用
     if (selectedParts.length > 0) {
-      const maxId = importedWords.length > 0 ? Math.max(...importedWords.map(w => w.id)) : 0
-      let minStart = Infinity
-      let maxEnd = 0
-
-      selectedParts.forEach(key => {
-        const p = partRanges[key]
-        if (p.start < minStart) minStart = p.start
-        const endNum = p.end === null ? maxId : p.end
-        if (endNum > maxEnd) maxEnd = endNum
-      })
-
-      applyRange(importedWords, minStart, maxEnd)
+      const filtered = filterWordsBySelectedParts(importedWords, selectedParts, partRanges)
+      setFilteredWords(filtered)
+      selectRandomWord(filtered)
     } else if (isRangeActive && startRange && endRange) {
       // 詳細範囲が指定されている場合は、詳細範囲を再適用
       applyRange(importedWords, parseInt(startRange), parseInt(endRange))
@@ -246,31 +157,31 @@ function App() {
       showWord(thankYouWord, { addToHistory: true })
       return
     }
-    
+
     // Part4の場合、endNumがnullの場合は最大値を使用
     if (endNum === null && words.length > 0) {
       endNum = Math.max(...words.map(w => w.id))
     }
-    
+
     if (!startNum || !endNum) {
       return
     }
-    
+
     if (startNum > endNum) {
       setError('開始No.は終了No.以下である必要があります。')
       return
     }
-    
+
     const minId = Math.min(startNum, endNum)
     const maxId = Math.max(startNum, endNum)
-    
+
     const filtered = wordList.filter(word => word.id >= minId && word.id <= maxId)
-    
+
     if (filtered.length === 0) {
       setError(`No. ${minId}～${maxId} の範囲に単語が見つかりませんでした。`)
       return
     }
-    
+
     setFilteredWords(filtered)
     setIsRangeActive(true)
     setIsCheckedOnlyActive(false)
@@ -341,20 +252,15 @@ function App() {
       return
     }
 
-    // 複数のPartの範囲を結合
-    const maxId = words.length > 0 ? Math.max(...words.map(w => w.id)) : 0
-    let minStart = Infinity
-    let maxEnd = 0
-
-    newSelectedParts.forEach(key => {
-      const p = partRanges[key]
-      if (p.start < minStart) minStart = p.start
-      const endNum = p.end === null ? maxId : p.end
-      if (endNum > maxEnd) maxEnd = endNum
-    })
-
-    // 結合した範囲を適用
-    applyRange(words, minStart, maxEnd)
+    const filtered = filterWordsBySelectedParts(words, newSelectedParts, partRanges)
+    setFilteredWords(filtered)
+    setIsRangeActive(true)
+    setIsCheckedOnlyActive(false)
+    setStartRange('')
+    setEndRange('')
+    setError(null)
+    resetNavigation()
+    selectRandomWord(filtered)
   }
 
   // 範囲をリセット
@@ -394,12 +300,13 @@ function App() {
     if (wordList.length === 0) return
 
     // 既に出題済みの単語IDを除外したリストを作成
-    const availableWords = wordList.filter((word) => !usedWordIds.includes(word.id))
+    const nextUnusedWord = pickRandomUnusedWord(wordList, usedWordIdsRef.current)
 
     // 現在の範囲内の全単語が出題済みの場合
-    if (availableWords.length === 0) {
+    if (!nextUnusedWord) {
       // すべて出題し切ったので、自動でキャッシュをリセットしてユーザーに通知
       clearUsedWordIdsFromLocalStorage()
+      usedWordIdsRef.current = []
       setUsedWordIds([])
 
       toast({
@@ -418,30 +325,24 @@ function App() {
       showWord(nextWord, { addToHistory: true })
 
       // 新しいキャッシュとして、この単語だけを出題済みとして保存
-      setUsedWordIds(() => {
-        const updated = [nextWord.id]
-        saveUsedWordIdsToLocalStorage(updated)
-        return updated
-      })
+      const updated = [nextWord.id]
+      usedWordIdsRef.current = updated
+      setUsedWordIds(updated)
+      saveUsedWordIdsToLocalStorage(updated)
 
       return
     }
 
     // まだ出題されていない単語の中からランダムに選択
-    const randomIndex = Math.floor(Math.random() * availableWords.length)
-    const nextWord = availableWords[randomIndex]
+    const nextWord = nextUnusedWord
 
     showWord(nextWord, { addToHistory: true })
 
     // 出題済みIDをキャッシュに追加してローカルストレージにも保存
-    setUsedWordIds((prev) => {
-      if (prev.includes(nextWord.id)) {
-        return prev
-      }
-      const updated = [...prev, nextWord.id]
-      saveUsedWordIdsToLocalStorage(updated)
-      return updated
-    })
+    const updated = [...usedWordIdsRef.current, nextWord.id]
+    usedWordIdsRef.current = updated
+    setUsedWordIds(updated)
+    saveUsedWordIdsToLocalStorage(updated)
   }
 
   // クイズモードを切り替え
@@ -556,6 +457,7 @@ function App() {
   // 出題済みキャッシュをリセット
   const handleResetCache = () => {
     // ローカル状態とローカルストレージの両方をクリア
+    usedWordIdsRef.current = []
     setUsedWordIds([])
     clearUsedWordIdsFromLocalStorage()
     resetNavigation()
@@ -896,153 +798,28 @@ function App() {
           )}
 
           {/* 範囲指定パネル */}
-          <Card bg={cardBg} boxShadow="md">
-            <CardBody p={4}>
-              <Tabs>
-                <TabList>
-                  <Tab>Part選択</Tab>
-                  <Tab>詳細範囲</Tab>
-                  <Tab>間違えた問題</Tab>
-                </TabList>
-
-                <TabPanels>
-                  {/* Part選択タブ */}
-                  <TabPanel>
-                    <VStack spacing={4} align="stretch">
-                      <Text fontSize="sm" fontWeight="bold" color="gray.700">
-                        Partを選択
-                      </Text>
-                      <SimpleGrid columns={{ base: 2, md: 5 }} spacing={3}>
-                        {Object.entries(partRanges).map(([key, part]) => {
-                          const isSelected = selectedParts.includes(key)
-                          
-                          return (
-                            <Button
-                              key={key}
-                              onClick={() => togglePart(key)}
-                              colorScheme={isSelected ? 'blue' : 'gray'}
-                              variant={isSelected ? 'solid' : 'outline'}
-                              size="md"
-                            >
-                              {part.label}
-                            </Button>
-                          )
-                        })}
-                      </SimpleGrid>
-                      {isRangeActive && (
-                        <Button
-                          onClick={resetRange}
-                          colorScheme="gray"
-                          size="sm"
-                          variant="outline"
-                          width="full"
-                        >
-                          範囲をリセット
-                        </Button>
-                      )}
-                    </VStack>
-                  </TabPanel>
-
-                  {/* 詳細範囲タブ */}
-                  <TabPanel>
-                    <VStack spacing={4} align="stretch">
-                      <Text fontSize="sm" fontWeight="bold" color="gray.700">
-                        出題範囲を指定（No.）
-                      </Text>
-                      <Stack
-                        direction={{ base: 'column', md: 'row' }}
-                        spacing={4}
-                        align={{ base: 'stretch', md: 'flex-end' }}
-                      >
-                        <FormControl>
-                          <FormLabel fontSize="xs">開始No.</FormLabel>
-                          <NumberInput
-                            value={startRange}
-                            onChange={(value) => {
-                              setStartRange(value)
-                              setSelectedParts([]) // 詳細範囲を変更したらPart選択を解除
-                            }}
-                            min={1}
-                            max={words.length > 0 ? Math.max(...words.map(w => w.id)) : 1}
-                          >
-                            <NumberInputField />
-                            <NumberInputStepper>
-                              <NumberIncrementStepper />
-                              <NumberDecrementStepper />
-                            </NumberInputStepper>
-                          </NumberInput>
-                        </FormControl>
-                        <Text
-                          pt={{ base: 0, md: 6 }}
-                          textAlign="center"
-                        >
-                          ～
-                        </Text>
-                        <FormControl>
-                          <FormLabel fontSize="xs">終了No.</FormLabel>
-                          <NumberInput
-                            value={endRange}
-                            onChange={(value) => {
-                              setEndRange(value)
-                              setSelectedParts([]) // 詳細範囲を変更したらPart選択を解除
-                            }}
-                            min={1}
-                            max={words.length > 0 ? Math.max(...words.map(w => w.id)) : 1}
-                          >
-                            <NumberInputField />
-                            <NumberInputStepper>
-                              <NumberIncrementStepper />
-                              <NumberDecrementStepper />
-                            </NumberInputStepper>
-                          </NumberInput>
-                        </FormControl>
-                        <Box pt={{ base: 0, md: 6 }}>
-                          <HStack spacing={2}>
-                            <Button
-                              onClick={() => applyRange()}
-                              colorScheme="blue"
-                              size="md"
-                              isDisabled={!startRange || !endRange}
-                            >
-                              適用
-                            </Button>
-                            {isRangeActive && (
-                              <Button
-                                onClick={resetRange}
-                                colorScheme="gray"
-                                size="md"
-                                variant="outline"
-                              >
-                                リセット
-                              </Button>
-                            )}
-                          </HStack>
-                        </Box>
-                      </Stack>
-                      {words.length > 0 && (
-                        <Text fontSize="xs" color="gray.500">
-                          利用可能な範囲: No. 1 ～ {Math.max(...words.map(w => w.id))}
-                        </Text>
-                      )}
-                    </VStack>
-                  </TabPanel>
-                  <TabPanel>
-                    <VStack spacing={4} align="stretch">
-                      <Text fontSize="sm" fontWeight="bold" color="gray.700">
-                        間違えた問題だけを出題
-                      </Text>
-                      <Text fontSize="sm" color="gray.500">
-                        単語カード左上のバツボタンで選んだ問題を出題します（{checkedWordIds.length}問）。
-                      </Text>
-                      <Button onClick={selectCheckedWords} colorScheme="green">
-                        間違えた問題を出題
-                      </Button>
-                    </VStack>
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-            </CardBody>
-          </Card>
+          <RangeSelector
+            cardBg={cardBg}
+            checkedWordCount={checkedWordIds.length}
+            endRange={endRange}
+            isRangeActive={isRangeActive}
+            maxWordId={words.length > 0 ? Math.max(...words.map((word) => word.id)) : 0}
+            onApplyRange={() => applyRange()}
+            onEndRangeChange={(value) => {
+              setEndRange(value)
+              setSelectedParts([])
+            }}
+            onResetRange={resetRange}
+            onSelectCheckedWords={selectCheckedWords}
+            onStartRangeChange={(value) => {
+              setStartRange(value)
+              setSelectedParts([])
+            }}
+            onTogglePart={togglePart}
+            partRanges={partRanges}
+            selectedParts={selectedParts}
+            startRange={startRange}
+          />
 
           {/* フッター情報 */}
           <VStack spacing={2} textAlign="center" mt={4}>
@@ -1061,4 +838,3 @@ function App() {
 }
 
 export default App
-
