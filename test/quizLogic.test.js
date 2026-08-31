@@ -5,6 +5,7 @@ import {
   formatMeaning,
   PART_RANGES,
   pickRandomUnusedWord,
+  searchEnglishWords,
 } from '../src/utils/quizLogic.js'
 import {
   getTotalQuizCountFromLocalStorage,
@@ -52,4 +53,19 @@ test('total quiz count is persisted independently from quiz history', () => {
 
   assert.equal(getTotalQuizCountFromLocalStorage(), 42)
   delete global.localStorage
+})
+
+test('searchEnglishWords searches English spellings case-insensitively', () => {
+  const words = [
+    { id: 1, word: 'agree' },
+    { id: 2, word: 'disagree' },
+    { id: 3, word: 'agreement' },
+  ]
+
+  assert.deepEqual(searchEnglishWords(words, 'AGR').map(({ id }) => id), [1, 3, 2])
+})
+
+test('searchEnglishWords does not search Japanese meanings', () => {
+  const words = [{ id: 1, word: 'agree', meaning: '賛成する' }]
+  assert.deepEqual(searchEnglishWords(words, '賛成'), [])
 })

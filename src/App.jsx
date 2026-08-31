@@ -36,6 +36,7 @@ import {
 import { DataImporter } from './components/DataImporter'
 import { PronounceButton } from './components/PronounceButton'
 import { RangeSelector } from './components/RangeSelector'
+import { WordSearch } from './components/WordSearch'
 import {
   filterWordsBySelectedParts,
   formatMeaning,
@@ -394,6 +395,11 @@ function App() {
     }
   }
 
+  const handleSearchWordSelect = (word) => {
+    setIsAutoPlay(false)
+    showWord(word, { addToHistory: true })
+  }
+
   // 前の問題へ
   const handlePrevious = () => {
     if (!canGoPrevious) return
@@ -597,6 +603,8 @@ function App() {
               </Box>
             )}
           </Box>
+
+          <WordSearch words={words} onSelectWord={handleSearchWordSelect} />
 
           {/* クイズモード切り替え */}
           <HStack justify="center" spacing={3} mb={2}>
