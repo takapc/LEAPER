@@ -29,6 +29,10 @@ import {
   saveCheckedWordIdsToCookie,
   clearCheckedWordIdsFromCookie,
 } from './utils/wordData'
+import {
+  getTotalQuizCountFromLocalStorage,
+  saveTotalQuizCountToLocalStorage,
+} from './utils/learningStats'
 import { DataImporter } from './components/DataImporter'
 import { PronounceButton } from './components/PronounceButton'
 import { RangeSelector } from './components/RangeSelector'
@@ -53,6 +57,7 @@ function App() {
     return getUsedWordIdsFromLocalStorage()
   })
   const usedWordIdsRef = useRef(usedWordIds)
+  const [totalQuizCount, setTotalQuizCount] = useState(() => getTotalQuizCountFromLocalStorage())
   const [navigation, setNavigation] = useState({ history: [], index: -1 })
   const { history: wordHistory, index: historyIndex } = navigation
   const canGoPrevious = historyIndex > 0
@@ -175,7 +180,8 @@ function App() {
     const minId = Math.min(startNum, endNum)
     const maxId = Math.max(startNum, endNum)
 
-    const filtered = wordList.filter(word => word.id >= minId && word.id <= maxId)
+    const rangeWords = wordList.filter(word => word.id >= minId && word.id <= maxId)
+    const filtered = isCheckedOnlyActive ? onlyChecked(rangeWords) : rangeWords
 
     if (filtered.length === 0) {
       setError(`No. ${minId}～${maxId} の範囲に単語が見つかりませんでした。`)
@@ -184,7 +190,6 @@ function App() {
 
     setFilteredWords(filtered)
     setIsRangeActive(true)
-    setIsCheckedOnlyActive(false)
     setError(null)
     setStartRange(minId.toString())
     setEndRange(maxId.toString())
@@ -204,8 +209,33 @@ function App() {
     })
   }
 
-  const selectCheckedWords = () => {
-    const checkedWords = words.filter((word) => checkedWordIds.includes(word.id))
+  const getBaseWords = () => {
+    if (selectedParts.length > 0) {
+      return filterWordsBySelectedParts(words, selectedParts, partRanges)
+    }
+
+    const start = Number(startRange)
+    const end = Number(endRange)
+    if (isRangeActive && start > 0 && end >= start) {
+      return words.filter((word) => word.id >= start && word.id <= end)
+    }
+
+    return words
+  }
+
+  const onlyChecked = (wordList) => wordList.filter((word) => checkedWordIds.includes(word.id))
+
+  const toggleCheckedOnly = () => {
+    if (isCheckedOnlyActive) {
+      const baseWords = getBaseWords()
+      setIsCheckedOnlyActive(false)
+      setFilteredWords(baseWords)
+      resetNavigation()
+      selectRandomWord(baseWords)
+      return
+    }
+
+    const checkedWords = onlyChecked(getBaseWords())
 
     if (checkedWords.length === 0) {
       toast({
@@ -220,11 +250,7 @@ function App() {
     }
 
     setFilteredWords(checkedWords)
-    setIsRangeActive(true)
     setIsCheckedOnlyActive(true)
-    setSelectedParts([])
-    setStartRange('')
-    setEndRange('')
     setError(null)
     resetNavigation()
     selectRandomWord(checkedWords)
@@ -244,18 +270,21 @@ function App() {
       newSelectedParts = [...selectedParts, partKey]
     }
 
-    setSelectedParts(newSelectedParts)
-
     // 選択がなくなった場合はリセット
     if (newSelectedParts.length === 0) {
       resetRange()
       return
     }
 
-    const filtered = filterWordsBySelectedParts(words, newSelectedParts, partRanges)
+    const partWords = filterWordsBySelectedParts(words, newSelectedParts, partRanges)
+    const filtered = isCheckedOnlyActive ? onlyChecked(partWords) : partWords
+    if (filtered.length === 0) {
+      toast({ title: 'この範囲に間違えた問題がありません', status: 'info', duration: 3000, isClosable: true, position: 'top' })
+      return
+    }
+    setSelectedParts(newSelectedParts)
     setFilteredWords(filtered)
     setIsRangeActive(true)
-    setIsCheckedOnlyActive(false)
     setStartRange('')
     setEndRange('')
     setError(null)
@@ -268,12 +297,12 @@ function App() {
     setStartRange('')
     setEndRange('')
     setIsRangeActive(false)
-    setIsCheckedOnlyActive(false)
     setSelectedParts([])
-    setFilteredWords(words)
+    const nextWords = isCheckedOnlyActive ? onlyChecked(words) : words
+    setFilteredWords(nextWords)
     setError(null)
     resetNavigation()
-    selectRandomWord(words)
+    selectRandomWord(nextWords)
   }
 
   // 出題履歴をリセット
@@ -329,6 +358,7 @@ function App() {
       usedWordIdsRef.current = updated
       setUsedWordIds(updated)
       saveUsedWordIdsToLocalStorage(updated)
+      incrementTotalQuizCount()
 
       return
     }
@@ -343,6 +373,15 @@ function App() {
     usedWordIdsRef.current = updated
     setUsedWordIds(updated)
     saveUsedWordIdsToLocalStorage(updated)
+    incrementTotalQuizCount()
+  }
+
+  const incrementTotalQuizCount = () => {
+    setTotalQuizCount((count) => {
+      const updated = count + 1
+      saveTotalQuizCountToLocalStorage(updated)
+      return updated
+    })
   }
 
   // クイズモードを切り替え
@@ -521,9 +560,7 @@ function App() {
             <Text color="gray.600" fontSize="sm">
                 {isRangeActive ? (
                   <>
-                    {isCheckedOnlyActive ? (
-                      <>間違えた{filteredWords.length}問から出題</>
-                    ) : selectedParts.length > 0 ? (
+                    {selectedParts.length > 0 ? (
                       <>
                         {selectedParts.map(key => partRanges[key].label).join(' + ')} ({filteredWords.length}語)
                       </>
@@ -536,6 +573,10 @@ function App() {
                 ) : (
                   <>全{words.length}語からランダムに出題</>
                 )}
+                {isCheckedOnlyActive && <> ・ 間違えた問題のみ</>}
+            </Text>
+            <Text color="teal.600" fontSize="sm" fontWeight="bold" mt={1}>
+              これまでの累計 {totalQuizCount.toLocaleString()}語
             </Text>
             {totalInRange > 0 && (
               <Box mt={3} mx="auto" maxW="280px" w="full">
@@ -803,6 +844,7 @@ function App() {
             checkedWordCount={checkedWordIds.length}
             endRange={endRange}
             isRangeActive={isRangeActive}
+            isCheckedOnlyActive={isCheckedOnlyActive}
             maxWordId={words.length > 0 ? Math.max(...words.map((word) => word.id)) : 0}
             onApplyRange={() => applyRange()}
             onEndRangeChange={(value) => {
@@ -810,7 +852,7 @@ function App() {
               setSelectedParts([])
             }}
             onResetRange={resetRange}
-            onSelectCheckedWords={selectCheckedWords}
+            onToggleCheckedOnly={toggleCheckedOnly}
             onStartRangeChange={(value) => {
               setStartRange(value)
               setSelectedParts([])
