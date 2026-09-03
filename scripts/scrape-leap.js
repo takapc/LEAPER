@@ -93,7 +93,24 @@ async function main() {
     }
 
     const outPath = path.resolve(__dirname, '../src/data/words.json')
-    await fs.promises.writeFile(outPath, JSON.stringify(words, null, 2), 'utf8')
+    let existingWords = []
+    try {
+      existingWords = JSON.parse(await fs.promises.readFile(outPath, 'utf8'))
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        console.warn('既存の関連語データを読み込めなかったため、空の状態で更新します。')
+      }
+    }
+
+    const relatedWordsByKey = new Map(
+      existingWords.map((item) => [`${item.id}:${item.word}`, item.relatedWords || []]),
+    )
+    const wordsWithRelations = words.map((item) => ({
+      ...item,
+      relatedWords: relatedWordsByKey.get(`${item.id}:${item.word}`) || [],
+    }))
+
+    await fs.promises.writeFile(outPath, JSON.stringify(wordsWithRelations, null, 2), 'utf8')
 
     console.log(`保存完了: ${outPath}`)
   } catch (error) {

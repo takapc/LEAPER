@@ -6,8 +6,9 @@ LEAP改訂版の英単語2,300語を、ブラウザで繰り返し学習する�
 ## 主な機能
 
 - 全2,300語から、出題済みの単語を除外してランダム出題
-- 「英語 → 日本語」と「日本語 → 英語」の双方向クイズ
+- 「英語 → 日本語」のフラッシュカード
 - カードのタップによる答えの表示・非表示
+- カード右下のボタンから、語族・類義語・対義語と意味を一覧表示
 - 英単語のスペル検索と、検索結果から選んだ単語のカード表示
 - 前の問題・次の問題への移動
 - Part単位の複数選択、または単語番号による詳細な範囲指定
@@ -66,9 +67,18 @@ npm run dev
 {
   "id": 1,
   "word": "agree",
-  "meaning": "[自] ①賛成する ②意見が一致する"
+  "meaning": "[自] ①賛成する ②意見が一致する",
+  "relatedWords": [
+    {
+      "word": "match",
+      "meaning": "[他] ①～と調和する ②～に匹敵する",
+      "type": "synonym"
+    }
+  ]
 }
 ```
+
+`relatedWords[].type`には、`word-family`（語族）、`synonym`（類義語）、`antonym`（対義語）のいずれかを指定します。
 
 ### 学習状態
 
@@ -94,7 +104,7 @@ npm run dev
 index.html
 └── src/main.jsx                React / Chakra UIの初期化
     └── src/App.jsx             画面状態とクイズセッション
-        ├── components/         インポート、発音、範囲選択UI
+        ├── components/         関連語、インポート、発音、範囲選択UI
         ├── utils/quizLogic.js  意味整形、Part抽出、ランダム選択
         ├── utils/wordData.js   データ読込とブラウザ保存
         └── data/words.json     標準の2,300語
@@ -127,3 +137,4 @@ npm run check
 ## ライセンス・データ出典
 
 このプロジェクトは教育目的で作成されています。単語データの出典は「受かる英語 - LEAP 改訂版 単語一覧」です。
+関連語の語彙関係は、Princeton WordNetを基にOpen English WordNetチームがCC BY 4.0で提供するOpen English WordNetを参照しています。LEAPに未収録の関連語の日本語表現にはJapanese Wordnet 2.0（CC BY 4.0）を参照しています。

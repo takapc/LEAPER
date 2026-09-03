@@ -15,7 +15,6 @@ import {
   useColorModeValue,
   Flex,
   IconButton,
-  Switch,
   Progress,
 } from '@chakra-ui/react'
 import { useToast } from '@chakra-ui/react'
@@ -35,6 +34,7 @@ import {
 } from './utils/learningStats'
 import { DataImporter } from './components/DataImporter'
 import { PronounceButton } from './components/PronounceButton'
+import { RelatedWordsModal } from './components/RelatedWordsModal'
 import { RangeSelector } from './components/RangeSelector'
 import { WordSearch } from './components/WordSearch'
 import {
@@ -51,7 +51,6 @@ function App() {
   const [showAnswer, setShowAnswer] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [quizMode, setQuizMode] = useState('en-to-ja') // 'en-to-ja' または 'ja-to-en'
   const [usedWordIds, setUsedWordIds] = useState(() => {
     // 一度出題された単語IDをローカルストレージから復元
     // - 復元に失敗した場合でもアプリが落ちないように空配列を返す
@@ -385,16 +384,6 @@ function App() {
     })
   }
 
-  // クイズモードを切り替え
-  const handleModeChange = (mode) => {
-    setQuizMode(mode)
-    setShowAnswer(false)
-    // モード変更時にも新しい問題を出題
-    if (filteredWords.length > 0) {
-      selectRandomWord(filteredWords)
-    }
-  }
-
   const handleSearchWordSelect = (word) => {
     setIsAutoPlay(false)
     showWord(word, { addToHistory: true })
@@ -606,23 +595,6 @@ function App() {
 
           <WordSearch words={words} onSelectWord={handleSearchWordSelect} />
 
-          {/* クイズモード切り替え */}
-          <HStack justify="center" spacing={3} mb={2}>
-            <Text fontSize="sm" color={quizMode === 'en-to-ja' ? 'blue.600' : 'gray.500'}>
-              英語 → 日本語
-            </Text>
-            <Switch
-              size="lg"
-              colorScheme="blue"
-              isChecked={quizMode === 'ja-to-en'}
-              onChange={(event) => handleModeChange(event.target.checked ? 'ja-to-en' : 'en-to-ja')}
-              aria-label="出題方向を切り替える"
-            />
-            <Text fontSize="sm" color={quizMode === 'ja-to-en' ? 'blue.600' : 'gray.500'}>
-              日本語 → 英語
-            </Text>
-          </HStack>
-
           {/* 単語カード */}
           {currentWord && (
             <Card bg={cardBg} boxShadow="lg" overflow="hidden">
@@ -656,81 +628,43 @@ function App() {
                     </Text>
                   </HStack>
 
-                  {/* 問題部分 */}
-                  {quizMode === 'en-to-ja' ? (
-                    <>
-                      {/* 英単語 */}
-                      <Flex
-                        justify="center"
-                        align="center"
-                        gap={2}
-                        py={{ base: 2, md: 4 }}
-                        flexWrap="wrap"
-                      >
-                        <Text
-                          as="span"
-                          fontSize={{ base: '3xl', md: '5xl' }}
-                          fontWeight="bold"
-                          letterSpacing="wide"
-                          wordBreak="break-word"
-                          textAlign="center"
-                          lineHeight="1"
-                          display="inline-flex"
-                          alignItems="center"
-                        >
-                          {currentWord.word}
-                        </Text>
-                        <PronounceButton word={currentWord.word} />
-                      </Flex>
+                  {/* 英単語 */}
+                  <Flex
+                    justify="center"
+                    align="center"
+                    gap={2}
+                    py={{ base: 2, md: 4 }}
+                    flexWrap="wrap"
+                  >
+                    <Text
+                      as="span"
+                      fontSize={{ base: '3xl', md: '5xl' }}
+                      fontWeight="bold"
+                      letterSpacing="wide"
+                      wordBreak="break-word"
+                      textAlign="center"
+                      lineHeight="1"
+                      display="inline-flex"
+                      alignItems="center"
+                    >
+                      {currentWord.word}
+                    </Text>
+                    <PronounceButton word={currentWord.word} />
+                  </Flex>
 
-                      {/* 区切り線 */}
-                      <Box borderTop="1px" borderColor="gray.200" />
+                  {/* 区切り線 */}
+                  <Box borderTop="1px" borderColor="gray.200" />
 
-                      {/* 意味（答え） */}
-                      <Box
-                        h={{ base: '140px', md: '200px' }}
-                        display="flex"
-                        flexDirection="column"
-                        cursor="pointer"
-                        onClick={handleToggleAnswer}
-                      >
-                        {showAnswer ? (
-                          <>
-                            <Text fontSize="sm" color="gray.500" mb={2}>
-                              意味
-                            </Text>
-                            <Box flex="1" overflowY="auto">
-                              <VStack align="stretch" spacing={2}>
-                                {formatMeaning(currentWord.meaning).map((line, index) => (
-                                  <Text
-                                    key={index}
-                                    fontSize={{ base: 'md', md: 'lg' }}
-                                    lineHeight="tall"
-                                  >
-                                    {line}
-                                  </Text>
-                                ))}
-                              </VStack>
-                            </Box>
-                          </>
-                        ) : (
-                          <Box
-                            flex="1"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Text color="gray.400" fontSize="lg" textAlign="center">
-                              ここをタップして答えを表示
-                            </Text>
-                          </Box>
-                        )}
-                      </Box>
-                    </>
-                  ) : (
-                    <>
-                      {/* 意味（問題） */}
-                      <Box h={{ base: '140px', md: '200px' }} display="flex" flexDirection="column">
+                  {/* 意味（答え） */}
+                  <Box
+                    h={{ base: '140px', md: '200px' }}
+                    display="flex"
+                    flexDirection="column"
+                    cursor="pointer"
+                    onClick={handleToggleAnswer}
+                  >
+                    {showAnswer ? (
+                      <>
                         <Text fontSize="sm" color="gray.500" mb={2}>
                           意味
                         </Text>
@@ -747,47 +681,25 @@ function App() {
                             ))}
                           </VStack>
                         </Box>
-                      </Box>
-
-                      {/* 区切り線 */}
-                      <Box borderTop="1px" borderColor="gray.200" />
-
-                      {/* 英単語（答え） */}
+                      </>
+                    ) : (
                       <Box
-                        textAlign="center"
-                        py={{ base: 2, md: 4 }}
-                        minH={{ base: '60px', md: '80px' }}
+                        flex="1"
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
-                        cursor="pointer"
-                        onClick={handleToggleAnswer}
                       >
-                        {showAnswer ? (
-                          <Flex justify="center" align="center" gap={2} flexWrap="wrap">
-                            <Text
-                              as="span"
-                              fontSize={{ base: '3xl', md: '5xl' }}
-                              fontWeight="bold"
-                              letterSpacing="wide"
-                              wordBreak="break-word"
-                              textAlign="center"
-                              lineHeight="1"
-                              display="inline-flex"
-                              alignItems="center"
-                            >
-                              {currentWord.word}
-                            </Text>
-                            <PronounceButton word={currentWord.word} />
-                          </Flex>
-                        ) : (
-                          <Text color="gray.400" fontSize="lg" textAlign="center">
-                            ここをタップして答えを表示
-                          </Text>
-                        )}
+                        <Text color="gray.400" fontSize="lg" textAlign="center">
+                          ここをタップして答えを表示
+                        </Text>
                       </Box>
-                    </>
-                  )}
+                    )}
+                  </Box>
+
+                  {/* 関連語 */}
+                  <Flex justify="flex-end">
+                    <RelatedWordsModal word={currentWord} />
+                  </Flex>
                 </VStack>
               </CardBody>
             </Card>

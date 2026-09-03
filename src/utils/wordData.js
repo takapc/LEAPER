@@ -6,7 +6,7 @@ import wordsJson from '../data/words.json'
 /**
  * HTMLテーブルから単語データを抽出
  * @param {string} html - HTML文字列
- * @returns {Array<{id: number, word: string, meaning: string}>} - 単語データの配列
+ * @returns {Array<{id: number, word: string, meaning: string, relatedWords?: Array}>} - 単語データの配列
  */
 export function parseWordDataFromHTML(html) {
   const words = [];
@@ -50,7 +50,7 @@ export function parseWordDataFromHTML(html) {
       
       // idが有効な数値で、wordとmeaningが空でない場合のみ追加
       if (!isNaN(id) && id > 0 && word && meaning) {
-        words.push({ id, word, meaning });
+        words.push({ id, word, meaning, relatedWords: [] });
       }
     }
   });
@@ -65,7 +65,7 @@ export function parseWordDataFromHTML(html) {
  * ローカルの JSON ファイルから単語データを取得
  * - CORS の影響を受けない安定した取得方法
  * - 必要に応じて words.json を更新することでデータを最新化する
- * @returns {Array<{id: number, word: string, meaning: string}>} - 単語データの配列
+ * @returns {Array<{id: number, word: string, meaning: string, relatedWords?: Array}>} - 単語データの配列
  */
 export function getLocalWordData() {
   try {
