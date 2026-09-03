@@ -30,6 +30,8 @@ export function RelatedWordsModal({ word }) {
   const meaningColor = useColorModeValue('gray.600', 'gray.300')
   const relatedWords = Array.isArray(word?.relatedWords) ? word.relatedWords : []
 
+  if (relatedWords.length === 0) return null
+
   return (
     <>
       <Button
@@ -58,49 +60,43 @@ export function RelatedWordsModal({ word }) {
           <Divider />
 
           <ModalBody py={5}>
-            {relatedWords.length > 0 ? (
-              <VStack spacing={3} align="stretch">
-                {relatedWords.map((relatedWord) => {
-                  const relation = RELATION_LABELS[relatedWord.type] ?? {
-                    label: '関連語',
-                    colorScheme: 'gray',
-                  }
+            <VStack spacing={3} align="stretch">
+              {relatedWords.map((relatedWord) => {
+                const relation = RELATION_LABELS[relatedWord.type] ?? {
+                  label: '関連語',
+                  colorScheme: 'gray',
+                }
 
-                  return (
-                    <Box
-                      key={`${relatedWord.type}-${relatedWord.word}`}
-                      bg={rowBg}
-                      borderRadius="md"
-                      px={{ base: 3, md: 4 }}
-                      py={3}
-                    >
-                      <HStack align="start" spacing={3}>
-                        <Badge
-                          colorScheme={relation.colorScheme}
-                          mt={1}
-                          minW="3.5rem"
-                          textAlign="center"
-                        >
-                          {relation.label}
-                        </Badge>
-                        <Box minW={0}>
-                          <Text fontSize="lg" fontWeight="bold" wordBreak="break-word">
-                            {relatedWord.word}
-                          </Text>
-                          <Text mt={1} fontSize="sm" lineHeight="tall" color={meaningColor}>
-                            {relatedWord.meaning}
-                          </Text>
-                        </Box>
-                      </HStack>
-                    </Box>
-                  )
-                })}
-              </VStack>
-            ) : (
-              <Text color="gray.500" textAlign="center" py={8}>
-                この単語の関連語はまだ登録されていません。
-              </Text>
-            )}
+                return (
+                  <Box
+                    key={`${relatedWord.type}-${relatedWord.word}`}
+                    bg={rowBg}
+                    borderRadius="md"
+                    px={{ base: 3, md: 4 }}
+                    py={3}
+                  >
+                    <HStack align="start" spacing={3}>
+                      <Badge
+                        colorScheme={relation.colorScheme}
+                        mt={1}
+                        minW="3.5rem"
+                        textAlign="center"
+                      >
+                        {relation.label}
+                      </Badge>
+                      <Box minW={0}>
+                        <Text fontSize="lg" fontWeight="bold" wordBreak="break-word">
+                          {relatedWord.word}
+                        </Text>
+                        <Text mt={1} fontSize="sm" lineHeight="tall" color={meaningColor}>
+                          {relatedWord.meaning}
+                        </Text>
+                      </Box>
+                    </HStack>
+                  </Box>
+                )
+              })}
+            </VStack>
           </ModalBody>
 
           <ModalFooter>

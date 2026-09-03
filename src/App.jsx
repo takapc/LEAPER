@@ -12,6 +12,12 @@ import {
   Spinner,
   Alert,
   AlertIcon,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   useColorModeValue,
   Flex,
   IconButton,
@@ -72,6 +78,8 @@ function App() {
   const [selectedParts, setSelectedParts] = useState([]) // ['part1', 'part2', ...] 複数選択可能
   const [isAutoPlay, setIsAutoPlay] = useState(false)
   const [autoPlayProgress, setAutoPlayProgress] = useState(0)
+  const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false)
+  const resetCancelRef = useRef()
   const handleNextRef = useRef(() => {})
   const AUTO_PLAY_MS = 3000
   const AUTO_PLAY_REVEAL_MS = 1500
@@ -697,9 +705,11 @@ function App() {
                   </Box>
 
                   {/* 関連語 */}
-                  <Flex justify="flex-end">
-                    <RelatedWordsModal word={currentWord} />
-                  </Flex>
+                  {Array.isArray(currentWord.relatedWords) && currentWord.relatedWords.length > 0 && (
+                    <Flex justify="flex-end">
+                      <RelatedWordsModal word={currentWord} />
+                    </Flex>
+                  )}
                 </VStack>
               </CardBody>
             </Card>
@@ -729,27 +739,17 @@ function App() {
             </Button>
           </HStack>
 
-          {/* 補助操作 */}
+          {/* 自動再生 */}
           <HStack spacing={3} justify="center" flexWrap="wrap" w="full">
             <Button
               onClick={handleStartAutoPlay}
               colorScheme="purple"
               variant={isAutoPlay ? 'solid' : 'outline'}
               size="md"
-              w="calc(50% - 6px)"
+              w="full"
               maxW="220px"
             >
               {isAutoPlay ? '自動再生中…' : '自動再生'}
-            </Button>
-            <Button
-              onClick={handleResetCache}
-              colorScheme="red"
-              variant="outline"
-              size="md"
-              w="calc(50% - 6px)"
-              maxW="220px"
-            >
-              履歴を削除
             </Button>
           </HStack>
           {isAutoPlay && (
@@ -782,6 +782,53 @@ function App() {
             selectedParts={selectedParts}
             startRange={startRange}
           />
+
+          {/* 誤操作を避けるため、履歴削除は範囲指定より下に配置 */}
+          <Flex justify="center">
+            <Button
+              onClick={() => setIsResetConfirmOpen(true)}
+              colorScheme="red"
+              variant="outline"
+              size="sm"
+            >
+              履歴を削除
+            </Button>
+          </Flex>
+
+          <AlertDialog
+            isOpen={isResetConfirmOpen}
+            leastDestructiveRef={resetCancelRef}
+            onClose={() => setIsResetConfirmOpen(false)}
+            isCentered
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent mx={4}>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  履歴を削除しますか？
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  現在の出題済み履歴を削除します。累計学習語数と「間違えた問題」の記録は削除されません。
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button ref={resetCancelRef} onClick={() => setIsResetConfirmOpen(false)}>
+                    キャンセル
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    ml={3}
+                    onClick={() => {
+                      setIsResetConfirmOpen(false)
+                      handleResetCache()
+                    }}
+                  >
+                    削除する
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
 
           {/* フッター情報 */}
           <VStack spacing={2} textAlign="center" mt={4}>
