@@ -20508,9 +20508,2617 @@
   {
     "id": 957,
     "word": "ashamed",
-    "meaning": "[�
-... 61735 bytes omitted ...
-"firmness",
+    "meaning": "[形] 恥ずかしい",
+    "relatedWords": [
+      {
+        "word": "unashamed",
+        "meaning": "臆面もない",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 958,
+    "word": "uneasy",
+    "meaning": "[形] 不安な，胸騒ぎがする",
+    "relatedWords": [
+      {
+        "word": "uneasiness",
+        "meaning": "焦慮、焦燥",
+        "type": "word-family"
+      },
+      {
+        "word": "easy",
+        "meaning": "安楽、暢気、呑気",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 959,
+    "word": "hesitate",
+    "meaning": "[自] ためらう",
+    "relatedWords": [
+      {
+        "word": "hesitation",
+        "meaning": "躊躇い、二の足、躊躇",
+        "type": "word-family"
+      },
+      {
+        "word": "hesitancy",
+        "meaning": "不本意",
+        "type": "word-family"
+      },
+      {
+        "word": "waver",
+        "meaning": "後込み、後込む、ぐじぐじ",
+        "type": "synonym"
+      },
+      {
+        "word": "waffle",
+        "meaning": "後込み、後込む、ぐじぐじ",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 960,
+    "word": "reluctant",
+    "meaning": "[形] （to do）（～するのは）気が進まない",
+    "relatedWords": [
+      {
+        "word": "reluctance",
+        "meaning": "不本意",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 961,
+    "word": "tremble",
+    "meaning": "[自] 震える",
+    "relatedWords": [
+      {
+        "word": "trembler",
+        "meaning": "振動板",
+        "type": "word-family"
+      },
+      {
+        "word": "trembling",
+        "meaning": "震顫、動揺、顫動",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 962,
+    "word": "boast",
+    "meaning": "[自] ①自慢する [他] ②（場所や組織が）～を誇りにしている",
+    "relatedWords": [
+      {
+        "word": "boaster",
+        "meaning": "天狗、内弁慶",
+        "type": "word-family"
+      },
+      {
+        "word": "feature",
+        "meaning": "[名] ①特徴 ②特集記事 [他] ③～を特集する",
+        "type": "synonym"
+      },
+      {
+        "word": "tout",
+        "meaning": "誇る、広言、ひけらかす",
+        "type": "synonym"
+      },
+      {
+        "word": "swash",
+        "meaning": "誇る、広言、ひけらかす",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 963,
+    "word": "jealous",
+    "meaning": "[形] （of ～）（～に）嫉妬した",
+    "relatedWords": []
+  },
+  {
+    "id": 964,
+    "word": "envy",
+    "meaning": "[他] ①～を羨ましく思う [名] ②羨望",
+    "relatedWords": [
+      {
+        "word": "enviousness",
+        "meaning": "羨ましさ、物羨み、うらやましさ",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 965,
+    "word": "yell",
+    "meaning": "[自] ①叫ぶ，大声をあげる [名] ②叫び，わめき声",
+    "relatedWords": [
+      {
+        "word": "yelling",
+        "meaning": "怒号",
+        "type": "word-family"
+      },
+      {
+        "word": "scream",
+        "meaning": "[自] ①悲鳴を上げる [名] ②悲鳴",
+        "type": "synonym"
+      },
+      {
+        "word": "cry",
+        "meaning": "大呼、大喝、怒号",
+        "type": "synonym"
+      },
+      {
+        "word": "outcry",
+        "meaning": "大呼、大喝、怒号",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 966,
+    "word": "respect",
+    "meaning": "[他] ①（人）を尊敬する ②（物）を尊重する [名] ③（for ～）（～に対する）尊敬，尊重 ④（in ―）点",
+    "relatedWords": [
+      {
+        "word": "regard",
+        "meaning": "[他] ①（A as B）（A）を（B と）みなす ②（副詞を伴い）～を評価する [名] ③（in ―）点 ④（―s）よろしくという挨拶",
+        "type": "synonym"
+      },
+      {
+        "word": "value",
+        "meaning": "[名] ①価値 ②（―s）価値観 ③お買い得品〈不可算〉 [他] ④～を重んじる",
+        "type": "synonym"
+      },
+      {
+        "word": "honor",
+        "meaning": "[名] ①名誉，栄誉 [他] ②～を敬う",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 967,
+    "word": "despair",
+    "meaning": "[名] 絶望",
+    "relatedWords": [
+      {
+        "word": "desperation",
+        "meaning": "絶望",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 968,
+    "word": "emotion",
+    "meaning": "[名] （特に強い）感情〈可算〉",
+    "relatedWords": [
+      {
+        "word": "emotional",
+        "meaning": "精神的",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 969,
+    "word": "sympathy",
+    "meaning": "[名] ①同情 ②共感",
+    "relatedWords": [
+      {
+        "word": "sympathetic",
+        "meaning": "同情的、情の籠もった、暖か",
+        "type": "word-family"
+      },
+      {
+        "word": "sympathize",
+        "meaning": "わかる、呑み込む、受け取る",
+        "type": "word-family"
+      },
+      {
+        "word": "sympathise",
+        "meaning": "わかる、呑み込む、受け取る",
+        "type": "word-family"
+      },
+      {
+        "word": "understanding",
+        "meaning": "理解力、同感、領解",
+        "type": "synonym"
+      },
+      {
+        "word": "fellow feeling",
+        "meaning": "同感、共鳴、共鳴り",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 970,
+    "word": "shame",
+    "meaning": "[名] ①残念なこと ②恥",
+    "relatedWords": [
+      {
+        "word": "disgrace",
+        "meaning": "顔汚、不評、恥さらし",
+        "type": "synonym"
+      },
+      {
+        "word": "ignominy",
+        "meaning": "顔汚、不評、恥さらし",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 971,
+    "word": "confidence",
+    "meaning": "[名] ①自信 ②（in ～）（～に対する）信頼",
+    "relatedWords": [
+      {
+        "word": "confident",
+        "meaning": "昂然たる",
+        "type": "word-family"
+      },
+      {
+        "word": "authority",
+        "meaning": "[名] ①権威 ②権力 ③（―ies）当局",
+        "type": "synonym"
+      },
+      {
+        "word": "assurance",
+        "meaning": "自負、自信、自負心",
+        "type": "synonym"
+      },
+      {
+        "word": "self-assurance",
+        "meaning": "自負、自信、自負心",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 972,
+    "word": "courage",
+    "meaning": "[名] 勇気",
+    "relatedWords": [
+      {
+        "word": "courageous",
+        "meaning": "男々しい、強勇、凛凛しい",
+        "type": "word-family"
+      },
+      {
+        "word": "courageousness",
+        "meaning": "根性、肝っ魂、強勇",
+        "type": "synonym"
+      },
+      {
+        "word": "bravery",
+        "meaning": "根性、肝っ魂、強勇",
+        "type": "synonym"
+      },
+      {
+        "word": "braveness",
+        "meaning": "根性、肝っ魂、強勇",
+        "type": "synonym"
+      },
+      {
+        "word": "cowardice",
+        "meaning": "腑抜け、小胆、臆病",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 973,
+    "word": "passion",
+    "meaning": "[名] 情熱",
+    "relatedWords": [
+      {
+        "word": "passionateness",
+        "meaning": "情熱、パッション、熱心さ",
+        "type": "synonym"
+      },
+      {
+        "word": "passion of christ",
+        "meaning": "恋",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 974,
+    "word": "sorrow",
+    "meaning": "[名] 悲しみ",
+    "relatedWords": [
+      {
+        "word": "joy",
+        "meaning": "慶び、楽しいこと、悦楽",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 975,
+    "word": "ignore",
+    "meaning": "[他] （人，物）を無視する",
+    "relatedWords": [
+      {
+        "word": "disregard",
+        "meaning": "[他] ～を無視する",
+        "type": "synonym"
+      },
+      {
+        "word": "snub",
+        "meaning": "無視、無みする、無み",
+        "type": "synonym"
+      },
+      {
+        "word": "cut",
+        "meaning": "無視、無みする、無み",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 976,
+    "word": "offend",
+    "meaning": "[他] （人，物が）～を怒らせる，～の気分を害する",
+    "relatedWords": [
+      {
+        "word": "pique",
+        "meaning": "憤らす",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 977,
+    "word": "depress",
+    "meaning": "[他] ～を憂うつにさせる，落ち込ませる",
+    "relatedWords": [
+      {
+        "word": "depressant",
+        "meaning": "鎮静剤",
+        "type": "word-family"
+      },
+      {
+        "word": "dismay",
+        "meaning": "[他] ①～を狼狽させる[名] ②狼狽",
+        "type": "synonym"
+      },
+      {
+        "word": "deject",
+        "meaning": "凹ませる、落胆させる、凹ます",
+        "type": "synonym"
+      },
+      {
+        "word": "dispirit",
+        "meaning": "凹ませる、落胆させる、凹ます",
+        "type": "synonym"
+      },
+      {
+        "word": "elate",
+        "meaning": "昂揚させる、高揚させる",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 978,
+    "word": "owe",
+    "meaning": "[他] （A to B)①（A）は（B の）おかげだ ②（A）を（Bに）借りている",
+    "relatedWords": []
+  },
+  {
+    "id": 979,
+    "word": "fear",
+    "meaning": "[名] ①恐怖 [他] ②～を恐れる ③～を心配する",
+    "relatedWords": [
+      {
+        "word": "dread",
+        "meaning": "[他] ①～を恐れる [名] ②恐怖",
+        "type": "synonym"
+      },
+      {
+        "word": "fearfulness",
+        "meaning": "怖、怖じけ、恐怖",
+        "type": "synonym"
+      },
+      {
+        "word": "fright",
+        "meaning": "怖、怖じけ、恐怖",
+        "type": "synonym"
+      },
+      {
+        "word": "fearlessness",
+        "meaning": "勇気",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 980,
+    "word": "method",
+    "meaning": "[名] 方法",
+    "relatedWords": []
+  },
+  {
+    "id": 981,
+    "word": "medium",
+    "meaning": "[名] ①（情報伝達）手段，媒体，メディア [形] ②中間の",
+    "relatedWords": [
+      {
+        "word": "intermediate",
+        "meaning": "[形] ①（授業・教材が）中級の ②中間の",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 982,
+    "word": "means",
+    "meaning": "[名] ①手段〈単複同形〉 ②（特定な表現で）財産，収入",
+    "relatedWords": [
+      {
+        "word": "agency",
+        "meaning": "[名] ①（政府）機関 ②代理店",
+        "type": "synonym"
+      },
+      {
+        "word": "way",
+        "meaning": "[名] ①方法 ②（in ～ way）（～の）点（で)③道 [副] ④はるかに",
+        "type": "synonym"
+      },
+      {
+        "word": "substance",
+        "meaning": "[名] ①物質 ②本質，根拠",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 983,
+    "word": "extent",
+    "meaning": "[名] 程度",
+    "relatedWords": [
+      {
+        "word": "extend",
+        "meaning": "[他] ①～を延長する，広げる [自] ②伸びる，広がる",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 984,
+    "word": "extremely",
+    "meaning": "[副] 極度に，非常に",
+    "relatedWords": [
+      {
+        "word": "highly",
+        "meaning": "いとも、然許、非常に",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 985,
+    "word": "total",
+    "meaning": "[形] ①全体の ②（a ―）まったくの [名] ③合計",
+    "relatedWords": [
+      {
+        "word": "totality",
+        "meaning": "全体",
+        "type": "word-family"
+      },
+      {
+        "word": "entire",
+        "meaning": "[形] すべての",
+        "type": "synonym"
+      },
+      {
+        "word": "sum",
+        "meaning": "[名] ①（修飾語を伴って）金額 ②合計 ③（簡単な）計算 [他] ④（up）～を要約する",
+        "type": "synonym"
+      },
+      {
+        "word": "aggregate",
+        "meaning": "トータル、サム、計",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 986,
+    "word": "largely",
+    "meaning": "[副] ①大部分は ②主に",
+    "relatedWords": [
+      {
+        "word": "mostly",
+        "meaning": "大抵、大方、おおく",
+        "type": "synonym"
+      },
+      {
+        "word": "for the most part",
+        "meaning": "大抵、大方、おおく",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 987,
+    "word": "moderate",
+    "meaning": "[形] 適度な，節度のある",
+    "relatedWords": [
+      {
+        "word": "moderateness",
+        "meaning": "中庸、節制、節度",
+        "type": "word-family"
+      },
+      {
+        "word": "immoderate",
+        "meaning": "過度",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 988,
+    "word": "somewhat",
+    "meaning": "[副] いくぶん",
+    "relatedWords": [
+      {
+        "word": "slightly",
+        "meaning": "わずか、心為し、心成しか",
+        "type": "synonym"
+      },
+      {
+        "word": "more or less",
+        "meaning": "わずか、心為し、心成しか",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 989,
+    "word": "subtle",
+    "meaning": "[形] かすかな",
+    "relatedWords": []
+  },
+  {
+    "id": 990,
+    "word": "possibly",
+    "meaning": "[副] ①ひょっとすると ②（cannot ―）どうしても（～できない）",
+    "relatedWords": [
+      {
+        "word": "possible",
+        "meaning": "可能、ありうる",
+        "type": "word-family"
+      },
+      {
+        "word": "perchance",
+        "meaning": "若しや、若しか、或は",
+        "type": "synonym"
+      },
+      {
+        "word": "perhaps",
+        "meaning": "若しや、若しか、或は",
+        "type": "synonym"
+      },
+      {
+        "word": "maybe",
+        "meaning": "若しや、若しか、或は",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 991,
+    "word": "eventually",
+    "meaning": "[副] 最終的に，ついに",
+    "relatedWords": [
+      {
+        "word": "finally",
+        "meaning": "弥、初めて、愈々",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 992,
+    "word": "necessarily",
+    "meaning": "[副] （not ―）必ずしも（～ない）",
+    "relatedWords": [
+      {
+        "word": "necessary",
+        "meaning": "不可欠、必要、必須",
+        "type": "word-family"
+      },
+      {
+        "word": "needfully",
+        "meaning": "余儀なく、須らく、余業無く",
+        "type": "synonym"
+      },
+      {
+        "word": "unnecessarily",
+        "meaning": "不必要、いたずらに",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 993,
+    "word": "frankly",
+    "meaning": "[副] 率直に",
+    "relatedWords": [
+      {
+        "word": "honestly",
+        "meaning": "正直、ずばり、率直に言って",
+        "type": "synonym"
+      },
+      {
+        "word": "candidly",
+        "meaning": "正直、ずばり、率直に言って",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 994,
+    "word": "ironically",
+    "meaning": "[副] 皮肉なことに",
+    "relatedWords": []
+  },
+  {
+    "id": 995,
+    "word": "moreover",
+    "meaning": "[副] その上",
+    "relatedWords": [
+      {
+        "word": "furthermore",
+        "meaning": "さらに、糅てて加えて、此の上とも",
+        "type": "synonym"
+      },
+      {
+        "word": "what is more",
+        "meaning": "さらに、糅てて加えて、此の上とも",
+        "type": "synonym"
+      },
+      {
+        "word": "in addition",
+        "meaning": "さらに、糅てて加えて、此の上とも",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 996,
+    "word": "otherwise",
+    "meaning": "[副] ①さもなければ ②ほかの点では ③ほかの方法で",
+    "relatedWords": [
+      {
+        "word": "differently",
+        "meaning": "違って、異なって",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 997,
+    "word": "regardless",
+    "meaning": "[副] （of ～）（～とは）無関係に",
+    "relatedWords": [
+      {
+        "word": "irrespective",
+        "meaning": "どんなことがあっても",
+        "type": "synonym"
+      },
+      {
+        "word": "disregardless",
+        "meaning": "どんなことがあっても",
+        "type": "synonym"
+      },
+      {
+        "word": "disregarding",
+        "meaning": "どんなことがあっても",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 998,
+    "word": "worth",
+    "meaning": "[前] ①～の価値がある ②（― doing）（～する）価値がある [名] ③価値，（～）相当",
+    "relatedWords": []
+  },
+  {
+    "id": 999,
+    "word": "according to",
+    "meaning": "[前] ①（調査，人の話など）によれば ②（能力など）に応じて",
+    "relatedWords": []
+  },
+  {
+    "id": 1000,
+    "word": "despite",
+    "meaning": "[前] ～にもかかわらず",
+    "relatedWords": []
+  },
+  {
+    "id": 1001,
+    "word": "propose",
+    "meaning": "[他] ①～を提案する [自] ②（to ～）（～に）結婚を申し込む",
+    "relatedWords": [
+      {
+        "word": "proposition",
+        "meaning": "申出で、立言、申しこみ",
+        "type": "word-family"
+      },
+      {
+        "word": "proposer",
+        "meaning": "首唱",
+        "type": "word-family"
+      },
+      {
+        "word": "proposal",
+        "meaning": "申出で、立言、申しこみ",
+        "type": "word-family"
+      },
+      {
+        "word": "suggest",
+        "meaning": "[他] ①～を示唆する ②～を提案する",
+        "type": "synonym"
+      },
+      {
+        "word": "advise",
+        "meaning": "[他] ～に忠告する",
+        "type": "synonym"
+      },
+      {
+        "word": "project",
+        "meaning": "[名] ①計画，企画 [他] ②（予算など）を見積もる ③～を投影する",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1002,
+    "word": "dismiss",
+    "meaning": "[他] ①（意見や考えなど）を退ける ②～を解雇する",
+    "relatedWords": [
+      {
+        "word": "dismissal",
+        "meaning": "免訴、却下、棄却",
+        "type": "word-family"
+      },
+      {
+        "word": "disregard",
+        "meaning": "[他] ～を無視する",
+        "type": "synonym"
+      },
+      {
+        "word": "ignore",
+        "meaning": "[他] （人，物）を無視する",
+        "type": "synonym"
+      },
+      {
+        "word": "discount",
+        "meaning": "無視、差し措く、さし置く",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1003,
+    "word": "bless",
+    "meaning": "[他] ～を祝福する",
+    "relatedWords": [
+      {
+        "word": "blessing",
+        "meaning": "倖せ、幸せ、恩恵",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 1004,
+    "word": "glory",
+    "meaning": "[名] 栄光",
+    "relatedWords": [
+      {
+        "word": "glorious",
+        "meaning": "華やか、勝絶、赫赫たる",
+        "type": "word-family"
+      },
+      {
+        "word": "glorify",
+        "meaning": "絶賛する、誉めちぎる、歎称",
+        "type": "word-family"
+      },
+      {
+        "word": "glorification",
+        "meaning": "讃美、賛美、礼讃",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1005,
+    "word": "compliment",
+    "meaning": "[名] ①褒め言葉，賛辞 [他] ②～を褒める",
+    "relatedWords": [
+      {
+        "word": "congratulate",
+        "meaning": "[他] （人）を祝う，～にお祝いを述べる",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1006,
+    "word": "feast",
+    "meaning": "[名] ①宴会，祝宴 ②とても楽しいこと，喜ばせるもの",
+    "relatedWords": [
+      {
+        "word": "banquet",
+        "meaning": "祝筵、祝宴、賀宴",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1007,
+    "word": "declare",
+    "meaning": "[他] ①～を宣言する ②（税関や税務署で）～を申告する",
+    "relatedWords": [
+      {
+        "word": "declarative",
+        "meaning": "宣言的、断定的",
+        "type": "word-family"
+      },
+      {
+        "word": "declaratory",
+        "meaning": "宣言的、断定的",
+        "type": "word-family"
+      },
+      {
+        "word": "declaration",
+        "meaning": "断言、言明、公言",
+        "type": "word-family"
+      },
+      {
+        "word": "announce",
+        "meaning": "[他] ～を発表する",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1008,
+    "word": "highlight",
+    "meaning": "[他] ①～を強調する [名] ②呼び物，目玉商品，ハイライト",
+    "relatedWords": [
+      {
+        "word": "highlighter",
+        "meaning": "螢光ペン",
+        "type": "word-family"
+      },
+      {
+        "word": "highlighting",
+        "meaning": "ハイライト",
+        "type": "word-family"
+      },
+      {
+        "word": "foreground",
+        "meaning": "強調する、目だたす、強調",
+        "type": "synonym"
+      },
+      {
+        "word": "spotlight",
+        "meaning": "強調する、目だたす、強調",
+        "type": "synonym"
+      },
+      {
+        "word": "high spot",
+        "meaning": "ハイライト、見どころ、圧巻",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1009,
+    "word": "imply",
+    "meaning": "[他] ～をほのめかす，（暗に）～を意味する",
+    "relatedWords": [
+      {
+        "word": "implication",
+        "meaning": "インプリケーション、含意、含蓄",
+        "type": "word-family"
+      },
+      {
+        "word": "connote",
+        "meaning": "含意、暗示する、含蓄",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1010,
+    "word": "recite",
+    "meaning": "[他] ～を暗唱する",
+    "relatedWords": [
+      {
+        "word": "recitation",
+        "meaning": "朗読、復唱",
+        "type": "word-family"
+      },
+      {
+        "word": "declaim",
+        "meaning": "詠誦、詠じる、読誦する",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1011,
+    "word": "ray",
+    "meaning": "[名] ①光線 ②放射線 ③（a ― of）一縷の，わずかな",
+    "relatedWords": [
+      {
+        "word": "beam",
+        "meaning": "ビーム、光線、光束",
+        "type": "synonym"
+      },
+      {
+        "word": "shaft",
+        "meaning": "ビーム、光線、光束",
+        "type": "synonym"
+      },
+      {
+        "word": "irradiation",
+        "meaning": "ビーム、光線、光束",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1012,
+    "word": "radiation",
+    "meaning": "[名] 放射線",
+    "relatedWords": [
+      {
+        "word": "radiate",
+        "meaning": "照射する、放光する、発する",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 1013,
+    "word": "laboratory",
+    "meaning": "[名] 研究室，研究所",
+    "relatedWords": [
+      {
+        "word": "lab",
+        "meaning": "試験場、検査室、ラボ",
+        "type": "synonym"
+      },
+      {
+        "word": "research lab",
+        "meaning": "試験場、検査室、ラボ",
+        "type": "synonym"
+      },
+      {
+        "word": "research laboratory",
+        "meaning": "試験場、検査室、ラボ",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1014,
+    "word": "oxygen",
+    "meaning": "[名] 酸素",
+    "relatedWords": [
+      {
+        "word": "o",
+        "meaning": "O、酸素",
+        "type": "synonym"
+      },
+      {
+        "word": "atomic number 8",
+        "meaning": "O、酸素",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1015,
+    "word": "molecule",
+    "meaning": "[名] 分子",
+    "relatedWords": [
+      {
+        "word": "molecular",
+        "meaning": "分子性、分子的",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 1016,
+    "word": "compound",
+    "meaning": "[名] ①化合物 [形] ②複合的な",
+    "relatedWords": [
+      {
+        "word": "simple",
+        "meaning": "簡単、単純",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 1017,
+    "word": "tissue",
+    "meaning": "[名] ①組織 ②ティッシュペーパー",
+    "relatedWords": [
+      {
+        "word": "tissue paper",
+        "meaning": "吉野紙、薄葉紙、薄紙",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1018,
+    "word": "cell",
+    "meaning": "[名] ①細胞 ②電池 ③独房 （①②③いずれも〈可算〉)",
+    "relatedWords": [
+      {
+        "word": "cellphone",
+        "meaning": "移動電話、携帯電話、携帯",
+        "type": "synonym"
+      },
+      {
+        "word": "cubicle",
+        "meaning": "個室、小部屋",
+        "type": "synonym"
+      },
+      {
+        "word": "electric cell",
+        "meaning": "セル、細胞、電池",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1019,
+    "word": "gene",
+    "meaning": "[名] 遺伝子〈可算〉",
+    "relatedWords": [
+      {
+        "word": "factor",
+        "meaning": "[名] 要因",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1020,
+    "word": "substance",
+    "meaning": "[名] ①物質 ②本質，根拠",
+    "relatedWords": [
+      {
+        "word": "sum",
+        "meaning": "[名] ①（修飾語を伴って）金額 ②合計 ③（簡単な）計算 [他] ④（up）～を要約する",
+        "type": "synonym"
+      },
+      {
+        "word": "kernel",
+        "meaning": "髄、中核、中枢",
+        "type": "synonym"
+      },
+      {
+        "word": "core",
+        "meaning": "髄、中核、中枢",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1021,
+    "word": "solid",
+    "meaning": "[形] ①固体の ②ぎっしり詰まった [名] ③固体",
+    "relatedWords": [
+      {
+        "word": "solidness",
+        "meaning": "固形、固体、固態",
+        "type": "word-family"
+      },
+      {
+        "word": "solidify",
+        "meaning": "固まる",
+        "type": "word-family"
+      },
+      {
+        "word": "gaseous",
+        "meaning": "ガス状",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 1022,
+    "word": "satellite",
+    "meaning": "[名] ①（月などの）衛星 ②人工衛星",
+    "relatedWords": [
+      {
+        "word": "planet",
+        "meaning": "[名] ①惑星 ②（the ―）地球",
+        "type": "synonym"
+      },
+      {
+        "word": "orbiter",
+        "meaning": "サテライト、オービター、軌道船",
+        "type": "synonym"
+      },
+      {
+        "word": "artificial satellite",
+        "meaning": "サテライト、オービター、軌道船",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1023,
+    "word": "orbit",
+    "meaning": "[名] ①軌道 [他] ②（惑星などが）～を周回する",
+    "relatedWords": [
+      {
+        "word": "orbiter",
+        "meaning": "サテライト、オービター、軌道船",
+        "type": "word-family"
+      },
+      {
+        "word": "orb",
+        "meaning": "回る",
+        "type": "synonym"
+      },
+      {
+        "word": "revolve",
+        "meaning": "回る",
+        "type": "synonym"
+      },
+      {
+        "word": "celestial orbit",
+        "meaning": "軌道",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1024,
+    "word": "launch",
+    "meaning": "[他] ①（ロケットなど）を打ち上げる ②（運動，事業など）を始める [名] ③打ち上げ，開始，発売",
+    "relatedWords": [
+      {
+        "word": "launcher",
+        "meaning": "カタパルト、石弓",
+        "type": "word-family"
+      },
+      {
+        "word": "establish",
+        "meaning": "[他] ①～を確立する，定着させる ②～を設立する",
+        "type": "synonym"
+      },
+      {
+        "word": "found",
+        "meaning": "[他] ～を創立する",
+        "type": "synonym"
+      },
+      {
+        "word": "set up",
+        "meaning": "設立、設置、創設する",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1025,
+    "word": "attempt",
+    "meaning": "[名] ①試み [他] ②（to do）（～しようと）試みる",
+    "relatedWords": [
+      {
+        "word": "attempter",
+        "meaning": "企図者",
+        "type": "word-family"
+      },
+      {
+        "word": "effort",
+        "meaning": "[名] 努力",
+        "type": "synonym"
+      },
+      {
+        "word": "endeavor",
+        "meaning": "[名] ①努力，試み [他] ②～を (懸命に)努力する，試みる",
+        "type": "synonym"
+      },
+      {
+        "word": "seek",
+        "meaning": "[他] ①～を求める ②（to do）～しようと努める",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1026,
+    "word": "capacity",
+    "meaning": "[名] ①能力 ②容量，収容力",
+    "relatedWords": [
+      {
+        "word": "incapacity",
+        "meaning": "不敏、不才、非才",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 1027,
+    "word": "capable",
+    "meaning": "[形] ①（of ～）（～する）力がある ②有能な",
+    "relatedWords": [
+      {
+        "word": "capableness",
+        "meaning": "素質、潜在能力、ポテンシャル",
+        "type": "word-family"
+      },
+      {
+        "word": "capability",
+        "meaning": "素質、キャパシティ、腕前",
+        "type": "word-family"
+      },
+      {
+        "word": "subject",
+        "meaning": "[名] ①科目 ②話題 ③被験者 [形] ④（be ― to ～）～を受けやすい",
+        "type": "synonym"
+      },
+      {
+        "word": "incapable",
+        "meaning": "無能、無能力",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 1028,
+    "word": "attain",
+    "meaning": "[他] ①（人が主語）～を達成する ②（物，人が主語）～に到達する",
+    "relatedWords": [
+      {
+        "word": "attainment",
+        "meaning": "達成",
+        "type": "word-family"
+      },
+      {
+        "word": "achieve",
+        "meaning": "[他] ～を達成する",
+        "type": "synonym"
+      },
+      {
+        "word": "accomplish",
+        "meaning": "[他] ～をやり遂げる",
+        "type": "synonym"
+      },
+      {
+        "word": "reach",
+        "meaning": "贏ち得る、達成、勝得る",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1029,
+    "word": "desperate",
+    "meaning": "[形] ①必死の ②（状況が）絶望的な",
+    "relatedWords": []
+  },
+  {
+    "id": 1030,
+    "word": "dedicate",
+    "meaning": "[他] （A to B）（A）を（B に）捧げる",
+    "relatedWords": [
+      {
+        "word": "dedication",
+        "meaning": "言質",
+        "type": "word-family"
+      },
+      {
+        "word": "commit",
+        "meaning": "[他] ①（oneself to ～ / be ―ed to ～）～に専念する ②（A to B)（A）を（B に）委ねる，充てる ③（犯罪など）を犯す",
+        "type": "synonym"
+      },
+      {
+        "word": "devote",
+        "meaning": "[他] （A to B)（A）を（B に）ささげる",
+        "type": "synonym"
+      },
+      {
+        "word": "give",
+        "meaning": "抛つ、尽くす、擲つ",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1031,
+    "word": "pain",
+    "meaning": "[名] ①苦痛 ②（―s）苦労",
+    "relatedWords": [
+      {
+        "word": "hurting",
+        "meaning": "苦しみ、苦しさ、苦痛",
+        "type": "synonym"
+      },
+      {
+        "word": "painfulness",
+        "meaning": "苦しみ、苦しさ、難儀さ",
+        "type": "synonym"
+      },
+      {
+        "word": "pleasure",
+        "meaning": "慶び、快、悦楽",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 1032,
+    "word": "strain",
+    "meaning": "[名] ①（心身の）負担，無理 [他] ②（目や筋肉など）を痛める",
+    "relatedWords": [
+      {
+        "word": "strive",
+        "meaning": "[自] 努力する",
+        "type": "synonym"
+      },
+      {
+        "word": "reach",
+        "meaning": "尽力する、尽力、凝らす",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1033,
+    "word": "remedy",
+    "meaning": "[名] ①治療法，治療薬 ②改善策，対策（①②いずれも〈可算〉）",
+    "relatedWords": [
+      {
+        "word": "cure",
+        "meaning": "[他] ①～を治療する [名] ②治療法",
+        "type": "synonym"
+      },
+      {
+        "word": "redress",
+        "meaning": "匡正、矯正",
+        "type": "synonym"
+      },
+      {
+        "word": "remediation",
+        "meaning": "匡正、矯正",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1034,
+    "word": "pharmacy",
+    "meaning": "[名] （調剤）薬局",
+    "relatedWords": [
+      {
+        "word": "pharmacist",
+        "meaning": "薬剤師、調剤師",
+        "type": "word-family"
+      },
+      {
+        "word": "pharmaceutics",
+        "meaning": "薬剤学",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1035,
+    "word": "physician",
+    "meaning": "[名] ①〈米〉医師 ②〈英〉内科医",
+    "relatedWords": [
+      {
+        "word": "doctor",
+        "meaning": "医伯、医員、医師",
+        "type": "synonym"
+      },
+      {
+        "word": "doc",
+        "meaning": "医伯、医員、医師",
+        "type": "synonym"
+      },
+      {
+        "word": "md",
+        "meaning": "医伯、医員、医師",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1036,
+    "word": "disorder",
+    "meaning": "[名] （心身の）不調",
+    "relatedWords": [
+      {
+        "word": "upset",
+        "meaning": "不調、病み患い、異常",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1037,
+    "word": "pregnant",
+    "meaning": "[形] 妊娠した",
+    "relatedWords": [
+      {
+        "word": "pregnancy",
+        "meaning": "懐胎、胚胎、妊娠",
+        "type": "word-family"
+      },
+      {
+        "word": "nonpregnant",
+        "meaning": "非妊娠",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 1038,
+    "word": "clinical",
+    "meaning": "[形] 臨床の",
+    "relatedWords": [
+      {
+        "word": "clinic",
+        "meaning": "医院、クリニック、診療所",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 1039,
+    "word": "heal",
+    "meaning": "[他] ①～を治す [自] ②治る",
+    "relatedWords": [
+      {
+        "word": "healing",
+        "meaning": "治癒",
+        "type": "word-family"
+      },
+      {
+        "word": "mend",
+        "meaning": "[他] ～を修繕する",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1040,
+    "word": "infect",
+    "meaning": "[他] （人，動物，地域）に感染させる，伝染する",
+    "relatedWords": [
+      {
+        "word": "infection",
+        "meaning": "接触感染、伝染、感染",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 1041,
+    "word": "ankle",
+    "meaning": "[名] 足首",
+    "relatedWords": [
+      {
+        "word": "anklet",
+        "meaning": "ボビーソックス、アンクレット",
+        "type": "word-family"
+      },
+      {
+        "word": "ankle joint",
+        "meaning": "足頚、足首、足関節",
+        "type": "synonym"
+      },
+      {
+        "word": "mortise joint",
+        "meaning": "足頚、足首、足関節",
+        "type": "synonym"
+      },
+      {
+        "word": "articulatio talocruralis",
+        "meaning": "足頚、足首、足関節",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1042,
+    "word": "thumb",
+    "meaning": "[名] 親指",
+    "relatedWords": [
+      {
+        "word": "pollex",
+        "meaning": "大指、拇指、おや指",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1043,
+    "word": "forehead",
+    "meaning": "[名] 額，おでこ",
+    "relatedWords": [
+      {
+        "word": "brow",
+        "meaning": "御凸、前額部、前額",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1044,
+    "word": "chin",
+    "meaning": "[名] 下あご，あごの先端",
+    "relatedWords": [
+      {
+        "word": "mentum",
+        "meaning": "頤、顎、チン",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1045,
+    "word": "chest",
+    "meaning": "[名] ①胸（部)②（大きな木の）箱，密閉容器",
+    "relatedWords": [
+      {
+        "word": "thorax",
+        "meaning": "胸倉、胸板、胸糞",
+        "type": "synonym"
+      },
+      {
+        "word": "pectus",
+        "meaning": "胸倉、胸板、胸糞",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1046,
+    "word": "breast",
+    "meaning": "[名] （主に女性の）胸，乳房",
+    "relatedWords": [
+      {
+        "word": "chest",
+        "meaning": "[名] ①胸（部)②（大きな木の）箱，密閉容器",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1047,
+    "word": "lung",
+    "meaning": "[名] 肺〈可算〉",
+    "relatedWords": []
+  },
+  {
+    "id": 1048,
+    "word": "organ",
+    "meaning": "[名] ①臓器，(動植物の)器官 ②(楽器)オルガン（①②ともに）",
+    "relatedWords": [
+      {
+        "word": "organic",
+        "meaning": "器質性",
+        "type": "word-family"
+      },
+      {
+        "word": "organist",
+        "meaning": "オルガニスト",
+        "type": "word-family"
+      },
+      {
+        "word": "electric organ",
+        "meaning": "ハモンドオルガン、電子オルガン、エレクトーン",
+        "type": "synonym"
+      },
+      {
+        "word": "electronic organ",
+        "meaning": "ハモンドオルガン、電子オルガン、エレクトーン",
+        "type": "synonym"
+      },
+      {
+        "word": "hammond organ",
+        "meaning": "ハモンドオルガン、電子オルガン、エレクトーン",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1049,
+    "word": "vision",
+    "meaning": "[名] ①視力，視野 ②未来像 ③未来を見通す力，先見の明",
+    "relatedWords": [
+      {
+        "word": "sight",
+        "meaning": "[名] ①光景 ②視力",
+        "type": "synonym"
+      },
+      {
+        "word": "visual sense",
+        "meaning": "視覚、ヴィジョン、視力",
+        "type": "synonym"
+      },
+      {
+        "word": "visual modality",
+        "meaning": "視覚、ヴィジョン、視力",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1050,
+    "word": "skeleton",
+    "meaning": "[名] 骸骨，骨格",
+    "relatedWords": []
+  },
+  {
+    "id": 1051,
+    "word": "sensation",
+    "meaning": "[名] ①感覚 ②（説明し難い）感情",
+    "relatedWords": [
+      {
+        "word": "sense",
+        "meaning": "[名] ①感覚 ②分別 ③（言葉の）意味 [他] ④（何となく）～を感じる",
+        "type": "word-family"
+      },
+      {
+        "word": "adept",
+        "meaning": "達者、スター、スタア",
+        "type": "synonym"
+      },
+      {
+        "word": "esthesis",
+        "meaning": "感覚資料、感覚、感覚的な体験",
+        "type": "synonym"
+      },
+      {
+        "word": "aesthesis",
+        "meaning": "感覚資料、感覚、感覚的な体験",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1052,
+    "word": "code",
+    "meaning": "[名] ①（服装などの）規定 ②暗号",
+    "relatedWords": [
+      {
+        "word": "codify",
+        "meaning": "法文化する、法文化",
+        "type": "word-family"
+      },
+      {
+        "word": "codification",
+        "meaning": "規則、集大成、法典",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1053,
+    "word": "agenda",
+    "meaning": "[名] 議題，協議事項",
+    "relatedWords": [
+      {
+        "word": "docket",
+        "meaning": "スケジュール、アジェンダ、スケデュール",
+        "type": "synonym"
+      },
+      {
+        "word": "schedule",
+        "meaning": "スケジュール、アジェンダ、スケデュール",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1054,
+    "word": "liberty",
+    "meaning": "[名] 自由",
+    "relatedWords": [
+      {
+        "word": "liberate",
+        "meaning": "逃がす、放つ、放す",
+        "type": "word-family"
+      },
+      {
+        "word": "autonomy",
+        "meaning": "[名] 自治（権），自主性",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1055,
+    "word": "committee",
+    "meaning": "[名] 委員会",
+    "relatedWords": [
+      {
+        "word": "commission",
+        "meaning": "コンミッション、コミッション、委員会",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1056,
+    "word": "humanity",
+    "meaning": "[名] ①（集合的に）人類 ②（the ―ies）人文科学 ③人間性",
+    "relatedWords": [
+      {
+        "word": "human",
+        "meaning": "人的",
+        "type": "word-family"
+      },
+      {
+        "word": "mankind",
+        "meaning": "[名] （集合的に）人類",
+        "type": "synonym"
+      },
+      {
+        "word": "humanness",
+        "meaning": "ヒューマニティ、ヒューマニチー、ユマニテ",
+        "type": "synonym"
+      },
+      {
+        "word": "manhood",
+        "meaning": "ヒューマニティ、ヒューマニチー、ユマニテ",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1057,
+    "word": "mankind",
+    "meaning": "[名] （集合的に）人類",
+    "relatedWords": [
+      {
+        "word": "humanity",
+        "meaning": "[名] ①（集合的に）人類 ②（the ―ies）人文科学 ③人間性",
+        "type": "synonym"
+      },
+      {
+        "word": "world",
+        "meaning": "ヒト、人、人類",
+        "type": "synonym"
+      },
+      {
+        "word": "humankind",
+        "meaning": "ヒト、人、人類",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1058,
+    "word": "authority",
+    "meaning": "[名] ①権威 ②権力 ③（―ies）当局",
+    "relatedWords": [
+      {
+        "word": "authorization",
+        "meaning": "決定権、権、権力",
+        "type": "synonym"
+      },
+      {
+        "word": "authorisation",
+        "meaning": "決定権、権、権力",
+        "type": "synonym"
+      },
+      {
+        "word": "potency",
+        "meaning": "決定権、権、権力",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1059,
+    "word": "justice",
+    "meaning": "[名] 正義",
+    "relatedWords": [
+      {
+        "word": "doj",
+        "meaning": "司法省",
+        "type": "synonym"
+      },
+      {
+        "word": "justness",
+        "meaning": "中正、正道、公正さ",
+        "type": "synonym"
+      },
+      {
+        "word": "department of justice",
+        "meaning": "司法省",
+        "type": "synonym"
+      },
+      {
+        "word": "injustice",
+        "meaning": "不義、不公正、不正",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 1060,
+    "word": "insurance",
+    "meaning": "[名] 保険〈不可算〉",
+    "relatedWords": [
+      {
+        "word": "insure",
+        "meaning": "保障、カバーする、カヴァーする",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 1061,
+    "word": "hardship",
+    "meaning": "[名] （主に経済的）苦難",
+    "relatedWords": [
+      {
+        "word": "adversity",
+        "meaning": "悲境、憂き目、困窮",
+        "type": "synonym"
+      },
+      {
+        "word": "hard knocks",
+        "meaning": "悲境、憂き目、困窮",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1062,
+    "word": "poverty",
+    "meaning": "[名] 貧困〈不可算〉",
+    "relatedWords": [
+      {
+        "word": "poorness",
+        "meaning": "窮乏、困窮、貧しさ",
+        "type": "synonym"
+      },
+      {
+        "word": "impoverishment",
+        "meaning": "窮乏、困窮、貧しさ",
+        "type": "synonym"
+      },
+      {
+        "word": "wealth",
+        "meaning": "[名] ①富，財産〈不可算〉 ②（a ― of ～）豊富な～",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 1063,
+    "word": "chaos",
+    "meaning": "[名] 大混乱，混沌〈不可算〉",
+    "relatedWords": [
+      {
+        "word": "pandemonium",
+        "meaning": "無秩序、滅茶苦茶、騒々しい混乱",
+        "type": "synonym"
+      },
+      {
+        "word": "bedlam",
+        "meaning": "無秩序、滅茶苦茶、騒々しい混乱",
+        "type": "synonym"
+      },
+      {
+        "word": "topsy-turvydom",
+        "meaning": "無秩序、滅茶苦茶、騒々しい混乱",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1064,
+    "word": "isolation",
+    "meaning": "[名] 孤立，分離，孤独感",
+    "relatedWords": [
+      {
+        "word": "isolate",
+        "meaning": "距てる、隔離する、離隔する",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 1065,
+    "word": "region",
+    "meaning": "[名] 地域",
+    "relatedWords": [
+      {
+        "word": "part",
+        "meaning": "エリア、領域、地帯",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1066,
+    "word": "proof",
+    "meaning": "[名] ①証拠，証明〈不可算〉 [形] ②（複合語で）～を防ぐ，～に耐える",
+    "relatedWords": [
+      {
+        "word": "cogent evidence",
+        "meaning": "実証、証跡、裏付",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1067,
+    "word": "warranty",
+    "meaning": "[名] 保証",
+    "relatedWords": [
+      {
+        "word": "guarantee",
+        "meaning": "[他] ①～を保証する [名] ②保証（期間）",
+        "type": "synonym"
+      },
+      {
+        "word": "warrant",
+        "meaning": "保証書",
+        "type": "synonym"
+      },
+      {
+        "word": "warrantee",
+        "meaning": "保証書",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1068,
+    "word": "principle",
+    "meaning": "[名] ①原理，原則 ②主義，信念",
+    "relatedWords": [
+      {
+        "word": "rule",
+        "meaning": "[名] ①規則 [他] ②～を支配する",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1069,
+    "word": "origin",
+    "meaning": "[名] 起源",
+    "relatedWords": [
+      {
+        "word": "originate",
+        "meaning": "発する",
+        "type": "word-family"
+      },
+      {
+        "word": "beginning",
+        "meaning": "淵源、始め、根源",
+        "type": "synonym"
+      },
+      {
+        "word": "root",
+        "meaning": "淵源、始め、根源",
+        "type": "synonym"
+      },
+      {
+        "word": "rootage",
+        "meaning": "淵源、始め、根源",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1070,
+    "word": "setting",
+    "meaning": "[名] ①環境，状況 ②（小説，劇，機械などの）設定，舞台（①②ともに）",
+    "relatedWords": [
+      {
+        "word": "scene",
+        "meaning": "[名] ①（劇，小説などの）場面 ②（事故）現場 ③（the ～ scene）～（業）界",
+        "type": "synonym"
+      },
+      {
+        "word": "background",
+        "meaning": "[名] ①背景 ②経歴，生い立ち",
+        "type": "synonym"
+      },
+      {
+        "word": "scope",
+        "meaning": "[名] 範囲",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1071,
+    "word": "mission",
+    "meaning": "[名] ①任務，使命 ②使節団 ③（主にキリスト教の）布教（団）",
+    "relatedWords": [
+      {
+        "word": "missioner",
+        "meaning": "宣教師",
+        "type": "word-family"
+      },
+      {
+        "word": "charge",
+        "meaning": "[名] ①料金 ②（主にin ―）責任，管理 ③（against ～）（～に対する）非難，告訴 [他] ④～を請求する ⑤～を告訴する ⑥～を充電する",
+        "type": "synonym"
+      },
+      {
+        "word": "commission",
+        "meaning": "特務",
+        "type": "synonym"
+      },
+      {
+        "word": "missionary post",
+        "meaning": "ミッション、伝道団、伝道所",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1072,
+    "word": "project",
+    "meaning": "[名] ①計画，企画 [他] ②（予算など）を見積もる ③～を投影する",
+    "relatedWords": [
+      {
+        "word": "projection",
+        "meaning": "突出、隆起",
+        "type": "word-family"
+      },
+      {
+        "word": "task",
+        "meaning": "[名] 仕事〈可算〉",
+        "type": "synonym"
+      },
+      {
+        "word": "labor",
+        "meaning": "[名] ①労働 ②（集合的に）労働者 ③努力，陣痛",
+        "type": "synonym"
+      },
+      {
+        "word": "undertaking",
+        "meaning": "課題、任務、任",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1073,
+    "word": "monument",
+    "meaning": "[名] 記念碑，遺跡，史跡",
+    "relatedWords": [
+      {
+        "word": "monumental",
+        "meaning": "モニュメンタル",
+        "type": "word-family"
+      },
+      {
+        "word": "memorial",
+        "meaning": "モニュメント、記念建造物",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1074,
+    "word": "revolution",
+    "meaning": "[名] 革命",
+    "relatedWords": [
+      {
+        "word": "revolutionist",
+        "meaning": "革命家",
+        "type": "word-family"
+      }
+    ]
+  },
+  {
+    "id": 1075,
+    "word": "contract",
+    "meaning": "[名] ①契約 [他] ②～を契約する ③（病気）に感染する",
+    "relatedWords": [
+      {
+        "word": "contractor",
+        "meaning": "工務店、ビルダ、ビルダー",
+        "type": "word-family"
+      },
+      {
+        "word": "undertake",
+        "meaning": "[他] (仕事など)を引き受ける，始める",
+        "type": "synonym"
+      },
+      {
+        "word": "sign",
+        "meaning": "[名] ①兆候，印 ②標識，看板，掲示 [他] ③～を署名する",
+        "type": "synonym"
+      },
+      {
+        "word": "sign on",
+        "meaning": "契約、契約する",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1076,
+    "word": "infrastructure",
+    "meaning": "[名] インフラ、基本的施設",
+    "relatedWords": [
+      {
+        "word": "substructure",
+        "meaning": "基礎構造、下部構造",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1077,
+    "word": "negotiate",
+    "meaning": "[自] ①（with ～）（～と）交渉する [他] ②（交渉の上で，条件など）を取り決める",
+    "relatedWords": [
+      {
+        "word": "negotiation",
+        "meaning": "協議、交渉、会商",
+        "type": "word-family"
+      },
+      {
+        "word": "negociate",
+        "meaning": "交渉、会商、掛け合う",
+        "type": "synonym"
+      },
+      {
+        "word": "talk terms",
+        "meaning": "交渉、会商、掛け合う",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1078,
+    "word": "cooperate",
+    "meaning": "[自] （with ～）（～と）協力する，（in ～）（～を）協力する",
+    "relatedWords": [
+      {
+        "word": "cooperative",
+        "meaning": "協同的",
+        "type": "word-family"
+      },
+      {
+        "word": "cooperation",
+        "meaning": "協力",
+        "type": "word-family"
+      },
+      {
+        "word": "cooperator",
+        "meaning": "仲間、相棒",
+        "type": "word-family"
+      },
+      {
+        "word": "collaborate",
+        "meaning": "[自] （to do）共同して働く",
+        "type": "synonym"
+      },
+      {
+        "word": "join forces",
+        "meaning": "協調、連携、団結",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1079,
+    "word": "restore",
+    "meaning": "[他] ①（治安など）を回復する ②（古い建物，絵など）を修復する",
+    "relatedWords": [
+      {
+        "word": "restoration",
+        "meaning": "蘇生、再興、再起",
+        "type": "word-family"
+      },
+      {
+        "word": "reconstruct",
+        "meaning": "回復する、還元する、立直す",
+        "type": "synonym"
+      },
+      {
+        "word": "regenerate",
+        "meaning": "回復させる、生き返らせる",
+        "type": "synonym"
+      },
+      {
+        "word": "rejuvenate",
+        "meaning": "回復させる、生き返らせる",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1080,
+    "word": "found",
+    "meaning": "[他] ～を創立する",
+    "relatedWords": [
+      {
+        "word": "foundation",
+        "meaning": "財団、財団法人",
+        "type": "word-family"
+      },
+      {
+        "word": "founder",
+        "meaning": "父、創始者、創立者",
+        "type": "word-family"
+      },
+      {
+        "word": "founding",
+        "meaning": "創始、設立、設置",
+        "type": "word-family"
+      },
+      {
+        "word": "establish",
+        "meaning": "[他] ①～を確立する，定着させる ②～を設立する",
+        "type": "synonym"
+      },
+      {
+        "word": "launch",
+        "meaning": "[他] ①（ロケットなど）を打ち上げる ②（運動，事業など）を始める [名] ③打ち上げ，開始，発売",
+        "type": "synonym"
+      },
+      {
+        "word": "set up",
+        "meaning": "設立、設置、創設する",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1081,
+    "word": "conservative",
+    "meaning": "[形] 保守的な",
+    "relatedWords": [
+      {
+        "word": "liberal",
+        "meaning": "リベラル",
+        "type": "antonym"
+      }
+    ]
+  },
+  {
+    "id": 1082,
+    "word": "affair",
+    "meaning": "[名] ①（―s）情勢 ②（スキャンダラスな）事件 ③情事，浮気",
+    "relatedWords": [
+      {
+        "word": "matter",
+        "meaning": "[自] ①重要である [名] ②（修飾語を伴い）物質 ③（―s）事態，状況",
+        "type": "synonym"
+      },
+      {
+        "word": "occasion",
+        "meaning": "[名] ①場合 ②行事，祝い事",
+        "type": "synonym"
+      },
+      {
+        "word": "function",
+        "meaning": "[名] ①機能 [自] ②機能する",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1083,
+    "word": "agency",
+    "meaning": "[名] ①（政府）機関 ②代理店",
+    "relatedWords": [
+      {
+        "word": "authority",
+        "meaning": "[名] ①権威 ②権力 ③（―ies）当局",
+        "type": "synonym"
+      },
+      {
+        "word": "bureau",
+        "meaning": "官府、機関、官衙",
+        "type": "synonym"
+      },
+      {
+        "word": "office",
+        "meaning": "官府、機関、官衙",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1084,
+    "word": "council",
+    "meaning": "[名] 議会",
+    "relatedWords": []
+  },
+  {
+    "id": 1085,
+    "word": "kingdom",
+    "meaning": "[名] ①（the ～ kingdom）～界，社会 ②王国",
+    "relatedWords": [
+      {
+        "word": "realm",
+        "meaning": "[名] 領域，領土",
+        "type": "synonym"
+      },
+      {
+        "word": "land",
+        "meaning": "領域、世界、分野",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1086,
+    "word": "republic",
+    "meaning": "[名] 共和国",
+    "relatedWords": [
+      {
+        "word": "democracy",
+        "meaning": "共和国、民主制、民主国家",
+        "type": "synonym"
+      },
+      {
+        "word": "commonwealth",
+        "meaning": "共和国、民主制、民主国家",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1087,
+    "word": "empire",
+    "meaning": "[名] 帝国",
+    "relatedWords": [
+      {
+        "word": "imperium",
+        "meaning": "帝国",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1088,
+    "word": "aid",
+    "meaning": "[名] 援助，救援物資〈不可算〉",
+    "relatedWords": [
+      {
+        "word": "assistance",
+        "meaning": "輔助、補助、ヘルプ",
+        "type": "synonym"
+      },
+      {
+        "word": "help",
+        "meaning": "輔助、補助、ヘルプ",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1089,
+    "word": "reform",
+    "meaning": "[名] 改革",
+    "relatedWords": []
+  },
+  {
+    "id": 1090,
+    "word": "minister",
+    "meaning": "[名] ①大臣 ②牧師",
+    "relatedWords": [
+      {
+        "word": "curate",
+        "meaning": "副牧師、牧師、代理牧師",
+        "type": "synonym"
+      },
+      {
+        "word": "parson",
+        "meaning": "副牧師、牧師、代理牧師",
+        "type": "synonym"
+      },
+      {
+        "word": "pastor",
+        "meaning": "副牧師、牧師、代理牧師",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1091,
+    "word": "parliament",
+    "meaning": "[名] 議会",
+    "relatedWords": []
+  },
+  {
+    "id": 1092,
+    "word": "territory",
+    "meaning": "[名] ①領土 ②（動物などの）縄張り，（学問などの）領域",
+    "relatedWords": [
+      {
+        "word": "district",
+        "meaning": "[名] 地区",
+        "type": "synonym"
+      },
+      {
+        "word": "dominion",
+        "meaning": "地区、地域",
+        "type": "synonym"
+      },
+      {
+        "word": "territorial dominion",
+        "meaning": "地区、地域",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1093,
+    "word": "poll",
+    "meaning": "[名] ①（政治関連の）世論調査 ②投票 [他] ③（票）を得る",
+    "relatedWords": [
+      {
+        "word": "canvass",
+        "meaning": "世論調査を、世論調査をする",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1094,
+    "word": "fortune",
+    "meaning": "[名] ①財産 ②運",
+    "relatedWords": [
+      {
+        "word": "chance",
+        "meaning": "[名] ①（to do）（～する）機会 ②（of ～ / that SV）（～の/ ～する）可能性",
+        "type": "synonym"
+      },
+      {
+        "word": "hazard",
+        "meaning": "[名] 危険（になり得るもの）",
+        "type": "synonym"
+      },
+      {
+        "word": "luck",
+        "meaning": "回合せ、巡合わせ、回合",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1095,
+    "word": "property",
+    "meaning": "[名] ①（主に集合的）財産，資産 ②（物質の）特性 ③（建物を含む）所有地",
+    "relatedWords": [
+      {
+        "word": "belongings",
+        "meaning": "所有地、プロパティー、所有物",
+        "type": "synonym"
+      },
+      {
+        "word": "holding",
+        "meaning": "所有地、プロパティー、所有物",
+        "type": "synonym"
+      },
+      {
+        "word": "place",
+        "meaning": "プレイス、プレース、場所",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1096,
+    "word": "fund",
+    "meaning": "[名] ①（―s）資金 ②基金 [他] ③～に資金を出す",
+    "relatedWords": [
+      {
+        "word": "stock",
+        "meaning": "[名] ①株（式)②在庫品，蓄え",
+        "type": "synonym"
+      },
+      {
+        "word": "store",
+        "meaning": "備蓄、蓄え、貯蔵品",
+        "type": "synonym"
+      },
+      {
+        "word": "monetary fund",
+        "meaning": "基金、ファンド",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1097,
+    "word": "stock",
+    "meaning": "[名] ①株（式)②在庫品，蓄え",
+    "relatedWords": [
+      {
+        "word": "inventory",
+        "meaning": "棚卸し資産、店卸し資産、在庫品",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1098,
+    "word": "labor",
+    "meaning": "[名] ①労働 ②（集合的に）労働者 ③努力，陣痛",
+    "relatedWords": [
+      {
+        "word": "toil",
+        "meaning": "[自] ①(長時間)骨折って働く [名] ②骨の折れる仕事",
+        "type": "synonym"
+      },
+      {
+        "word": "labour",
+        "meaning": "労働党、レーバー",
+        "type": "synonym"
+      },
+      {
+        "word": "dol",
+        "meaning": "労働省",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1099,
+    "word": "overwork",
+    "meaning": "[自] ①働きすぎる [他] ②～を働かせすぎる，酷使する [名] ③過労",
+    "relatedWords": [
+      {
+        "word": "overworking",
+        "meaning": "働き過ぎ、オーバーワーク、過労",
+        "type": "word-family"
+      },
+      {
+        "word": "exploit",
+        "meaning": "[他] ①(自然の力など)を利用する ②～を搾取する",
+        "type": "synonym"
+      }
+    ]
+  },
+  {
+    "id": 1100,
+    "word": "firm",
+    "meaning": "[名] ①会社 [形] ②（土台，信念などが）固い ③（体が）引き締まった",
+    "relatedWords": [
+      {
+        "word": "firmness",
         "meaning": "意志強さ",
         "type": "word-family"
       },
