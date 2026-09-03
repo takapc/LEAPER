@@ -24,6 +24,19 @@ const RELATION_LABELS = {
   antonym: { label: '対義語', colorScheme: 'orange' },
 }
 
+const PART_OF_SPEECH_LABELS = {
+  noun: { label: '名詞', colorScheme: 'blue' },
+  'transitive-verb': { label: '他動詞', colorScheme: 'red' },
+  'intransitive-verb': { label: '自動詞', colorScheme: 'teal' },
+  verb: { label: '動詞', colorScheme: 'cyan' },
+  adjective: { label: '形容詞', colorScheme: 'green' },
+  adverb: { label: '副詞', colorScheme: 'purple' },
+  preposition: { label: '前置詞', colorScheme: 'orange' },
+  conjunction: { label: '接続詞', colorScheme: 'yellow' },
+  auxiliary: { label: '助動詞', colorScheme: 'pink' },
+  phrase: { label: '熟語', colorScheme: 'gray' },
+}
+
 export function RelatedWordsModal({ word }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const rowBg = useColorModeValue('gray.50', 'whiteAlpha.100')
@@ -66,6 +79,9 @@ export function RelatedWordsModal({ word }) {
                   label: '関連語',
                   colorScheme: 'gray',
                 }
+                const partsOfSpeech = Array.isArray(relatedWord.partsOfSpeech)
+                  ? relatedWord.partsOfSpeech
+                  : []
 
                 return (
                   <Box
@@ -84,10 +100,27 @@ export function RelatedWordsModal({ word }) {
                       >
                         {relation.label}
                       </Badge>
-                      <Box minW={0}>
-                        <Text fontSize="lg" fontWeight="bold" wordBreak="break-word">
-                          {relatedWord.word}
-                        </Text>
+                      <Box minW={0} flex="1">
+                        <HStack spacing={2} rowGap={1} align="center" flexWrap="wrap">
+                          <Text fontSize="lg" fontWeight="bold" wordBreak="break-word">
+                            {relatedWord.word}
+                          </Text>
+                          {partsOfSpeech.map((partOfSpeech) => {
+                            const part = PART_OF_SPEECH_LABELS[partOfSpeech]
+                            if (!part) return null
+
+                            return (
+                              <Badge
+                                key={partOfSpeech}
+                                colorScheme={part.colorScheme}
+                                variant="subtle"
+                                whiteSpace="nowrap"
+                              >
+                                {part.label}
+                              </Badge>
+                            )
+                          })}
+                        </HStack>
                         <Text mt={1} fontSize="sm" lineHeight="tall" color={meaningColor}>
                           {relatedWord.meaning}
                         </Text>

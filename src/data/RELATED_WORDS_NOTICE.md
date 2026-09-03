@@ -15,3 +15,6 @@ from Japanese Wordnet 2.0, provided under the Creative Commons Attribution 4.0
 International License.
 
 - Japanese Wordnet: https://github.com/bond-lab/wnja
+
+Parts of speech are taken from the bundled LEAP meanings when available and from
+Open English WordNet entries and verb frames otherwise.

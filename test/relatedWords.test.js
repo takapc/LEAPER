@@ -8,6 +8,18 @@ const words = JSON.parse(
 
 test('every bundled word has a valid relatedWords collection', () => {
   const validTypes = new Set(['word-family', 'synonym', 'antonym'])
+  const validPartsOfSpeech = new Set([
+    'noun',
+    'transitive-verb',
+    'intransitive-verb',
+    'verb',
+    'adjective',
+    'adverb',
+    'preposition',
+    'conjunction',
+    'auxiliary',
+    'phrase',
+  ])
 
   for (const word of words) {
     assert.ok(Array.isArray(word.relatedWords), `${word.word} is missing relatedWords`)
@@ -19,6 +31,11 @@ test('every bundled word has a valid relatedWords collection', () => {
       assert.equal(typeof relatedWord.meaning, 'string')
       assert.ok(relatedWord.meaning.length > 0)
       assert.ok(validTypes.has(relatedWord.type))
+      assert.ok(Array.isArray(relatedWord.partsOfSpeech))
+      assert.ok(relatedWord.partsOfSpeech.length > 0)
+      for (const partOfSpeech of relatedWord.partsOfSpeech) {
+        assert.ok(validPartsOfSpeech.has(partOfSpeech))
+      }
       assert.notEqual(relatedWord.word.toLowerCase(), word.word.toLowerCase())
       assert.ok(!seen.has(relatedWord.word.toLowerCase()))
       seen.add(relatedWord.word.toLowerCase())
