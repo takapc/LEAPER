@@ -11,6 +11,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Tag,
+  TagLabel,
   Text,
   useColorModeValue,
   useDisclosure,
@@ -94,9 +96,15 @@ export function RelatedWordsModal({ word }) {
                     <HStack align="start" spacing={3}>
                       <Badge
                         colorScheme={relation.colorScheme}
+                        variant="solid"
+                        borderRadius="full"
+                        fontSize="sm"
+                        letterSpacing="wide"
                         mt={1}
                         minW="3.5rem"
                         textAlign="center"
+                        px={2.5}
+                        py={1}
                       >
                         {relation.label}
                       </Badge>
@@ -110,14 +118,18 @@ export function RelatedWordsModal({ word }) {
                             if (!part) return null
 
                             return (
-                              <Badge
+                              <Tag
                                 key={partOfSpeech}
                                 colorScheme={part.colorScheme}
-                                variant="subtle"
+                                variant="outline"
+                                size="sm"
+                                fontSize="sm"
+                                borderRadius="md"
+                                borderLeftWidth="3px"
                                 whiteSpace="nowrap"
                               >
-                                {part.label}
-                              </Badge>
+                                <TagLabel fontWeight="bold">{part.label}</TagLabel>
+                              </Tag>
                             )
                           })}
                         </HStack>

@@ -43,6 +43,7 @@ import { PronounceButton } from './components/PronounceButton'
 import { RelatedWordsModal } from './components/RelatedWordsModal'
 import { RangeSelector } from './components/RangeSelector'
 import { WordSearch } from './components/WordSearch'
+import packageJson from '../package.json'
 import {
   filterWordsBySelectedParts,
   formatMeaning,
@@ -838,6 +839,9 @@ function App() {
             </Text>
             <Text fontSize="xs" color="gray.500">
               データ出典: 受かる英語 - LEAP 改訂版 単語一覧
+            </Text>
+            <Text fontSize="xs" color="gray.500" fontWeight="semibold">
+              LEAPER ver{packageJson.version}
             </Text>
           </VStack>
         </VStack>
