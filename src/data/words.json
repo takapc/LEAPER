@@ -6,7 +6,7 @@
     "relatedWords": [
       {
         "word": "agreement",
-        "meaning": "取り極め、申し合わせ、賛成",
+        "meaning": "合意、協定",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -40,7 +40,7 @@
       },
       {
         "word": "disagree",
-        "meaning": "食い違う、異に、異る",
+        "meaning": "意見が合わない、反対する",
         "type": "antonym",
         "partsOfSpeech": [
           "intransitive-verb"
@@ -55,7 +55,7 @@
     "relatedWords": [
       {
         "word": "opposition",
-        "meaning": "抵抗、レジスタンス、反撥",
+        "meaning": "反対、対立",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -63,7 +63,7 @@
       },
       {
         "word": "opposer",
-        "meaning": "反対者、対者、対手",
+        "meaning": "反対者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -71,7 +71,7 @@
       },
       {
         "word": "opponent",
-        "meaning": "反対者、対者、対手",
+        "meaning": "反対者、対戦相手",
         "type": "word-family",
         "partsOfSpeech": [
           "noun",
@@ -87,7 +87,7 @@
     "relatedWords": [
       {
         "word": "advisement",
-        "meaning": "熟考、熟慮",
+        "meaning": "熟考、助言",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -95,7 +95,7 @@
       },
       {
         "word": "advisor",
-        "meaning": "補佐人、輔弼、コンサルタント",
+        "meaning": "助言者、顧問",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -103,7 +103,7 @@
       },
       {
         "word": "adviser",
-        "meaning": "補佐人、輔弼、コンサルタント",
+        "meaning": "助言者、顧問",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -111,7 +111,7 @@
       },
       {
         "word": "rede",
-        "meaning": "進言する、アドバイス、進言",
+        "meaning": "助言する、助言",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -119,7 +119,7 @@
       },
       {
         "word": "counsel",
-        "meaning": "進言する、アドバイス、進言",
+        "meaning": "助言する、助言",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -145,7 +145,7 @@
       },
       {
         "word": "gratuity",
-        "meaning": "心付、祝儀、手当",
+        "meaning": "心付け、チップ",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -153,7 +153,7 @@
       },
       {
         "word": "pourboire",
-        "meaning": "心付、祝儀、手当",
+        "meaning": "心付け、チップ",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -168,7 +168,7 @@
     "relatedWords": [
       {
         "word": "discussion",
-        "meaning": "話し合い、談議、談義",
+        "meaning": "話し合い、議論",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -176,7 +176,7 @@
       },
       {
         "word": "discourse",
-        "meaning": "論議する、話し合う、談議",
+        "meaning": "論じる、議論する",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -186,7 +186,7 @@
       },
       {
         "word": "talk about",
-        "meaning": "論議する、話し合う、談議",
+        "meaning": "～について話す",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -194,7 +194,7 @@
       },
       {
         "word": "hash out",
-        "meaning": "論議する、話合する、話し合い",
+        "meaning": "話し合って解決する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -210,7 +210,7 @@
     "relatedWords": [
       {
         "word": "fault",
-        "meaning": "非議する、誹議する、批難する",
+        "meaning": "責める、非難する",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -225,7 +225,7 @@
     "relatedWords": [
       {
         "word": "argument",
-        "meaning": "審議、評議、辯論",
+        "meaning": "議論、口論",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -233,7 +233,7 @@
       },
       {
         "word": "argumentation",
-        "meaning": "審議、評議、辯論",
+        "meaning": "議論、論証",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -241,7 +241,7 @@
       },
       {
         "word": "arguer",
-        "meaning": "討論者",
+        "meaning": "議論する人",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -284,7 +284,7 @@
     "relatedWords": [
       {
         "word": "claimant",
-        "meaning": "主張者、請求者",
+        "meaning": "請求者、申立人",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -292,7 +292,7 @@
       },
       {
         "word": "arrogate",
-        "meaning": "要求、要求する、主張する",
+        "meaning": "不当に要求する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -300,7 +300,7 @@
       },
       {
         "word": "lay claim",
-        "meaning": "要求、要求する、主張する",
+        "meaning": "権利を主張する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -309,7 +309,7 @@
       },
       {
         "word": "forfeit",
-        "meaning": "喪失する、喪失、失う",
+        "meaning": "失う、没収される",
         "type": "antonym",
         "partsOfSpeech": [
           "noun",
@@ -326,7 +326,7 @@
     "relatedWords": [
       {
         "word": "complaint",
-        "meaning": "クレイム、不服、クレーム",
+        "meaning": "不満、苦情",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -334,7 +334,7 @@
       },
       {
         "word": "complainer",
-        "meaning": "スコーカー、不平家",
+        "meaning": "不平を言う人",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -342,7 +342,7 @@
       },
       {
         "word": "complainant",
-        "meaning": "訴訟人、原告、訴人",
+        "meaning": "申立人、原告",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -350,7 +350,7 @@
       },
       {
         "word": "plain",
-        "meaning": "零す、不満がる、ごねる",
+        "meaning": "不平を言う",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -359,7 +359,7 @@
       },
       {
         "word": "kick",
-        "meaning": "零す、不満がる、ごねる",
+        "meaning": "文句を言う",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -369,7 +369,7 @@
       },
       {
         "word": "quetch",
-        "meaning": "零す、不満がる、ごねる",
+        "meaning": "不平を言う",
         "type": "synonym",
         "partsOfSpeech": [
           "intransitive-verb"
@@ -416,7 +416,7 @@
     "relatedWords": [
       {
         "word": "suggestion",
-        "meaning": "助言、入れ智慧、入知恵",
+        "meaning": "提案、示唆",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -424,7 +424,7 @@
       },
       {
         "word": "suggester",
-        "meaning": "首唱",
+        "meaning": "提案者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -449,7 +449,7 @@
       },
       {
         "word": "intimate",
-        "meaning": "暗示する、示唆する、示唆",
+        "meaning": "ほのめかす、暗示する",
         "type": "synonym",
         "partsOfSpeech": [
           "adjective"
@@ -464,7 +464,7 @@
     "relatedWords": [
       {
         "word": "recommendation",
-        "meaning": "選奨、推奨、推薦",
+        "meaning": "推薦、勧め",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -497,7 +497,7 @@
     "relatedWords": [
       {
         "word": "thankful",
-        "meaning": "感謝を感じた、幸甚、有り難い",
+        "meaning": "感謝している、ありがたく思う",
         "type": "synonym",
         "partsOfSpeech": [
           "adjective"
@@ -505,7 +505,7 @@
       },
       {
         "word": "ungrateful",
-        "meaning": "恩知らず",
+        "meaning": "感謝しない、恩知らずな",
         "type": "antonym",
         "partsOfSpeech": [
           "adjective"
@@ -520,7 +520,7 @@
     "relatedWords": [
       {
         "word": "apology",
-        "meaning": "詫び言、お詫び、謝辞",
+        "meaning": "謝罪、おわび",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -528,7 +528,7 @@
       },
       {
         "word": "apologise",
-        "meaning": "詫びる、詫びいる、陳謝する",
+        "meaning": "謝る、わびる",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -552,7 +552,7 @@
       },
       {
         "word": "alibi",
-        "meaning": "言い訳、辞柄、かこち種",
+        "meaning": "アリバイ、言い訳",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -561,7 +561,7 @@
       },
       {
         "word": "exculpation",
-        "meaning": "言い訳、辞柄、かこち種",
+        "meaning": "無罪の証明、弁明",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -576,7 +576,7 @@
     "relatedWords": [
       {
         "word": "celebration",
-        "meaning": "お祝い、御祝い、慶典",
+        "meaning": "祝い、祝賀",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -584,7 +584,7 @@
       },
       {
         "word": "celebrant",
-        "meaning": "祝賀者",
+        "meaning": "祝う人、司式者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -592,7 +592,7 @@
       },
       {
         "word": "celebrator",
-        "meaning": "祝賀者",
+        "meaning": "祝う人",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -608,7 +608,7 @@
       },
       {
         "word": "keep",
-        "meaning": "慶する、慶ぶ、慶祝",
+        "meaning": "祝う、記念する",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -618,7 +618,7 @@
       },
       {
         "word": "fete",
-        "meaning": "慶する、慶ぶ、慶祝",
+        "meaning": "祝う、もてなす",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -659,7 +659,7 @@
     "relatedWords": [
       {
         "word": "admiration",
-        "meaning": "歎称、歎美、嘆美",
+        "meaning": "感心、称賛",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -667,7 +667,7 @@
       },
       {
         "word": "admirer",
-        "meaning": "愛読者、サポーター、友達",
+        "meaning": "称賛する人、ファン",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -675,7 +675,7 @@
       },
       {
         "word": "look up to",
-        "meaning": "絶賛する、感服する、佳賞する",
+        "meaning": "尊敬する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -683,7 +683,7 @@
       },
       {
         "word": "look down on",
-        "meaning": "軽蔑する、軽蔑",
+        "meaning": "見下す、軽蔑する",
         "type": "antonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -698,7 +698,7 @@
     "relatedWords": [
       {
         "word": "impressible",
-        "meaning": "感じやすい",
+        "meaning": "影響を受けやすい",
         "type": "word-family",
         "partsOfSpeech": [
           "adjective"
@@ -706,7 +706,7 @@
       },
       {
         "word": "impressive",
-        "meaning": "高大、すばらしい、堂々",
+        "meaning": "印象的な、すばらしい",
         "type": "word-family",
         "partsOfSpeech": [
           "adjective"
@@ -731,7 +731,7 @@
       },
       {
         "word": "move",
-        "meaning": "印象づける、印象付ける",
+        "meaning": "感動させる",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -758,7 +758,7 @@
       },
       {
         "word": "awarding",
-        "meaning": "裁定、判定",
+        "meaning": "授与",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -773,7 +773,7 @@
     "relatedWords": [
       {
         "word": "explanation",
-        "meaning": "注釈、叙説、言開き",
+        "meaning": "説明、解説",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -781,7 +781,7 @@
       },
       {
         "word": "explicate",
-        "meaning": "説明する、説く、説明",
+        "meaning": "詳しく説明する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -797,7 +797,7 @@
     "relatedWords": [
       {
         "word": "description",
-        "meaning": "叙述、叙事、記述",
+        "meaning": "説明、描写",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -828,7 +828,7 @@
     "relatedWords": [
       {
         "word": "communication",
-        "meaning": "コミュニケーション",
+        "meaning": "伝達、意思疎通",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -836,7 +836,7 @@
       },
       {
         "word": "communicator",
-        "meaning": "コミュニケーター",
+        "meaning": "伝達者、通信装置",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -844,7 +844,7 @@
       },
       {
         "word": "communicating",
-        "meaning": "伝達、コミュニケイション、通信",
+        "meaning": "伝達、通信",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -862,7 +862,7 @@
       },
       {
         "word": "intercommunicate",
-        "meaning": "伝える、連絡する、伝達する",
+        "meaning": "互いに連絡する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -871,7 +871,7 @@
       },
       {
         "word": "pass on",
-        "meaning": "伝える、申伝える、知らせる",
+        "meaning": "伝える、知らせる",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -887,7 +887,7 @@
     "relatedWords": [
       {
         "word": "show",
-        "meaning": "現わす、見せる、表わす",
+        "meaning": "表す、示す",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -897,7 +897,7 @@
       },
       {
         "word": "evince",
-        "meaning": "現わす、見せる、表わす",
+        "meaning": "はっきり示す",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -905,7 +905,7 @@
       },
       {
         "word": "express mail",
-        "meaning": "速達、速達郵便",
+        "meaning": "速達郵便",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -935,7 +935,7 @@
     "relatedWords": [
       {
         "word": "inform",
-        "meaning": "伝える、告げ知らせる、知らせる",
+        "meaning": "知らせる、伝える",
         "type": "word-family",
         "partsOfSpeech": [
           "transitive-verb",
@@ -944,7 +944,7 @@
       },
       {
         "word": "info",
-        "meaning": "報道、報せ、消息",
+        "meaning": "情報",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -959,7 +959,7 @@
     "relatedWords": [
       {
         "word": "technological",
-        "meaning": "テクニカル、技術的",
+        "meaning": "技術の、技術的な",
         "type": "word-family",
         "partsOfSpeech": [
           "adjective"
@@ -967,7 +967,7 @@
       },
       {
         "word": "technologist",
-        "meaning": "科学技術者、技師、技術者",
+        "meaning": "技術者、科学技術者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -982,7 +982,7 @@
     "relatedWords": [
       {
         "word": "researcher",
-        "meaning": "研究者、研究員、調査者",
+        "meaning": "研究者、調査員",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -997,7 +997,7 @@
     "relatedWords": [
       {
         "word": "materiality",
-        "meaning": "物質性、有形、有相",
+        "meaning": "物質性、実質性",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1014,7 +1014,7 @@
       },
       {
         "word": "immaterial",
-        "meaning": "微々たる",
+        "meaning": "重要でない、非物質的な",
         "type": "antonym",
         "partsOfSpeech": [
           "adjective"
@@ -1029,7 +1029,7 @@
     "relatedWords": [
       {
         "word": "unreal",
-        "meaning": "人工的、技巧的、アーティフィッシャル",
+        "meaning": "現実でない、非現実的な",
         "type": "synonym",
         "partsOfSpeech": [
           "adjective"
@@ -1052,7 +1052,7 @@
     "relatedWords": [
       {
         "word": "electricity",
-        "meaning": "電力、エレキ、電気",
+        "meaning": "電気、電力",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1060,7 +1060,7 @@
       },
       {
         "word": "electrical",
-        "meaning": "電気的",
+        "meaning": "電気の、電気に関する",
         "type": "synonym",
         "partsOfSpeech": [
           "adjective"
@@ -1075,7 +1075,7 @@
     "relatedWords": [
       {
         "word": "invention",
-        "meaning": "着想、工夫、発明",
+        "meaning": "発明、発明品",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1083,7 +1083,7 @@
       },
       {
         "word": "inventor",
-        "meaning": "発見者、ディスカバラー、発明者",
+        "meaning": "発明者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1108,7 +1108,7 @@
       },
       {
         "word": "contrive",
-        "meaning": "案出する、考え出す、捻出す",
+        "meaning": "考案する、工夫する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -1124,7 +1124,7 @@
     "relatedWords": [
       {
         "word": "discoverer",
-        "meaning": "発見者、拾得者",
+        "meaning": "発見者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1132,7 +1132,7 @@
       },
       {
         "word": "discovery",
-        "meaning": "発見物",
+        "meaning": "発見、発見物",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1172,7 +1172,7 @@
     "relatedWords": [
       {
         "word": "development",
-        "meaning": "発展させること",
+        "meaning": "発達、開発",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1212,7 +1212,7 @@
     "relatedWords": [
       {
         "word": "accomplishment",
-        "meaning": "技能、技術、たしなみ",
+        "meaning": "技能、成果",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1220,7 +1220,7 @@
       },
       {
         "word": "acquirement",
-        "meaning": "技能、技術、たしなみ",
+        "meaning": "習得した技能",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1228,7 +1228,7 @@
       },
       {
         "word": "acquisition",
-        "meaning": "技能、技術、たしなみ",
+        "meaning": "習得、獲得",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1243,7 +1243,7 @@
     "relatedWords": [
       {
         "word": "able",
-        "meaning": "可能",
+        "meaning": "できる、能力がある",
         "type": "word-family",
         "partsOfSpeech": [
           "adjective"
@@ -1251,7 +1251,7 @@
       },
       {
         "word": "inability",
-        "meaning": "不能、無力、不適任",
+        "meaning": "できないこと、無能力",
         "type": "antonym",
         "partsOfSpeech": [
           "noun"
@@ -1266,7 +1266,7 @@
     "relatedWords": [
       {
         "word": "endowment",
-        "meaning": "素質、天賦の才、天資",
+        "meaning": "才能、素質",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1274,7 +1274,7 @@
       },
       {
         "word": "gift",
-        "meaning": "素質、天賦の才、天資",
+        "meaning": "才能、天分",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1283,7 +1283,7 @@
       },
       {
         "word": "natural endowment",
-        "meaning": "素質、天賦の才、天資",
+        "meaning": "生まれつきの才能",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1316,7 +1316,7 @@
       },
       {
         "word": "endeavour",
-        "meaning": "取り組み、努力、取組",
+        "meaning": "努力、試み",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1350,7 +1350,7 @@
       },
       {
         "word": "pattern",
-        "meaning": "常習、パタン、御定まり",
+        "meaning": "慣例、決まった型",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1360,7 +1360,7 @@
       },
       {
         "word": "drill",
-        "meaning": "エクササイズ、トレーニング、稽古",
+        "meaning": "反復練習、訓練",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1377,7 +1377,7 @@
     "relatedWords": [
       {
         "word": "achievement",
-        "meaning": "大成、完成、完遂",
+        "meaning": "達成、成果",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1385,7 +1385,7 @@
       },
       {
         "word": "achiever",
-        "meaning": "ウイナー、成功者、勝者",
+        "meaning": "成功者、達成者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1409,7 +1409,7 @@
       },
       {
         "word": "reach",
-        "meaning": "贏ち得る、達成、勝得る",
+        "meaning": "達成する、到達する",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1426,7 +1426,7 @@
     "relatedWords": [
       {
         "word": "management",
-        "meaning": "指導、監督、差配",
+        "meaning": "管理、経営",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1468,7 +1468,7 @@
     "relatedWords": [
       {
         "word": "improvement",
-        "meaning": "改良、改善、改修",
+        "meaning": "改善、向上",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1476,7 +1476,7 @@
       },
       {
         "word": "improver",
-        "meaning": "人道主義者",
+        "meaning": "改善する人・もの",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1492,7 +1492,7 @@
       },
       {
         "word": "better",
-        "meaning": "改善する、改良、革める",
+        "meaning": "改善する、より良くする",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1504,7 +1504,7 @@
       },
       {
         "word": "ameliorate",
-        "meaning": "改善する、改良、革める",
+        "meaning": "改善する、和らげる",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -1520,7 +1520,7 @@
     "relatedWords": [
       {
         "word": "producer",
-        "meaning": "プロデューサー、プロデューサ、興行主",
+        "meaning": "生産者、制作者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1528,7 +1528,7 @@
       },
       {
         "word": "product",
-        "meaning": "プロダクト、売り物",
+        "meaning": "製品、生産物",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1544,7 +1544,7 @@
       },
       {
         "word": "make",
-        "meaning": "生産する、造り上げる、作り出す",
+        "meaning": "作る、生産する",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1554,7 +1554,7 @@
       },
       {
         "word": "green goods",
-        "meaning": "青果、作物",
+        "meaning": "青果物",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1569,7 +1569,7 @@
     "relatedWords": [
       {
         "word": "creature",
-        "meaning": "アニマル、動物",
+        "meaning": "生き物、生物",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1577,7 +1577,7 @@
       },
       {
         "word": "creation",
-        "meaning": "創始",
+        "meaning": "創造、創作物",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1585,7 +1585,7 @@
       },
       {
         "word": "make",
-        "meaning": "作り出す、生む、造り出す",
+        "meaning": "作る、生み出す",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1602,7 +1602,7 @@
     "relatedWords": [
       {
         "word": "establishment",
-        "meaning": "創始、設立、結成",
+        "meaning": "設立、確立",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1651,7 +1651,7 @@
     "relatedWords": [
       {
         "word": "formation",
-        "meaning": "列伍、フォーメイション、フォーメーション",
+        "meaning": "形成、構成",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1676,7 +1676,7 @@
       },
       {
         "word": "signifier",
-        "meaning": "シニフィアン、記号表現、語形",
+        "meaning": "記号表現、能記",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1691,7 +1691,7 @@
     "relatedWords": [
       {
         "word": "saver",
-        "meaning": "救い主、節約家",
+        "meaning": "救う人、節約する人",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1699,7 +1699,7 @@
       },
       {
         "word": "savior",
-        "meaning": "救済者、救世主、救い主",
+        "meaning": "救済者、救世主",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1723,7 +1723,7 @@
       },
       {
         "word": "salvage",
-        "meaning": "救い上げる、セーヴする、助け出す",
+        "meaning": "救い出す、回収する",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1747,7 +1747,7 @@
       },
       {
         "word": "medicate",
-        "meaning": "投薬、投薬する",
+        "meaning": "薬で治療する、投薬する",
         "type": "word-family",
         "partsOfSpeech": [
           "transitive-verb"
@@ -1755,7 +1755,7 @@
       },
       {
         "word": "medication",
-        "meaning": "医薬、飲み薬、医薬品",
+        "meaning": "薬、投薬",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1763,7 +1763,7 @@
       },
       {
         "word": "medicament",
-        "meaning": "医薬、飲み薬、医薬品",
+        "meaning": "医薬品、薬",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1771,7 +1771,7 @@
       },
       {
         "word": "medical specialty",
-        "meaning": "内科学",
+        "meaning": "医学の専門分野",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1786,7 +1786,7 @@
     "relatedWords": [
       {
         "word": "patience",
-        "meaning": "辛棒づよさ、我慢、忍耐",
+        "meaning": "忍耐、辛抱",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1794,7 +1794,7 @@
       },
       {
         "word": "impatient",
-        "meaning": "歯痒い、もどかしい、歯がゆい",
+        "meaning": "我慢できない、いらいらした",
         "type": "antonym",
         "partsOfSpeech": [
           "adjective"
@@ -1817,7 +1817,7 @@
       },
       {
         "word": "precondition",
-        "meaning": "前提条件、コンディション、条件",
+        "meaning": "前提条件",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1826,7 +1826,7 @@
       },
       {
         "word": "stipulation",
-        "meaning": "前提条件、コンディション、条件",
+        "meaning": "条件、取り決め",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1849,7 +1849,7 @@
       },
       {
         "word": "surgical",
-        "meaning": "外科的",
+        "meaning": "外科の、手術の",
         "type": "antonym",
         "partsOfSpeech": [
           "adjective"
@@ -1880,7 +1880,7 @@
       },
       {
         "word": "emphasis",
-        "meaning": "強勢、力点、強調",
+        "meaning": "強調、重点",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -1895,7 +1895,7 @@
     "relatedWords": [
       {
         "word": "sufferer",
-        "meaning": "病者、病人",
+        "meaning": "苦しむ人、患者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1919,7 +1919,7 @@
       },
       {
         "word": "have",
-        "meaning": "蒙る、被る",
+        "meaning": "経験する、患う",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -1928,7 +1928,7 @@
       },
       {
         "word": "enjoy",
-        "meaning": "享受、享受する",
+        "meaning": "享受する、楽しむ",
         "type": "antonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -1976,7 +1976,7 @@
     "relatedWords": [
       {
         "word": "breather",
-        "meaning": "シュノーケル",
+        "meaning": "一休み、息をつく間",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -1984,7 +1984,7 @@
       },
       {
         "word": "breathing",
-        "meaning": "気息、外呼吸、息の緒",
+        "meaning": "呼吸",
         "type": "word-family",
         "partsOfSpeech": [
           "noun",
@@ -1993,7 +1993,7 @@
       },
       {
         "word": "respire",
-        "meaning": "呼吸する、息吹く、息づく",
+        "meaning": "呼吸する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -2002,7 +2002,7 @@
       },
       {
         "word": "suspire",
-        "meaning": "呼吸する、息吹く、息づく",
+        "meaning": "ため息をつく、呼吸する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -2011,7 +2011,7 @@
       },
       {
         "word": "take a breath",
-        "meaning": "呼吸する、息吹く、息づく",
+        "meaning": "息をつく、呼吸する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -2027,7 +2027,7 @@
     "relatedWords": [
       {
         "word": "thirstiness",
-        "meaning": "乾き",
+        "meaning": "喉の渇き",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2035,7 +2035,7 @@
       },
       {
         "word": "thirst",
-        "meaning": "渇き",
+        "meaning": "喉の渇き、渇望",
         "type": "word-family",
         "partsOfSpeech": [
           "noun",
@@ -2044,7 +2044,7 @@
       },
       {
         "word": "hungry",
-        "meaning": "腹ぺこ、空腹、ハングリー",
+        "meaning": "空腹の、飢えた",
         "type": "antonym",
         "partsOfSpeech": [
           "adjective"
@@ -2059,7 +2059,7 @@
     "relatedWords": [
       {
         "word": "physicality",
-        "meaning": "物性",
+        "meaning": "身体性、物質性",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2067,7 +2067,7 @@
       },
       {
         "word": "physicalness",
-        "meaning": "物質性、有形、有相",
+        "meaning": "物質性、身体性",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2075,7 +2075,7 @@
       },
       {
         "word": "physics",
-        "meaning": "物理学、究理学、格物学",
+        "meaning": "物理学",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2098,7 +2098,7 @@
     "relatedWords": [
       {
         "word": "febrility",
-        "meaning": "熱のある状態、熱、発熱",
+        "meaning": "発熱、熱のある状態",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2106,7 +2106,7 @@
       },
       {
         "word": "febricity",
-        "meaning": "熱のある状態、熱、発熱",
+        "meaning": "発熱、熱のある状態",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2114,7 +2114,7 @@
       },
       {
         "word": "pyrexia",
-        "meaning": "熱のある状態、熱、発熱",
+        "meaning": "発熱",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2137,7 +2137,7 @@
       },
       {
         "word": "military capability",
-        "meaning": "戦力、軍事力、兵力",
+        "meaning": "軍事力",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2145,7 +2145,7 @@
       },
       {
         "word": "military strength",
-        "meaning": "戦力、軍事力、兵力",
+        "meaning": "軍事力、兵力",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2153,7 +2153,7 @@
       },
       {
         "word": "weakness",
-        "meaning": "薄弱さ、脆弱さ、ひ弱さ",
+        "meaning": "弱さ、弱点",
         "type": "antonym",
         "partsOfSpeech": [
           "noun"
@@ -2174,7 +2174,7 @@
     "relatedWords": [
       {
         "word": "tasting",
-        "meaning": "嗜好、味、テイスト",
+        "meaning": "試食、味見",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2182,7 +2182,7 @@
       },
       {
         "word": "savor",
-        "meaning": "嘗める",
+        "meaning": "味わう",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2192,7 +2192,7 @@
       },
       {
         "word": "savour",
-        "meaning": "嘗める",
+        "meaning": "味わう",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2202,7 +2202,7 @@
       },
       {
         "word": "taste sensation",
-        "meaning": "味、テイスト、食味",
+        "meaning": "味覚",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2217,7 +2217,7 @@
     "relatedWords": [
       {
         "word": "ruler",
-        "meaning": "治者、統治者、天下取り",
+        "meaning": "統治者、支配者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2225,7 +2225,7 @@
       },
       {
         "word": "regulation",
-        "meaning": "掟、定め事、律格",
+        "meaning": "規則、規制",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2234,7 +2234,7 @@
       },
       {
         "word": "govern",
-        "meaning": "領知、舵取する、総督する",
+        "meaning": "統治する、支配する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -2259,7 +2259,7 @@
       },
       {
         "word": "office",
-        "meaning": "勤め、任務、責務",
+        "meaning": "役職、任務",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2267,7 +2267,7 @@
       },
       {
         "word": "part",
-        "meaning": "勤め、任務、責務",
+        "meaning": "役割、部分",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2285,7 +2285,7 @@
     "relatedWords": [
       {
         "word": "wont",
-        "meaning": "古例、風習、習わし",
+        "meaning": "習慣、慣例",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2316,7 +2316,7 @@
       },
       {
         "word": "usance",
-        "meaning": "古例、旧例、仕来たり",
+        "meaning": "慣習、慣例",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2331,7 +2331,7 @@
     "relatedWords": [
       {
         "word": "traditional",
-        "meaning": "トラディショナル、伝統的、トラディッショナル",
+        "meaning": "伝統的な",
         "type": "word-family",
         "partsOfSpeech": [
           "adjective"
@@ -2346,7 +2346,7 @@
     "relatedWords": [
       {
         "word": "societal",
-        "meaning": "社会的",
+        "meaning": "社会の、社会的な",
         "type": "word-family",
         "partsOfSpeech": [
           "adjective"
@@ -2371,7 +2371,7 @@
       },
       {
         "word": "club",
-        "meaning": "団体、アソシエーション、サークル",
+        "meaning": "団体、クラブ",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2388,7 +2388,7 @@
     "relatedWords": [
       {
         "word": "jurisprudence",
-        "meaning": "置き目、置目、科条",
+        "meaning": "法学、法律学",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2396,7 +2396,7 @@
       },
       {
         "word": "natural law",
-        "meaning": "理、自然法、自然律",
+        "meaning": "自然法",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2411,7 +2411,7 @@
     "relatedWords": [
       {
         "word": "ascendant",
-        "meaning": "祖、先人、先世",
+        "meaning": "祖先",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2420,7 +2420,7 @@
       },
       {
         "word": "ascendent",
-        "meaning": "祖、先人、先世",
+        "meaning": "祖先",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2429,7 +2429,7 @@
       },
       {
         "word": "antecedent",
-        "meaning": "祖、先人、先世",
+        "meaning": "先祖、先行するもの",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2438,7 +2438,7 @@
       },
       {
         "word": "descendant",
-        "meaning": "胤裔、孫子、末ずえ",
+        "meaning": "子孫、末裔",
         "type": "antonym",
         "partsOfSpeech": [
           "noun",
@@ -2454,7 +2454,7 @@
     "relatedWords": [
       {
         "word": "populate",
-        "meaning": "生息する、棲む、栖息する",
+        "meaning": "居住する、住まわせる",
         "type": "word-family",
         "partsOfSpeech": [
           "transitive-verb",
@@ -2470,7 +2470,7 @@
     "relatedWords": [
       {
         "word": "nativeness",
-        "meaning": "生得",
+        "meaning": "生来であること、土着性",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2478,7 +2478,7 @@
       },
       {
         "word": "indigen",
-        "meaning": "原住民、ネイティヴ、ネイティブ",
+        "meaning": "先住民",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2486,7 +2486,7 @@
       },
       {
         "word": "indigene",
-        "meaning": "原住民、ネイティヴ、ネイティブ",
+        "meaning": "先住民",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2494,7 +2494,7 @@
       },
       {
         "word": "aborigine",
-        "meaning": "原住民、ネイティヴ、ネイティブ",
+        "meaning": "先住民",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2502,7 +2502,7 @@
       },
       {
         "word": "foreign",
-        "meaning": "外来性",
+        "meaning": "外国の、外来の",
         "type": "antonym",
         "partsOfSpeech": [
           "adjective"
@@ -2523,7 +2523,7 @@
     "relatedWords": [
       {
         "word": "locality",
-        "meaning": "周囲、近所、近く",
+        "meaning": "地域、場所",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2531,7 +2531,7 @@
       },
       {
         "word": "national",
-        "meaning": "ナショナル",
+        "meaning": "国の、全国的な",
         "type": "antonym",
         "partsOfSpeech": [
           "noun",
@@ -2547,7 +2547,7 @@
     "relatedWords": [
       {
         "word": "study",
-        "meaning": "調査",
+        "meaning": "調査、研究",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2557,7 +2557,7 @@
       },
       {
         "word": "appraise",
-        "meaning": "概観、見わたす、通観する",
+        "meaning": "評価する、査定する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -2580,7 +2580,7 @@
       },
       {
         "word": "valuate",
-        "meaning": "測算する、位置づけ、品定めする",
+        "meaning": "評価する、値を付ける",
         "type": "word-family",
         "partsOfSpeech": [
           "transitive-verb"
@@ -2588,7 +2588,7 @@
       },
       {
         "word": "economic value",
-        "meaning": "価、値、値打ち",
+        "meaning": "経済的価値",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2620,7 +2620,7 @@
       },
       {
         "word": "gem",
-        "meaning": "珠玉、逸品",
+        "meaning": "宝石、逸品",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2635,7 +2635,7 @@
     "relatedWords": [
       {
         "word": "fashioning",
-        "meaning": "製造、製作、成すこと",
+        "meaning": "形成、製作",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2675,7 +2675,7 @@
     "relatedWords": [
       {
         "word": "publicity",
-        "meaning": "公共性",
+        "meaning": "宣伝、知名度",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2683,7 +2683,7 @@
       },
       {
         "word": "populace",
-        "meaning": "大衆、衆人、俗衆",
+        "meaning": "大衆、民衆",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2691,7 +2691,7 @@
       },
       {
         "word": "world",
-        "meaning": "大衆、衆人、俗衆",
+        "meaning": "世間、世界",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2700,7 +2700,7 @@
       },
       {
         "word": "private",
-        "meaning": "私的、プライベート、個人的",
+        "meaning": "私的な、個人の",
         "type": "antonym",
         "partsOfSpeech": [
           "noun",
@@ -2724,7 +2724,7 @@
       },
       {
         "word": "grounds",
-        "meaning": "根拠、証跡、裏付",
+        "meaning": "根拠、理由",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2739,7 +2739,7 @@
     "relatedWords": [
       {
         "word": "voter",
-        "meaning": "有権者、選挙人",
+        "meaning": "投票者、有権者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2747,7 +2747,7 @@
       },
       {
         "word": "voting",
-        "meaning": "票決、採決、表決",
+        "meaning": "投票",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2755,7 +2755,7 @@
       },
       {
         "word": "ballot",
-        "meaning": "票決、採決、表決",
+        "meaning": "投票、投票用紙",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2764,7 +2764,7 @@
       },
       {
         "word": "balloting",
-        "meaning": "票決、採決、表決",
+        "meaning": "投票",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2779,7 +2779,7 @@
     "relatedWords": [
       {
         "word": "govern",
-        "meaning": "領知、舵取する、総督する",
+        "meaning": "統治する、治める",
         "type": "word-family",
         "partsOfSpeech": [
           "transitive-verb",
@@ -2796,7 +2796,7 @@
       },
       {
         "word": "authorities",
-        "meaning": "上、官憲、其向",
+        "meaning": "当局、関係機関",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2820,7 +2820,7 @@
       },
       {
         "word": "country",
-        "meaning": "ネーション、連邦、國",
+        "meaning": "国、国家",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2828,7 +2828,7 @@
       },
       {
         "word": "land",
-        "meaning": "ネーション、連邦、國",
+        "meaning": "国、土地",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2845,7 +2845,7 @@
     "relatedWords": [
       {
         "word": "capitalist",
-        "meaning": "資本家、ブルジョワ、ブルジョア",
+        "meaning": "資本家",
         "type": "word-family",
         "partsOfSpeech": [
           "noun",
@@ -2854,7 +2854,7 @@
       },
       {
         "word": "capitalize",
-        "meaning": "資本化する、資本化",
+        "meaning": "資本化する、利用する",
         "type": "word-family",
         "partsOfSpeech": [
           "transitive-verb",
@@ -2863,7 +2863,7 @@
       },
       {
         "word": "capitalise",
-        "meaning": "ポイント、ポイントする",
+        "meaning": "資本化する、利用する",
         "type": "word-family",
         "partsOfSpeech": [
           "transitive-verb",
@@ -2872,7 +2872,7 @@
       },
       {
         "word": "working capital",
-        "meaning": "キャピタル、運転資金、キャピトル",
+        "meaning": "運転資金",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2887,7 +2887,7 @@
     "relatedWords": [
       {
         "word": "statement",
-        "meaning": "断言、言明、陳述",
+        "meaning": "声明、陳述",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -2903,7 +2903,7 @@
       },
       {
         "word": "dos",
-        "meaning": "国務省",
+        "meaning": "米国務省",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -2911,7 +2911,7 @@
       },
       {
         "word": "say",
-        "meaning": "物語る、申す、申述べる",
+        "meaning": "述べる、言う",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -2976,7 +2976,7 @@
     "relatedWords": [
       {
         "word": "summate",
-        "meaning": "トータル、累計する、集計",
+        "meaning": "合計する",
         "type": "word-family",
         "partsOfSpeech": [
           "transitive-verb",
@@ -2985,7 +2985,7 @@
       },
       {
         "word": "summation",
-        "meaning": "最終弁論",
+        "meaning": "合計、総和",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3011,7 +3011,7 @@
       },
       {
         "word": "summarize",
-        "meaning": "要約、要約する",
+        "meaning": "要約する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -3089,7 +3089,7 @@
     "relatedWords": [
       {
         "word": "trader",
-        "meaning": "商人、商売人、商賈",
+        "meaning": "商人、取引業者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3105,7 +3105,7 @@
       },
       {
         "word": "patronage",
-        "meaning": "商売、引立、御引立",
+        "meaning": "ひいき、後援",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3114,7 +3114,7 @@
       },
       {
         "word": "merchandise",
-        "meaning": "商う、トレード、商売",
+        "meaning": "商品、商品を売買する",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3130,7 +3130,7 @@
     "relatedWords": [
       {
         "word": "wealthiness",
-        "meaning": "富、殷富",
+        "meaning": "裕福さ、富",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3153,7 +3153,7 @@
     "relatedWords": [
       {
         "word": "economic",
-        "meaning": "エコノミカル、経済的、エコノミック",
+        "meaning": "経済の、経済的な",
         "type": "word-family",
         "partsOfSpeech": [
           "adjective"
@@ -3161,7 +3161,7 @@
       },
       {
         "word": "economical",
-        "meaning": "エコノミカル、経済的、エコノミック",
+        "meaning": "経済的な、節約になる",
         "type": "word-family",
         "partsOfSpeech": [
           "adjective"
@@ -3169,7 +3169,7 @@
       },
       {
         "word": "economist",
-        "meaning": "経済家、経済学者、エコノミスト",
+        "meaning": "経済学者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3177,7 +3177,7 @@
       },
       {
         "word": "economize",
-        "meaning": "節約する、節約",
+        "meaning": "節約する",
         "type": "word-family",
         "partsOfSpeech": [
           "transitive-verb",
@@ -3186,7 +3186,7 @@
       },
       {
         "word": "economic system",
-        "meaning": "エコノミ、経済体制、経済社会",
+        "meaning": "経済体制",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3201,7 +3201,7 @@
     "relatedWords": [
       {
         "word": "be",
-        "meaning": "懸る、為る、掛かる",
+        "meaning": "かかる、要する",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3226,7 +3226,7 @@
       },
       {
         "word": "companionship",
-        "meaning": "交わり、仲間であること、行交い",
+        "meaning": "交友、仲間付き合い",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3234,7 +3234,7 @@
       },
       {
         "word": "fellowship",
-        "meaning": "交わり、仲間であること、行交い",
+        "meaning": "仲間関係、親交",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3266,7 +3266,7 @@
       },
       {
         "word": "undertaking",
-        "meaning": "課題、任務、任",
+        "meaning": "仕事、事業",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3281,7 +3281,7 @@
     "relatedWords": [
       {
         "word": "earner",
-        "meaning": "勤労者",
+        "meaning": "稼ぐ人、所得者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3289,7 +3289,7 @@
       },
       {
         "word": "earnings",
-        "meaning": "給与、報酬、給料",
+        "meaning": "収入、所得",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3314,7 +3314,7 @@
       },
       {
         "word": "clear",
-        "meaning": "稼ぐ、儲ける、もたらす",
+        "meaning": "純益を得る、稼ぐ",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3333,7 +3333,7 @@
     "relatedWords": [
       {
         "word": "hurting",
-        "meaning": "苦しみ、苦しさ、苦痛",
+        "meaning": "痛み、苦しみ",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3341,7 +3341,7 @@
       },
       {
         "word": "ache",
-        "meaning": "ひりひり、ひりひりする、苦しむ",
+        "meaning": "痛む、うずく",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3350,7 +3350,7 @@
       },
       {
         "word": "smart",
-        "meaning": "ひりひり、ひりひりする、苦しむ",
+        "meaning": "ひりひり痛む",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3367,7 +3367,7 @@
     "relatedWords": [
       {
         "word": "injury",
-        "meaning": "外傷、けが、私傷",
+        "meaning": "けが、負傷",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3417,7 +3417,7 @@
       },
       {
         "word": "impairment",
-        "meaning": "不都合、危害、毀傷",
+        "meaning": "損傷、機能低下",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3432,7 +3432,7 @@
     "relatedWords": [
       {
         "word": "destructive",
-        "meaning": "破壊的",
+        "meaning": "破壊的な",
         "type": "word-family",
         "partsOfSpeech": [
           "adjective"
@@ -3440,7 +3440,7 @@
       },
       {
         "word": "destruction",
-        "meaning": "撃滅、潰滅、損壊",
+        "meaning": "破壊、壊滅",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3448,7 +3448,7 @@
       },
       {
         "word": "destroyer",
-        "meaning": "駆逐艦、破壊者",
+        "meaning": "破壊者、駆逐艦",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3465,7 +3465,7 @@
       },
       {
         "word": "destruct",
-        "meaning": "撲滅する、破壊する、害う",
+        "meaning": "破壊する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -3480,7 +3480,7 @@
     "relatedWords": [
       {
         "word": "ruination",
-        "meaning": "潰滅、損壊、壊滅",
+        "meaning": "破滅、崩壊",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3488,7 +3488,7 @@
       },
       {
         "word": "ruiner",
-        "meaning": "駆逐艦、破壊者",
+        "meaning": "破滅させる人・もの",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3496,7 +3496,7 @@
       },
       {
         "word": "ruining",
-        "meaning": "潰滅、損壊、壊滅",
+        "meaning": "破滅、台無しにすること",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3534,7 +3534,7 @@
     "relatedWords": [
       {
         "word": "neighborhood",
-        "meaning": "周囲、近所、近く",
+        "meaning": "近所、周辺地域",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3542,7 +3542,7 @@
       },
       {
         "word": "neighbour",
-        "meaning": "近所、隣近所、隣人",
+        "meaning": "隣人、近所の人",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3571,7 +3571,7 @@
     "relatedWords": [
       {
         "word": "authorship",
-        "meaning": "著述、撰述、著作",
+        "meaning": "著作、著者であること",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3579,7 +3579,7 @@
       },
       {
         "word": "writer",
-        "meaning": "原作者、著者、ライター",
+        "meaning": "作家、著者",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3587,7 +3587,7 @@
       },
       {
         "word": "generator",
-        "meaning": "根源、根元、根原",
+        "meaning": "生み出すもの、発生源",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3595,7 +3595,7 @@
       },
       {
         "word": "source",
-        "meaning": "根源、根元、根原",
+        "meaning": "源、出所",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3618,7 +3618,7 @@
     "relatedWords": [
       {
         "word": "clerical",
-        "meaning": "事務的",
+        "meaning": "事務の、事務員の",
         "type": "word-family",
         "partsOfSpeech": [
           "adjective"
@@ -3626,7 +3626,7 @@
       },
       {
         "word": "clerkship",
-        "meaning": "掌記",
+        "meaning": "事務員の職",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3634,7 +3634,7 @@
       },
       {
         "word": "salesclerk",
-        "meaning": "店員、売子、売り子",
+        "meaning": "販売員、店員",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3642,7 +3642,7 @@
       },
       {
         "word": "shop clerk",
-        "meaning": "店員、売子、売り子",
+        "meaning": "店員",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3650,7 +3650,7 @@
       },
       {
         "word": "shop assistant",
-        "meaning": "店員、売子、売り子",
+        "meaning": "店員",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3680,7 +3680,7 @@
     "relatedWords": [
       {
         "word": "rider",
-        "meaning": "乗り手、パッセンジャー、舟人",
+        "meaning": "乗客、乗る人",
         "type": "synonym",
         "partsOfSpeech": [
           "noun"
@@ -3711,7 +3711,7 @@
     "relatedWords": [
       {
         "word": "male",
-        "meaning": "牡、雄、オス",
+        "meaning": "男性、雄の",
         "type": "antonym",
         "partsOfSpeech": [
           "noun",
@@ -3744,7 +3744,7 @@
     "relatedWords": [
       {
         "word": "follower",
-        "meaning": "侶、宗徒、フロアー",
+        "meaning": "追随者、信奉者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3752,7 +3752,7 @@
       },
       {
         "word": "following",
-        "meaning": "追駆、追躡、追跡",
+        "meaning": "次の、追随",
         "type": "word-family",
         "partsOfSpeech": [
           "noun",
@@ -3761,7 +3761,7 @@
       },
       {
         "word": "postdate",
-        "meaning": "続く",
+        "meaning": "～より後の日付にする、後に続く",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -3776,7 +3776,7 @@
     "relatedWords": [
       {
         "word": "wanderer",
-        "meaning": "流れ者、渡り者、渡り鳥",
+        "meaning": "放浪者、さすらう人",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3784,7 +3784,7 @@
       },
       {
         "word": "wandering",
-        "meaning": "流浪、放浪、歩き",
+        "meaning": "放浪、さまようこと",
         "type": "word-family",
         "partsOfSpeech": [
           "noun",
@@ -3793,7 +3793,7 @@
       },
       {
         "word": "stray",
-        "meaning": "さすらう、逍遥、流浪",
+        "meaning": "道に迷う、さまよう",
         "type": "synonym",
         "partsOfSpeech": [
           "adjective"
@@ -3824,7 +3824,7 @@
     "relatedWords": [
       {
         "word": "traveller",
-        "meaning": "遊子、旅行家、行旅",
+        "meaning": "旅行者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3832,7 +3832,7 @@
       },
       {
         "word": "traveler",
-        "meaning": "遊子、旅行家、行旅",
+        "meaning": "旅行者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3840,7 +3840,7 @@
       },
       {
         "word": "travelling",
-        "meaning": "移動",
+        "meaning": "旅行、移動",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3848,7 +3848,7 @@
       },
       {
         "word": "traveling",
-        "meaning": "移動",
+        "meaning": "旅行、移動",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3856,7 +3856,7 @@
       },
       {
         "word": "go",
-        "meaning": "動く、移動、行く",
+        "meaning": "行く、進む",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3867,7 +3867,7 @@
       },
       {
         "word": "move",
-        "meaning": "動く、移動、行く",
+        "meaning": "移動する、動く",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3877,7 +3877,7 @@
       },
       {
         "word": "locomote",
-        "meaning": "動く、移動、行く",
+        "meaning": "移動する",
         "type": "synonym",
         "partsOfSpeech": [
           "intransitive-verb"
@@ -3892,7 +3892,7 @@
     "relatedWords": [
       {
         "word": "passer",
-        "meaning": "行客、行人、通行人",
+        "meaning": "通行人、通過する人",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3908,7 +3908,7 @@
       },
       {
         "word": "walk",
-        "meaning": "フォアボール、四球",
+        "meaning": "四球で出塁させる、四球",
         "type": "synonym",
         "partsOfSpeech": [
           "noun",
@@ -3918,7 +3918,7 @@
       },
       {
         "word": "legislate",
-        "meaning": "可決、議決する、議決",
+        "meaning": "法律を制定する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb",
@@ -3934,7 +3934,7 @@
     "relatedWords": [
       {
         "word": "likeliness",
-        "meaning": "見込み、プロバビリティー、見込",
+        "meaning": "可能性、見込み",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -3950,7 +3950,7 @@
       },
       {
         "word": "belike",
-        "meaning": "大抵、多分、大方",
+        "meaning": "おそらく",
         "type": "synonym",
         "partsOfSpeech": [
           "adverb"
@@ -3958,7 +3958,7 @@
       },
       {
         "word": "in all likelihood",
-        "meaning": "大抵、多分、大方",
+        "meaning": "十中八九、おそらく",
         "type": "synonym",
         "partsOfSpeech": [
           "adverb"
@@ -3966,7 +3966,7 @@
       },
       {
         "word": "unlikely",
-        "meaning": "ありそうにない、見込みのない、なさそう",
+        "meaning": "ありそうにない",
         "type": "antonym",
         "partsOfSpeech": [
           "adjective"
@@ -4918,7 +4918,7 @@
     "relatedWords": [
       {
         "word": "reparation",
-        "meaning": "繕い、取繕い、修補",
+        "meaning": "修理、修復、償い",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -4926,7 +4926,7 @@
       },
       {
         "word": "repairer",
-        "meaning": "フィクサー",
+        "meaning": "修理する人、修理業者",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -4934,7 +4934,7 @@
       },
       {
         "word": "fix",
-        "meaning": "繕い、取繕い、修補",
+        "meaning": "直す、修理する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -4942,7 +4942,7 @@
       },
       {
         "word": "mend",
-        "meaning": "繕い、取繕い、修補",
+        "meaning": "直す、修繕する",
         "type": "synonym",
         "partsOfSpeech": [
           "transitive-verb"
@@ -4958,7 +4958,7 @@
       },
       {
         "word": "break",
-        "meaning": "損なう、損ずる、潰す",
+        "meaning": "壊す、故障させる",
         "type": "antonym",
         "partsOfSpeech": [
           "noun",
@@ -30954,7 +30954,7 @@
     "relatedWords": [
       {
         "word": "possible",
-        "meaning": "可能、ありうる",
+        "meaning": "可能な、あり得る",
         "type": "word-family",
         "partsOfSpeech": [
           "noun",
@@ -30963,7 +30963,7 @@
       },
       {
         "word": "perchance",
-        "meaning": "若しや、若しか、或は",
+        "meaning": "ひょっとすると",
         "type": "synonym",
         "partsOfSpeech": [
           "adverb"
@@ -30971,7 +30971,7 @@
       },
       {
         "word": "perhaps",
-        "meaning": "若しや、若しか、或は",
+        "meaning": "おそらく、ひょっとすると",
         "type": "synonym",
         "partsOfSpeech": [
           "adverb"
@@ -30979,7 +30979,7 @@
       },
       {
         "word": "maybe",
-        "meaning": "若しや、若しか、或は",
+        "meaning": "たぶん、もしかすると",
         "type": "synonym",
         "partsOfSpeech": [
           "adverb"
@@ -52749,7 +52749,7 @@
     "relatedWords": [
       {
         "word": "indispensableness",
-        "meaning": "旺盛さ",
+        "meaning": "不可欠であること",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -52757,7 +52757,7 @@
       },
       {
         "word": "indispensability",
-        "meaning": "旺盛さ",
+        "meaning": "不可欠であること、必要不可欠さ",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"
@@ -52765,7 +52765,7 @@
       },
       {
         "word": "dispensable",
-        "meaning": "不必要",
+        "meaning": "なくてもよい、不要な",
         "type": "antonym",
         "partsOfSpeech": [
           "adjective"
@@ -57749,7 +57749,7 @@
     "relatedWords": [
       {
         "word": "liability",
-        "meaning": "傾向",
+        "meaning": "責任、負債、～しがちなこと",
         "type": "word-family",
         "partsOfSpeech": [
           "noun"

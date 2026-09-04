@@ -12,7 +12,9 @@ Commons Attribution 4.0 International License.
 
 Japanese labels for related words not present in the bundled LEAP list are derived
 from Japanese Wordnet 2.0, provided under the Creative Commons Attribution 4.0
-International License.
+International License. Learner-oriented corrections are maintained in
+`scripts/improve-related-translations.js`. They are keyed by both the LEAP
+headword and related spelling to preserve the intended sense of homonyms.
 
 - Japanese Wordnet: https://github.com/bond-lab/wnja
 

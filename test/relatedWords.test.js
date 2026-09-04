@@ -48,3 +48,23 @@ test('the bundled dataset contains every requested relation type', () => {
 
   assert.deepEqual(types, new Set(['word-family', 'synonym', 'antonym']))
 })
+
+test('learner-oriented translations keep the intended related-word sense', () => {
+  const expectedMeanings = {
+    'agree>agreement': '合意、協定',
+    'advise>advisor': '助言者、顧問',
+    'admire>admiration': '感心、称賛',
+    'complain>kick': '文句を言う',
+    'talent>gift': '才能、天分',
+    'indispensable>indispensability': '不可欠であること、必要不可欠さ',
+    'liable>liability': '責任、負債、～しがちなこと',
+  }
+
+  for (const [key, expectedMeaning] of Object.entries(expectedMeanings)) {
+    const [headword, relatedSpelling] = key.split('>')
+    const word = words.find((item) => item.word === headword)
+    const relatedWord = word?.relatedWords.find((item) => item.word === relatedSpelling)
+
+    assert.equal(relatedWord?.meaning, expectedMeaning, key)
+  }
+})
