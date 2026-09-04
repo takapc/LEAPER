@@ -19,6 +19,8 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { LinkIcon } from '@chakra-ui/icons'
+import wordsJson from '../data/words.json'
+import { formatHeadwordMeaningForRelatedWord } from '../utils/relatedWordMeanings'
 
 const RELATION_LABELS = {
   'word-family': { label: '語族', colorScheme: 'purple' },
@@ -37,6 +39,18 @@ const PART_OF_SPEECH_LABELS = {
   conjunction: { label: '接続詞', colorScheme: 'yellow' },
   auxiliary: { label: '助動詞', colorScheme: 'pink' },
   phrase: { label: '熟語', colorScheme: 'gray' },
+}
+
+const bundledMeaningsByWord = new Map(
+  wordsJson.map((item) => [
+    item.word.trim().toLowerCase(),
+    formatHeadwordMeaningForRelatedWord(item.meaning),
+  ]),
+)
+
+function getRelatedWordMeaning(relatedWord) {
+  const bundledMeaning = bundledMeaningsByWord.get(relatedWord.word.trim().toLowerCase())
+  return bundledMeaning || relatedWord.meaning
 }
 
 export function RelatedWordsModal({ word }) {
@@ -134,7 +148,7 @@ export function RelatedWordsModal({ word }) {
                           })}
                         </HStack>
                         <Text mt={1} fontSize="sm" lineHeight="tall" color={meaningColor}>
-                          {relatedWord.meaning}
+                          {getRelatedWordMeaning(relatedWord)}
                         </Text>
                       </Box>
                     </HStack>
