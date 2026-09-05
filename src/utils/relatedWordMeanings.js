@@ -1,4 +1,4 @@
-import { meaningToText } from './meanings.js'
+import { normalizeMeanings } from './meanings.js'
 
 const PART_OF_SPEECH_PREFIX = /^(?:\[[^\]]+\]\s*)+/
 const CIRCLED_SENSE_NUMBER = /[①②③④⑤⑥⑦⑧⑨⑩]/g
@@ -8,7 +8,9 @@ function normalizeWord(word) {
 }
 
 export function formatHeadwordMeaningForRelatedWord(meaning) {
-  meaning = meaningToText(meaning)
+  if (Array.isArray(meaning)) {
+    return normalizeMeanings(meaning).map((entry) => entry.meaning).join('／')
+  }
 
   return meaning
     .replace(PART_OF_SPEECH_PREFIX, '')
@@ -25,7 +27,7 @@ export function applyBundledHeadwordMeanings(words) {
   const headwordMeanings = new Map()
   for (const word of words) {
     const key = normalizeWord(word?.word)
-    const meaning = formatHeadwordMeaningForRelatedWord(word?.meaning)
+    const meaning = formatHeadwordMeaningForRelatedWord(word?.meanings ?? word?.meaning)
     if (key && meaning) headwordMeanings.set(key, meaning)
   }
 

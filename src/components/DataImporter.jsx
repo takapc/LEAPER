@@ -186,7 +186,7 @@ export function DataImporter({ onDataImported }) {
                       <Text fontSize="sm">
                         JSONファイルを選択するか、JSON形式のテキストを貼り付けてください。
                         <br />
-                        形式: {'"meaning": [{"partOfSpeech": "noun", "meaning": "意味"}]'}
+                        形式: {'"meanings": [{"partOfSpeech": "noun", "meaning": "意味"}]'}
                       </Text>
                     </Alert>
 
@@ -207,7 +207,7 @@ export function DataImporter({ onDataImported }) {
                     <Textarea
                       value={importData}
                       onChange={(e) => setImportData(e.target.value)}
-                      placeholder='[{"id": 1, "word": "agree", "meaning": [{"partOfSpeech": "noun", "meaning": "意味"}]}, ...]'
+                      placeholder='[{"id": 1, "word": "agree", "meanings": [{"partOfSpeech": "noun", "meaning": "意味"}]}, ...]'
                       rows={10}
                       fontFamily="mono"
                       fontSize="xs"
@@ -253,4 +253,3 @@ export function DataImporter({ onDataImported }) {
     </>
   )
 }
-

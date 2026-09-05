@@ -12,8 +12,11 @@ import {
   saveTotalQuizCountToLocalStorage,
 } from '../src/utils/learningStats.js'
 
-test('formatMeaning keeps the first numbered meaning with its part of speech', () => {
-  assert.deepEqual(formatMeaning('[自] ①賛成する ②意見が一致する'), ['[自] ①賛成する', '②意見が一致する'])
+test('formatMeaning renders one line for every structured sense', () => {
+  assert.deepEqual(formatMeaning([
+    { partOfSpeech: 'intransitive-verb', meaning: '賛成する' },
+    { partOfSpeech: 'intransitive-verb', meaning: '意見が一致する' },
+  ]), ['[自] 賛成する', '[自] 意見が一致する'])
 })
 
 test('filterWordsBySelectedParts returns a union of non-adjacent parts', () => {

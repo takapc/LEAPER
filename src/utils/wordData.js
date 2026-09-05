@@ -2,12 +2,12 @@
  * 単語データを取得・パースするユーティリティ関数
  */
 import wordsJson from '../data/words.json'
-import { normalizeMeaning, normalizeWordMeanings } from './meanings.js'
+import { normalizeMeanings, normalizeWordMeanings } from './meanings.js'
 
 /**
  * HTMLテーブルから単語データを抽出
  * @param {string} html - HTML文字列
- * @returns {Array<{id: number, word: string, meaning: import('./meanings.js').Mean[], relatedWords?: Array}>} - 単語データの配列
+ * @returns {Array<{id: number, word: string, meanings: import('./meanings.js').Meaning[], relatedWords?: Array}>} - 単語データの配列
  */
 export function parseWordDataFromHTML(html) {
   const words = [];
@@ -51,7 +51,7 @@ export function parseWordDataFromHTML(html) {
       
       // idが有効な数値で、wordとmeaningが空でない場合のみ追加
       if (!isNaN(id) && id > 0 && word && meaning) {
-        words.push({ id, word, meaning: normalizeMeaning(meaning), relatedWords: [] });
+        words.push({ id, word, meanings: normalizeMeanings(meaning), relatedWords: [] });
       }
     }
   });
@@ -66,12 +66,12 @@ export function parseWordDataFromHTML(html) {
  * ローカルの JSON ファイルから単語データを取得
  * - CORS の影響を受けない安定した取得方法
  * - 必要に応じて words.json を更新することでデータを最新化する
- * @returns {Array<{id: number, word: string, meaning: import('./meanings.js').Mean[], relatedWords?: Array}>} - 単語データの配列
+ * @returns {Array<{id: number, word: string, meanings: import('./meanings.js').Meaning[], relatedWords?: Array}>} - 単語データの配列
  */
 export function getLocalWordData() {
   try {
     // 念のため id でソートしておく（words.json 側の順番が変わっても安定）
-    const words = [...wordsJson].sort((a, b) => a.id - b.id)
+    const words = normalizeWordMeanings(wordsJson).sort((a, b) => a.id - b.id)
     console.log(`ローカルJSONから単語データを読み込みました: ${words.length}語`)
     return words
   } catch (error) {

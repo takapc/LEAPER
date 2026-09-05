@@ -7,9 +7,9 @@ existing behavior unless the request explicitly changes it.
 ## Product overview
 
 LEAPER is a Japanese, mobile-first flash-card application for studying the 2,300 words in
-the revised LEAP vocabulary book. It is a client-only React application: there is no backend,
-authentication, or database. The bundled vocabulary data is the default source of truth at
-runtime.
+the revised LEAP vocabulary book. The quiz is a client-side React application; a single Vercel
+Function backed by Upstash Redis stores the anonymous global quiz count. There is no authentication.
+The bundled vocabulary data is the default source of truth at runtime.
 
 Prioritize, in this order:
 
@@ -28,6 +28,8 @@ or other large dependency unless the user explicitly asks for it or approves the
 - `src/utils/quizLogic.js`: pure filtering, formatting, search, and random-selection logic.
 - `src/utils/wordData.js`: bundled data loading, import parsing, localStorage, and cookie helpers.
 - `src/utils/learningStats.js`: cumulative learning-count persistence.
+- `src/utils/globalQuizCount.js`: durable client queue and global-count synchronization.
+- `api/global-quiz-count.js`: idempotent global-count Vercel Function backed by Upstash Redis.
 - `src/data/words.json`: bundled production vocabulary dataset.
 - `src/data/RELATED_WORDS_NOTICE.md`: attribution for lexical-relation data.
 - `test/`: Node.js unit and dataset-integrity tests.
@@ -77,7 +79,9 @@ lockfile unless dependencies or package metadata intentionally changed.
 Preserve these rules unless the user explicitly requests different behavior:
 
 - A newly selected random quiz word is added to the in-memory navigation history, recorded in
-  `leapUsedWordIds`, and increments `leapTotalQuizCount` exactly once.
+  `leapUsedWordIds`, increments `leapTotalQuizCount` exactly once, and queues one global increment.
+- Global-count sync failures must not block the quiz. Keep unsent increments locally and reuse the
+  same batch ID after an ambiguous failure so a successful server write is never counted twice.
 - Moving backward or forward through existing history does not increment totals or mark a word as
   newly used.
 - Selecting a search result displays that word but does not alter the active filter or count it as
@@ -111,7 +115,7 @@ Each word must have:
 {
   "id": 1,
   "word": "agree",
-  "meaning": [{ "partOfSpeech": "intransitive-verb", "meaning": "①賛成する" }],
+  "meanings": [{ "partOfSpeech": "intransitive-verb", "meaning": "賛成する" }],
   "relatedWords": []
 }
 ```
@@ -120,10 +124,10 @@ Requirements:
 
 - `id`: unique positive integer.
 - `word`: non-empty English headword.
-- `meaning`: non-empty array of `{ partOfSpeech, meaning }` objects, one per part-of-speech block.
+- `meanings`: non-empty array of `{ partOfSpeech, meaning }` objects, one per individual sense.
   `partOfSpeech` uses the keys in `src/utils/meanings.js` (`noun`, `transitive-verb`, etc.);
-  `meaning` is a non-empty Japanese string with numbering and usage notes preserved.
-  Legacy string imports are normalized; untagged imported meanings use an empty `partOfSpeech`.
+  `meaning` is a non-empty Japanese string without circled sense numbering; usage notes are preserved.
+  Legacy `meaning` string and grouped-array imports are normalized; untagged imported meanings use an empty `partOfSpeech`.
   Related-word meanings remain strings with their existing `partsOfSpeech` array.
 - `relatedWords`: array; use an empty array when no relation exists.
 

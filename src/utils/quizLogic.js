@@ -1,4 +1,4 @@
-import { meaningToText } from './meanings.js'
+import { meaningsToText } from './meanings.js'
 
 export const PART_RANGES = {
   part1: { start: 1, end: 400, label: 'Part 1' },
@@ -8,8 +8,8 @@ export const PART_RANGES = {
   partExtra: { start: 2001, end: 2300, label: '＋α' },
 }
 
-export function formatMeaning(meaning) {
-  meaning = meaningToText(meaning)
+export function formatMeaning(meanings) {
+  const meaning = meaningsToText(meanings)
   if (!meaning) return ['']
 
   const posLookahead = /(?=\[(?:自|他|名|形|前|副|接|助|動|熟)\])/

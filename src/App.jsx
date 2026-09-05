@@ -38,6 +38,12 @@ import {
   getTotalQuizCountFromLocalStorage,
   saveTotalQuizCountToLocalStorage,
 } from './utils/learningStats'
+import {
+  getPendingGlobalQuizCount,
+  queueGlobalQuizIncrement,
+  queueInitialGlobalQuizCount,
+  syncGlobalQuizCount,
+} from './utils/globalQuizCount'
 import { DataImporter } from './components/DataImporter'
 import { PronounceButton } from './components/PronounceButton'
 import { RelatedWordsModal } from './components/RelatedWordsModal'
@@ -50,12 +56,14 @@ import {
   PART_RANGES,
   pickRandomUnusedWord,
 } from './utils/quizLogic'
+import { getPartOfSpeechTags } from './utils/meanings'
 
 function App() {
   const [words, setWords] = useState([]) // 全単語データ
   const [filteredWords, setFilteredWords] = useState([]) // フィルタリングされた単語データ
   const [currentWord, setCurrentWord] = useState(null)
   const [showAnswer, setShowAnswer] = useState(false)
+  const [isPartOfSpeechHintEnabled, setIsPartOfSpeechHintEnabled] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [usedWordIds, setUsedWordIds] = useState(() => {
@@ -65,6 +73,8 @@ function App() {
   })
   const usedWordIdsRef = useRef(usedWordIds)
   const [totalQuizCount, setTotalQuizCount] = useState(() => getTotalQuizCountFromLocalStorage())
+  const [globalQuizCount, setGlobalQuizCount] = useState(null)
+  const [globalQuizCountStatus, setGlobalQuizCountStatus] = useState('loading')
   const [navigation, setNavigation] = useState({ history: [], index: -1 })
   const { history: wordHistory, index: historyIndex } = navigation
   const canGoPrevious = historyIndex > 0
@@ -82,6 +92,7 @@ function App() {
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false)
   const resetCancelRef = useRef()
   const handleNextRef = useRef(() => {})
+  const globalQuizCountTimerRef = useRef()
   const AUTO_PLAY_MS = 3000
   const AUTO_PLAY_REVEAL_MS = 1500
 
@@ -94,6 +105,32 @@ function App() {
   // 単語データの読み込み
   useEffect(() => {
     loadWordData()
+  }, [])
+
+  const refreshGlobalQuizCount = () => {
+    setGlobalQuizCountStatus('loading')
+    return syncGlobalQuizCount()
+      .then((serverCount) => {
+        setGlobalQuizCount(serverCount + getPendingGlobalQuizCount())
+        setGlobalQuizCountStatus('ready')
+      })
+      .catch((syncError) => {
+        console.error('共有累計語数の同期に失敗しました:', syncError)
+        setGlobalQuizCountStatus('unavailable')
+      })
+  }
+
+  useEffect(() => {
+    // 既存ユーザーの端末内累計も、初回だけ共有カウンターへ移す。
+    queueInitialGlobalQuizCount(totalQuizCount)
+    refreshGlobalQuizCount()
+
+    const handleOnline = () => refreshGlobalQuizCount()
+    window.addEventListener('online', handleOnline)
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      clearTimeout(globalQuizCountTimerRef.current)
+    }
   }, [])
 
   const loadWordData = async () => {
@@ -157,7 +194,7 @@ function App() {
       const thankYouWord = {
         id: 2009213,
         word: 'Thank you for using!',
-        meaning: 'ご利用ありがとうございました！',
+        meanings: [{ partOfSpeech: '', meaning: 'ご利用ありがとうございました！' }],
       }
 
       setFilteredWords([thankYouWord])
@@ -386,6 +423,11 @@ function App() {
   }
 
   const incrementTotalQuizCount = () => {
+    queueGlobalQuizIncrement()
+    setGlobalQuizCount((count) => count === null ? null : count + 1)
+    clearTimeout(globalQuizCountTimerRef.current)
+    globalQuizCountTimerRef.current = setTimeout(refreshGlobalQuizCount, 5000)
+
     setTotalQuizCount((count) => {
       const updated = count + 1
       saveTotalQuizCountToLocalStorage(updated)
@@ -515,6 +557,7 @@ function App() {
   const completedInRange = filteredWords.filter((word) => usedWordIds.includes(word.id)).length
   const totalInRange = filteredWords.length
   const progressPercent = totalInRange > 0 ? (completedInRange / totalInRange) * 100 : 0
+  const currentPartOfSpeechTags = getPartOfSpeechTags(currentWord?.meanings)
 
   if (loading) {
     return (
@@ -579,9 +622,18 @@ function App() {
                 )}
                 {isCheckedOnlyActive && <> ・ 間違えた問題のみ</>}
             </Text>
-            <Text color="teal.600" fontSize="sm" fontWeight="bold" mt={1}>
-              これまでの累計 {totalQuizCount.toLocaleString()}語
-            </Text>
+            <HStack justify="center" spacing={3} mt={1} flexWrap="wrap">
+              <Text color="teal.600" fontSize="sm" fontWeight="bold">
+                あなたの累計 {totalQuizCount.toLocaleString()}語
+              </Text>
+              <Text color="purple.600" fontSize="sm" fontWeight="bold">
+                {globalQuizCountStatus === 'ready'
+                  ? `みんなの累計 ${globalQuizCount.toLocaleString()}語`
+                  : globalQuizCountStatus === 'unavailable'
+                    ? 'みんなの累計 オフライン'
+                    : 'みんなの累計 集計中…'}
+              </Text>
+            </HStack>
             {totalInRange > 0 && (
               <Box mt={3} mx="auto" maxW="280px" w="full">
                 <HStack justify="space-between" mb={1}>
@@ -679,7 +731,7 @@ function App() {
                         </Text>
                         <Box flex="1" overflowY="auto">
                           <VStack align="stretch" spacing={2}>
-                            {formatMeaning(currentWord.meaning).map((line, index) => (
+                            {formatMeaning(currentWord.meanings).map((line, index) => (
                               <Text
                                 key={index}
                                 fontSize={{ base: 'md', md: 'lg' }}
@@ -692,16 +744,39 @@ function App() {
                         </Box>
                       </>
                     ) : (
-                      <Box
-                        flex="1"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <Text color="gray.400" fontSize="lg" textAlign="center">
-                          ここをタップして答えを表示
-                        </Text>
-                      </Box>
+                      isPartOfSpeechHintEnabled && currentPartOfSpeechTags.length > 0 ? (
+                        <>
+                          <Text fontSize="sm" color="gray.500" mb={2}>
+                            品詞（タップで意味を表示）
+                          </Text>
+                          <Box flex="1" overflowY="auto">
+                            <VStack align="stretch" spacing={2}>
+                              {currentPartOfSpeechTags.map((tag, index) => (
+                                <Text
+                                  key={index}
+                                  color="blue.600"
+                                  fontSize={{ base: 'md', md: 'lg' }}
+                                  fontWeight="bold"
+                                  lineHeight="tall"
+                                >
+                                  {tag ? `[${tag}]` : '—'}
+                                </Text>
+                              ))}
+                            </VStack>
+                          </Box>
+                        </>
+                      ) : (
+                        <Box
+                          flex="1"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          <Text color="gray.400" fontSize="lg" textAlign="center">
+                            ここをタップして答えを表示
+                          </Text>
+                        </Box>
+                      )
                     )}
                   </Box>
 
@@ -740,14 +815,25 @@ function App() {
             </Button>
           </HStack>
 
-          {/* 自動再生 */}
+          {/* カード補助操作 */}
           <HStack spacing={3} justify="center" flexWrap="wrap" w="full">
+            <Button
+              onClick={() => setIsPartOfSpeechHintEnabled((enabled) => !enabled)}
+              colorScheme="blue"
+              variant={isPartOfSpeechHintEnabled ? 'solid' : 'outline'}
+              size="md"
+              w="calc(50% - 6px)"
+              maxW="220px"
+              aria-pressed={isPartOfSpeechHintEnabled}
+            >
+              品詞ヒント {isPartOfSpeechHintEnabled ? 'ON' : 'OFF'}
+            </Button>
             <Button
               onClick={handleStartAutoPlay}
               colorScheme="purple"
               variant={isAutoPlay ? 'solid' : 'outline'}
               size="md"
-              w="full"
+              w="calc(50% - 6px)"
               maxW="220px"
             >
               {isAutoPlay ? '自動再生中…' : '自動再生'}

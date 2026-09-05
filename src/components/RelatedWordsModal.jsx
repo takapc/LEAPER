@@ -44,7 +44,7 @@ const PART_OF_SPEECH_LABELS = {
 const bundledMeaningsByWord = new Map(
   wordsJson.map((item) => [
     item.word.trim().toLowerCase(),
-    formatHeadwordMeaningForRelatedWord(item.meaning),
+    formatHeadwordMeaningForRelatedWord(item.meanings ?? item.meaning),
   ]),
 )
 

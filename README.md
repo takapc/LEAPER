@@ -1,7 +1,7 @@
 # LEAP 英単語クイズ
 
 LEAP改訂版の英単語2,300語を、ブラウザで繰り返し学習するためのフラッシュカード型Webアプリケーションです。
-バックエンドは使用せず、同梱したJSONデータから出題します。
+同梱したJSONデータから出題し、全ユーザーの累計語数だけをVercel FunctionとUpstash Redisで共有します。
 
 ## 主な機能
 
@@ -13,7 +13,7 @@ LEAP改訂版の英単語2,300語を、ブラウザで繰り返し学習する�
 - 前の問題・次の問題への移動
 - Part単位の複数選択、または単語番号による詳細な範囲指定
 - 現在の出題範囲における学習進捗の表示
-- 履歴を削除しても残る、これまでに出題した累計語数の表示
+- 履歴を削除しても残る、端末別と全ユーザーの累計語数の表示
 - 間違えた問題のマークと、Part・詳細範囲に重ねて使えるオン／オフ式の絞り込み
 - 3秒ごとに問題を進める自動再生
 - ブラウザのSpeech Synthesis APIを利用した英単語の読み上げ
@@ -32,6 +32,7 @@ npm run dev
 ```
 
 開発サーバー起動後、表示されたURL（通常は `http://localhost:5173`）をブラウザで開いてください。
+共有累計語数APIも含めてローカル確認する場合は、Vercelプロジェクトをリンクして環境変数を取得後、`npx vercel dev`を使用します。
 
 ## コマンド
 
@@ -67,7 +68,10 @@ npm run dev
 {
   "id": 1,
   "word": "agree",
-  "meaning": [{ "partOfSpeech": "intransitive-verb", "meaning": "①賛成する ②意見が一致する" }],
+  "meanings": [
+    { "partOfSpeech": "intransitive-verb", "meaning": "賛成する" },
+    { "partOfSpeech": "intransitive-verb", "meaning": "意見が一致する" }
+  ],
   "relatedWords": [
     {
       "word": "match",
@@ -84,6 +88,7 @@ npm run dev
 
 - 出題済みの単語IDは`localStorage`に保存され、ページを再読み込みしても引き継がれます。
 - これまでに出題した累計語数は出題済みIDとは別に`localStorage`へ保存され、「履歴を削除」後も引き継がれます。
+- 未同期の共有累計は`localStorage`へ保存し、通信復旧時に再送します。バッチIDで重複加算を防ぎます。
 - 「間違えた問題」の単語IDは有効期間1年のCookieに保存されます。
 - 「履歴を削除」は出題済みIDと画面内の前後移動履歴をクリアします。
 - 前後移動履歴そのものはメモリ上だけに保持されるため、ページの再読み込みで消えます。
@@ -109,11 +114,12 @@ index.html
         ├── utils/wordData.js   データ読込とブラウザ保存
         └── data/words.json     標準の2,300語
 
+api/global-quiz-count.js        Upstash Redisへ接続する共有累計API
 scripts/scrape-leap.js          開発者向けデータ更新スクリプト
 test/                           純粋なクイズロジックの単体テスト
 ```
 
-バックエンドやデータベースはなく、Viteで生成した静的ファイルだけで動作します。
+クイズ本体は静的に動作し、共有累計だけがVercel Function経由でUpstash Redisを使用します。APIが利用できない場合も学習は継続できます。
 
 ## 技術スタック
 
@@ -124,6 +130,16 @@ test/                           純粋なクイズロジックの単体テスト
 - Node.js標準テストランナー
 - Web Storage API / Cookie
 - Web Speech API
+- Vercel Functions / Upstash Redis
+
+## 共有累計語数
+
+Vercel MarketplaceでUpstash Redisをプロジェクトへ接続し、次のサーバー専用環境変数を設定します。
+
+- `KV_REST_API_URL`
+- `KV_REST_API_TOKEN`
+
+無料運用ではUpstashのFreeプランを使い、`autoUpgrade`を無効にしてください。クライアントは複数回の出題をまとめて同期し、既存ユーザーの端末内累計も初回アクセス時に一度だけ共有値へ加算します。
 
 ## 単語データの更新
 
@@ -139,9 +155,9 @@ npm run check
 このプロジェクトは教育目的で作成されています。単語データの出典は「受かる英語 - LEAP 改訂版 単語一覧」です。
 関連語の語彙関係は、Princeton WordNetを基にOpen English WordNetチームがCC BY 4.0で提供するOpen English WordNetを参照しています。LEAPに未収録の関連語の日本語表現にはJapanese Wordnet 2.0（CC BY 4.0）を参照しています。
 
-見出し語の `meaning` は `{ partOfSpeech, meaning }` の配列です。品詞ごとに要素を分け、
-語義番号・用法注記は `meaning` の文字列に保持します。品詞の値は
+見出し語の `meanings` は `{ partOfSpeech, meaning }` の配列です。一つの語義ごとに要素を分け、
+丸数字は保存しません。用法注記は各 `meaning` の文字列に保持します。品詞の値は
 `src/utils/meanings.js` の `PART_OF_SPEECH_TAGS` を参照してください。
-旧形式の文字列もインポート時・保存データの読み込み時に変換します。
+旧形式の `meaning` 文字列・品詞単位の配列もインポート時・保存データの読み込み時に変換します。
 品詞の記載がないインポートデータでは `partOfSpeech` は空文字列です。
 関連語の `meaning` と `partsOfSpeech` は従来の形式を維持します。

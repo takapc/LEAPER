@@ -31,3 +31,6 @@ lerna-debug.log*
 *.swo
 *~
 
+.vercel
+.env*
+!.env.example
