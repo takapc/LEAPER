@@ -5,6 +5,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import fetch from 'node-fetch'
+import { normalizeMeaning } from '../src/utils/meanings.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -16,7 +17,7 @@ const SOURCE_URL = 'https://ukaru-eigo.com/leap-modified-list/'
  * HTMLテーブルから単語データを抽出
  * - src/utils/wordData.js の parseWordDataFromHTML と同じロジック
  * @param {string} html - HTML文字列
- * @returns {Array<{id: number, word: string, meaning: string}>}
+ * @returns {Array<{id: number, word: string, meaning: import('../src/utils/meanings.js').Mean[]}>}
  */
 function parseWordDataFromHTML(html) {
   const words = []
@@ -64,7 +65,7 @@ function parseWordDataFromHTML(html) {
 
       // idが有効な数値で、wordとmeaningが空でない場合のみ追加
       if (!isNaN(id) && id > 0 && word && meaning) {
-        words.push({ id, word, meaning })
+        words.push({ id, word, meaning: normalizeMeaning(meaning) })
       }
     }
   })

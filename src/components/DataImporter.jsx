@@ -1,3 +1,4 @@
+import { normalizeWordMeanings } from '../utils/meanings.js'
 import { useState } from 'react'
 import {
   Button,
@@ -78,6 +79,7 @@ export function DataImporter({ onDataImported }) {
       return
     }
 
+    words = normalizeWordMeanings(words)
     saveWordDataToLocalStorage(words)
     
     toast({
@@ -184,7 +186,7 @@ export function DataImporter({ onDataImported }) {
                       <Text fontSize="sm">
                         JSONファイルを選択するか、JSON形式のテキストを貼り付けてください。
                         <br />
-                        形式: [{"{"}"id": 1, "word": "agree", "meaning": "..."{"}"}, ...]
+                        形式: {'"meaning": [{"partOfSpeech": "noun", "meaning": "意味"}]'}
                       </Text>
                     </Alert>
 
@@ -205,7 +207,7 @@ export function DataImporter({ onDataImported }) {
                     <Textarea
                       value={importData}
                       onChange={(e) => setImportData(e.target.value)}
-                      placeholder='[{"id": 1, "word": "agree", "meaning": "..."}, ...]'
+                      placeholder='[{"id": 1, "word": "agree", "meaning": [{"partOfSpeech": "noun", "meaning": "意味"}]}, ...]'
                       rows={10}
                       fontFamily="mono"
                       fontSize="xs"
