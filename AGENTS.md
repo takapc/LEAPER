@@ -111,7 +111,7 @@ Each word must have:
 {
   "id": 1,
   "word": "agree",
-  "meaning": "[自] ①賛成する",
+  "meaning": [{ "partOfSpeech": "intransitive-verb", "meaning": "①賛成する" }],
   "relatedWords": []
 }
 ```
@@ -120,7 +120,11 @@ Requirements:
 
 - `id`: unique positive integer.
 - `word`: non-empty English headword.
-- `meaning`: non-empty Japanese meaning string.
+- `meaning`: non-empty array of `{ partOfSpeech, meaning }` objects, one per part-of-speech block.
+  `partOfSpeech` uses the keys in `src/utils/meanings.js` (`noun`, `transitive-verb`, etc.);
+  `meaning` is a non-empty Japanese string with numbering and usage notes preserved.
+  Legacy string imports are normalized; untagged imported meanings use an empty `partOfSpeech`.
+  Related-word meanings remain strings with their existing `partsOfSpeech` array.
 - `relatedWords`: array; use an empty array when no relation exists.
 
 Each related word must contain non-empty `word` and `meaning`, one `type` from

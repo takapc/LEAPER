@@ -2,11 +2,12 @@
  * 単語データを取得・パースするユーティリティ関数
  */
 import wordsJson from '../data/words.json'
+import { normalizeMeaning, normalizeWordMeanings } from './meanings.js'
 
 /**
  * HTMLテーブルから単語データを抽出
  * @param {string} html - HTML文字列
- * @returns {Array<{id: number, word: string, meaning: string, relatedWords?: Array}>} - 単語データの配列
+ * @returns {Array<{id: number, word: string, meaning: import('./meanings.js').Mean[], relatedWords?: Array}>} - 単語データの配列
  */
 export function parseWordDataFromHTML(html) {
   const words = [];
@@ -50,7 +51,7 @@ export function parseWordDataFromHTML(html) {
       
       // idが有効な数値で、wordとmeaningが空でない場合のみ追加
       if (!isNaN(id) && id > 0 && word && meaning) {
-        words.push({ id, word, meaning, relatedWords: [] });
+        words.push({ id, word, meaning: normalizeMeaning(meaning), relatedWords: [] });
       }
     }
   });
@@ -65,7 +66,7 @@ export function parseWordDataFromHTML(html) {
  * ローカルの JSON ファイルから単語データを取得
  * - CORS の影響を受けない安定した取得方法
  * - 必要に応じて words.json を更新することでデータを最新化する
- * @returns {Array<{id: number, word: string, meaning: string, relatedWords?: Array}>} - 単語データの配列
+ * @returns {Array<{id: number, word: string, meaning: import('./meanings.js').Mean[], relatedWords?: Array}>} - 単語データの配列
  */
 export function getLocalWordData() {
   try {
@@ -83,13 +84,13 @@ export function getLocalWordData() {
  * サンプル単語データ（フォールバック用）
  */
 function getSampleWordData() {
-  return [
+  return normalizeWordMeanings([
     { id: 1, word: 'agree', meaning: '[自] ①賛成する ②（主語の中で）意見が一致する ③（with ～）（気候，食べ物が）（～に）合う' },
     { id: 2, word: 'oppose', meaning: '[他] ～に反対する' },
     { id: 3, word: 'advise', meaning: '[他] ～に忠告する' },
     { id: 4, word: 'tip', meaning: '[名] ①助言，ヒント ②チップ ③（足や山などの）先，先端（いずれも〈可算〉）' },
     { id: 5, word: 'discuss', meaning: '[他] ①～について話し合う，議論する ②～を話題に出す' },
-  ];
+  ]);
 }
 
 /**
@@ -97,7 +98,7 @@ function getSampleWordData() {
  */
 export function saveWordDataToLocalStorage(words) {
   try {
-    localStorage.setItem('leapWordData', JSON.stringify(words));
+    localStorage.setItem('leapWordData', JSON.stringify(normalizeWordMeanings(words)));
     localStorage.setItem('leapWordDataTimestamp', Date.now().toString());
   } catch (error) {
     console.error('ローカルストレージへの保存に失敗しました:', error);
@@ -111,7 +112,7 @@ export function getWordDataFromLocalStorage() {
   try {
     const data = localStorage.getItem('leapWordData');
     if (data) {
-      return JSON.parse(data);
+      return normalizeWordMeanings(JSON.parse(data));
     }
   } catch (error) {
     console.error('ローカルストレージからの読み込みに失敗しました:', error);

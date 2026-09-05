@@ -1,3 +1,5 @@
+import { meaningToText } from './meanings.js'
+
 const PART_OF_SPEECH_PREFIX = /^(?:\[[^\]]+\]\s*)+/
 const CIRCLED_SENSE_NUMBER = /[①②③④⑤⑥⑦⑧⑨⑩]/g
 
@@ -6,7 +8,7 @@ function normalizeWord(word) {
 }
 
 export function formatHeadwordMeaningForRelatedWord(meaning) {
-  if (typeof meaning !== 'string') return ''
+  meaning = meaningToText(meaning)
 
   return meaning
     .replace(PART_OF_SPEECH_PREFIX, '')

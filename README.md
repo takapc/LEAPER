@@ -67,7 +67,7 @@ npm run dev
 {
   "id": 1,
   "word": "agree",
-  "meaning": "[自] ①賛成する ②意見が一致する",
+  "meaning": [{ "partOfSpeech": "intransitive-verb", "meaning": "①賛成する ②意見が一致する" }],
   "relatedWords": [
     {
       "word": "match",
@@ -138,3 +138,10 @@ npm run check
 
 このプロジェクトは教育目的で作成されています。単語データの出典は「受かる英語 - LEAP 改訂版 単語一覧」です。
 関連語の語彙関係は、Princeton WordNetを基にOpen English WordNetチームがCC BY 4.0で提供するOpen English WordNetを参照しています。LEAPに未収録の関連語の日本語表現にはJapanese Wordnet 2.0（CC BY 4.0）を参照しています。
+
+見出し語の `meaning` は `{ partOfSpeech, meaning }` の配列です。品詞ごとに要素を分け、
+語義番号・用法注記は `meaning` の文字列に保持します。品詞の値は
+`src/utils/meanings.js` の `PART_OF_SPEECH_TAGS` を参照してください。
+旧形式の文字列もインポート時・保存データの読み込み時に変換します。
+品詞の記載がないインポートデータでは `partOfSpeech` は空文字列です。
+関連語の `meaning` と `partsOfSpeech` は従来の形式を維持します。
