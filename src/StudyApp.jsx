@@ -13,7 +13,7 @@ export default function StudyApp() {
   const bg = useColorModeValue('gray.50', 'gray.900')
   return (
     <Box bg={bg}>
-      <Container maxW="container.md" px={{ base: 4, md: 0 }} pt={3}>
+      <Container maxW={{ base: 'container.md', md: 'full' }} px={{ base: 4, md: 6 }} pt={3}>
         <Flex justify="flex-end">
           <Button leftIcon={<SettingsIcon />} variant="ghost" minH="44px" onClick={() => {
             setDraft(settings)
