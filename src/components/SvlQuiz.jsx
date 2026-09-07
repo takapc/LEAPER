@@ -79,14 +79,47 @@ export function SvlQuiz({ level }) {
             <VStack align="stretch"><Alert status="error"><AlertIcon />{error}</Alert><Button onClick={() => setRetry((value) => value + 1)}>再試行</Button></VStack>
           ) : word ? (
             <>
-              <Card bg={cardBg} boxShadow="lg">
-                <CardBody p={{ base: 5, md: 8 }}>
-                  <VStack spacing={6} align="stretch">
-                    <Text fontSize={{ base: '3xl', md: '5xl' }} fontWeight="bold" textAlign="center" overflowWrap="anywhere">{word.word}</Text>
+              <Card bg={cardBg} boxShadow="lg" overflow="hidden">
+                <CardBody p={{ base: 3, md: 8 }}>
+                  <VStack spacing={{ base: 4, md: 6 }} align="stretch">
+                    <Text fontSize={{ base: '3xl', md: '5xl' }} fontWeight="bold" textAlign="center" overflowWrap="anywhere" letterSpacing="wide" lineHeight="1" py={{ base: 2, md: 4 }}>{word.word}</Text>
                     <Box borderTopWidth="1px" borderColor="gray.200" />
-                    <Button variant="ghost" h="auto" minH="140px" whiteSpace="normal" py={6} fontWeight="normal" fontSize="lg" aria-expanded={revealed} onClick={() => setRevealed((value) => !value)}>
-                      {revealed ? word.meaning : 'ここをタップして答えを表示'}
-                    </Button>
+                    <Box
+                      h={{ base: '140px', md: '200px' }}
+                      display="flex"
+                      flexDirection="column"
+                      cursor="pointer"
+                      role="button"
+                      tabIndex={0}
+                      aria-label={revealed ? '答えを非表示' : '答えを表示'}
+                      aria-expanded={revealed}
+                      sx={{ WebkitTapHighlightColor: 'transparent' }}
+                      _focusVisible={{ outline: '2px solid', outlineColor: 'teal.500', outlineOffset: '2px' }}
+                      onClick={() => setRevealed((value) => !value)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault()
+                          setRevealed((value) => !value)
+                        }
+                      }}
+                    >
+                      {revealed ? (
+                        <>
+                          <Text fontSize="sm" color="gray.500" mb={2}>意味</Text>
+                          <Box flex="1" overflowY="auto">
+                            <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="tall" whiteSpace="pre-line">
+                              {word.meaning}
+                            </Text>
+                          </Box>
+                        </>
+                      ) : (
+                        <Box flex="1" display="flex" alignItems="center" justifyContent="center">
+                          <Text color="gray.400" fontSize="lg" textAlign="center">
+                            ここをタップして答えを表示
+                          </Text>
+                        </Box>
+                      )}
+                    </Box>
                   </VStack>
                 </CardBody>
               </Card>
