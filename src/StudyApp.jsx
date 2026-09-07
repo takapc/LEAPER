@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Badge, Box, Button, Container, Flex, FormControl, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Select, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Badge, Box, Button, IconButton, FormControl, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Select, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { SettingsIcon } from '@chakra-ui/icons'
 import App from './App'
 import { SvlQuiz } from './components/SvlQuiz'
@@ -12,15 +12,21 @@ export default function StudyApp() {
   const initialFocusRef = useRef()
   const bg = useColorModeValue('gray.50', 'gray.900')
   return (
-    <Box bg={bg}>
-      <Container maxW={{ base: 'container.md', md: 'full' }} px={{ base: 4, md: 6 }} pt={3}>
-        <Flex justify="flex-end">
-          <Button leftIcon={<SettingsIcon />} variant="ghost" minH="44px" onClick={() => {
-            setDraft(settings)
-            setIsOpen(true)
-          }}>設定</Button>
-        </Flex>
-      </Container>
+    <Box bg={bg} position="relative">
+      <IconButton
+        aria-label="設定"
+        icon={<SettingsIcon />}
+        variant="ghost"
+        position="absolute"
+        top={{ base: 6, md: 10 }}
+        right={{ base: 4, md: 6 }}
+        zIndex={1}
+        boxSize="44px"
+        onClick={() => {
+          setDraft(settings)
+          setIsOpen(true)
+        }}
+      />
       {settings.mode === 'leap' ? <App /> : <SvlQuiz key={settings.level} level={settings.level} />}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} initialFocusRef={initialFocusRef} isCentered>
         <ModalOverlay />

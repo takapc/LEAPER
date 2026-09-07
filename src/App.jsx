@@ -601,7 +601,7 @@ function App() {
         <VStack spacing={6} align="stretch">
           {/* ヘッダー */}
           <Box textAlign="center">
-            <Heading as="h1" size="xl" mb={2}>
+            <Heading as="h1" size={{ base: 'lg', md: 'xl' }} mb={2} pr={{ base: 12, md: 16 }} minH="44px">
               LEAP 英単語クイズ
             </Heading>
             <Text color="gray.600" fontSize="sm">

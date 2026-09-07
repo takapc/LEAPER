@@ -72,7 +72,7 @@ export function SvlQuiz({ level }) {
       <Container maxW="container.md" px={{ base: 4, md: 0 }}>
         <VStack spacing={6} align="stretch">
           <Box textAlign="center">
-            <Heading as="h1" size={{ base: 'lg', md: 'xl' }}>SVL12000 <Badge colorScheme="purple" verticalAlign="middle">ベータ</Badge></Heading>
+            <Heading as="h1" size={{ base: 'lg', md: 'xl' }} pr={{ base: 12, md: 16 }} minH="44px">SVL12000 <Badge colorScheme="purple" verticalAlign="middle">ベータ</Badge></Heading>
             <Text mt={2} color="gray.600">{levelLabel(level)}{words.length > 0 ? ` ・ ${words.length.toLocaleString()}語` : ''}</Text>
           </Box>
           {loading ? <VStack role="status" py={12}><Spinner /><Text>{levelLabel(level)}を読み込んでいます…</Text></VStack> : error ? (
