@@ -9,6 +9,9 @@ export const PART_RANGES = {
 }
 
 export function formatMeaning(meanings) {
+  if (Array.isArray(meanings)) {
+    return meanings.length ? meanings.map((entry) => meaningsToText([entry])) : ['']
+  }
   const meaning = meaningsToText(meanings)
   if (!meaning) return ['']
 

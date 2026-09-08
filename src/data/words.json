@@ -7196,7 +7196,7 @@
       },
       {
         "partOfSpeech": "adjective",
-        "meaning": "（名詞的に）自分自身のもの"
+        "meaning": "（所有格の後で）（名詞的に）自分自身のもの"
       },
       {
         "partOfSpeech": "transitive-verb",
@@ -8135,15 +8135,7 @@
       },
       {
         "partOfSpeech": "transitive-verb",
-        "meaning": "（be ―ing）（～を）身ごもっている（※"
-      },
-      {
-        "partOfSpeech": "transitive-verb",
-        "meaning": "は"
-      },
-      {
-        "partOfSpeech": "intransitive-verb",
-        "meaning": "も可）"
+        "meaning": "（be ―ing）（～を）身ごもっている（自動詞も可）"
       }
     ]
   },
@@ -11699,11 +11691,7 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "分の"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "，15分，25セント"
+        "meaning": "4分の1，15分，25セント"
       },
       {
         "partOfSpeech": "noun",
@@ -12911,11 +12899,7 @@
     "meanings": [
       {
         "partOfSpeech": "adjective",
-        "meaning": "第"
-      },
-      {
-        "partOfSpeech": "adjective",
-        "meaning": "の"
+        "meaning": "第1の"
       },
       {
         "partOfSpeech": "adjective",
@@ -12927,11 +12911,7 @@
       },
       {
         "partOfSpeech": "adverb",
-        "meaning": "（文頭で）まず第"
-      },
-      {
-        "partOfSpeech": "adverb",
-        "meaning": "に（＝firstly)"
+        "meaning": "（文頭で）まず第1に（＝firstly)"
       },
       {
         "partOfSpeech": "noun",
@@ -14810,15 +14790,7 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "（"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "つ"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "つの）文"
+        "meaning": "（1つ1つの）文"
       },
       {
         "partOfSpeech": "noun",
@@ -17714,7 +17686,7 @@
       },
       {
         "partOfSpeech": "intransitive-verb",
-        "meaning": "（物が主語）（～を）示す"
+        "meaning": "（to ～）（物が主語）（～を）示す"
       }
     ]
   },
@@ -18345,11 +18317,7 @@
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "特異なもの，天才（"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに）"
+        "meaning": "特異なもの，天才"
       }
     ]
   },
@@ -19137,15 +19105,11 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "手術"
+        "meaning": "手術〈不可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "外科（"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに〈不可算〉)"
+        "meaning": "外科〈不可算〉"
       }
     ]
   },
@@ -20207,15 +20171,11 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "関係"
+        "meaning": "関係〈可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "親密な関係 （"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに〈可算〉）"
+        "meaning": "親密な関係〈可算〉"
       }
     ]
   },
@@ -20550,11 +20510,7 @@
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "識別（"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに）"
+        "meaning": "識別"
       }
     ]
   },
@@ -20685,11 +20641,7 @@
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "生活保護（"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "いずれも）"
+        "meaning": "生活保護"
       }
     ]
   },
@@ -20947,7 +20899,7 @@
       },
       {
         "partOfSpeech": "intransitive-verb",
-        "meaning": "（～の）一因となる"
+        "meaning": "（to ～）（～の）一因となる"
       },
       {
         "partOfSpeech": "transitive-verb",
@@ -22222,15 +22174,11 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "失業"
+        "meaning": "失業〈不可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "失業率（＝― rate），失業者数 （"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに〈不可算〉）"
+        "meaning": "失業率（＝― rate），失業者数〈不可算〉"
       }
     ]
   },
@@ -22453,15 +22401,11 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "制度，組織"
+        "meaning": "制度，組織〈可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "体系 （"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに〈可算〉）"
+        "meaning": "体系〈可算〉"
       }
     ]
   },
@@ -24044,11 +23988,7 @@
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "（tourist ―）観光地，旅行先（"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに）"
+        "meaning": "（tourist ―）観光地，旅行先"
       }
     ]
   },
@@ -25941,7 +25881,7 @@
       },
       {
         "partOfSpeech": "intransitive-verb",
-        "meaning": "（～に）偶然出会う"
+        "meaning": "（into ～）（～に）偶然出会う"
       }
     ]
   },
@@ -28181,7 +28121,7 @@
       },
       {
         "partOfSpeech": "adjective",
-        "meaning": "もっとも～でない"
+        "meaning": "（the last ～）もっとも～でない"
       },
       {
         "partOfSpeech": "noun",
@@ -29843,7 +29783,7 @@
       },
       {
         "partOfSpeech": "transitive-verb",
-        "meaning": "～を取り除く"
+        "meaning": "（get ― of ～）～を取り除く"
       }
     ]
   },
@@ -34013,7 +33953,7 @@
       },
       {
         "partOfSpeech": "intransitive-verb",
-        "meaning": "（～の原因を）説明する"
+        "meaning": "（for ～）（～の原因を）説明する"
       },
       {
         "partOfSpeech": "noun",
@@ -34431,7 +34371,7 @@
       },
       {
         "partOfSpeech": "intransitive-verb",
-        "meaning": "結局～になる"
+        "meaning": "（to ～）結局～になる"
       }
     ]
   },
@@ -37457,15 +37397,11 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "文学"
+        "meaning": "文学〈不可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "文献 （"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに〈不可算〉）"
+        "meaning": "文献〈不可算〉"
       }
     ]
   },
@@ -39723,7 +39659,7 @@
       },
       {
         "partOfSpeech": "transitive-verb",
-        "meaning": "（A）を（Bに）借りている"
+        "meaning": "（A to B)（A）を（Bに）借りている"
       }
     ]
   },
@@ -40962,19 +40898,15 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "細胞"
+        "meaning": "細胞〈可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "電池"
+        "meaning": "電池〈可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "独房 （"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "いずれも〈可算〉)"
+        "meaning": "独房〈可算〉"
       }
     ]
   },
@@ -41570,15 +41502,11 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "治療法，治療薬"
+        "meaning": "治療法，治療薬〈可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "改善策，対策（"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "いずれも〈可算〉）"
+        "meaning": "改善策，対策〈可算〉"
       }
     ]
   },
@@ -41993,11 +41921,7 @@
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "(楽器)オルガン（"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに）"
+        "meaning": "(楽器)オルガン"
       }
     ]
   },
@@ -42729,11 +42653,7 @@
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "（小説，劇，機械などの）設定，舞台（"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに）"
+        "meaning": "（小説，劇，機械などの）設定，舞台"
       }
     ]
   },
@@ -43927,19 +43847,15 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "経営，運営"
+        "meaning": "経営，運営〈不可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "行政"
+        "meaning": "行政〈不可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "政権 （"
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "は〈不可算〉）"
+        "meaning": "政権"
       }
     ]
   },
@@ -47677,7 +47593,7 @@
       },
       {
         "partOfSpeech": "intransitive-verb",
-        "meaning": "（～を）専門にする"
+        "meaning": "（in ～)（～を）専門にする"
       }
     ]
   },
@@ -56304,7 +56220,7 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "手足 (の本)"
+        "meaning": "手足 (の1本)"
       }
     ]
   },
@@ -68000,11 +67916,7 @@
     "meanings": [
       {
         "partOfSpeech": "adjective",
-        "meaning": "主な，第"
-      },
-      {
-        "partOfSpeech": "adjective",
-        "meaning": "の"
+        "meaning": "主な，第1の"
       },
       {
         "partOfSpeech": "adjective",
@@ -71026,15 +70938,11 @@
     "meanings": [
       {
         "partOfSpeech": "noun",
-        "meaning": "きずな"
+        "meaning": "きずな〈可算〉"
       },
       {
         "partOfSpeech": "noun",
-        "meaning": "公債，社債 ("
-      },
-      {
-        "partOfSpeech": "noun",
-        "meaning": "ともに〈可算〉)"
+        "meaning": "公債，社債〈可算〉"
       }
     ]
   },

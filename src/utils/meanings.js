@@ -17,11 +17,33 @@ const partsByTag = Object.fromEntries(
 
 const CIRCLED_SENSE_NUMBER = /[①-⑳]/g
 
+// Usage notes may contain sense references and part-of-speech tags.
+// Only markers outside brackets delimit entries (mixed-width parentheses occur in imports).
+function topLevelMatches(text, pattern) {
+  const depths = []
+  let depth = 0
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index]
+    depths.push(depth)
+    if ('（(［[〈「'.includes(char)) depth += 1
+    if ('）)］]〉」'.includes(char)) depth = Math.max(0, depth - 1)
+  }
+  return [...text.matchAll(pattern)].filter((match) => depths[match.index] === 0)
+}
+
+function plainNumbers(text) {
+  return text.replace(/([①-⑳])(?=[①-⑳])/g, '$1・')
+    .replace(CIRCLED_SENSE_NUMBER, (number) => String(number.charCodeAt(0) - '①'.charCodeAt(0) + 1))
+}
+
 /** @typedef {{partOfSpeech: string, meaning: string}} Meaning */
 
 function splitSenses(partOfSpeech, text) {
-  const matches = [...text.matchAll(CIRCLED_SENSE_NUMBER)]
-  if (!matches.length) return [{ partOfSpeech, meaning: text.trim() }]
+  const matches = topLevelMatches(text, CIRCLED_SENSE_NUMBER).filter((match) =>
+    !/[第の]/.test(text[match.index - 1] ?? '') &&
+    !text.slice(match.index + 1).startsWith('分の'),
+  )
+  if (!matches.length) return [{ partOfSpeech, meaning: plainNumbers(text.trim()) }]
 
   const prefix = text.slice(0, matches[0].index).trim()
   return matches.map((match, index) => {
@@ -30,7 +52,7 @@ function splitSenses(partOfSpeech, text) {
     const sense = text.slice(start, end).trim()
     return {
       partOfSpeech,
-      meaning: index === 0 && prefix ? `${prefix}${sense}` : sense,
+      meaning: plainNumbers(prefix ? `${prefix}${sense}` : sense),
     }
   }).filter(({ meaning }) => meaning)
 }
@@ -61,7 +83,7 @@ export function normalizeMeanings(value) {
   const tags = /\[(自|他|名|形|前|副|接|助|動|熟)\]/g
   let partOfSpeech = ''
   let start = 0
-  for (const match of value.matchAll(tags)) {
+  for (const match of topLevelMatches(value, tags)) {
     const meaning = value.slice(start, match.index).trim()
     if (meaning) blocks.push({ partOfSpeech, meaning })
     partOfSpeech = partsByTag[match[1]]
