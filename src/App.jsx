@@ -51,12 +51,25 @@ import { RangeSelector } from './components/RangeSelector'
 import { WordSearch } from './components/WordSearch'
 import packageJson from '../package.json'
 import {
-  filterWordsBySelectedParts,
+  filterWordsByCriteria,
   formatMeaning,
   PART_RANGES,
   pickRandomUnusedWord,
 } from './utils/quizLogic'
-import { getPartOfSpeechTags } from './utils/meanings'
+import { getPartOfSpeechTags, PART_OF_SPEECH_LABELS } from './utils/meanings'
+
+const PART_OF_SPEECH_OPTIONS = [
+  ['noun', 'blue'],
+  ['transitive-verb', 'red'],
+  ['intransitive-verb', 'teal'],
+  ['verb', 'cyan'],
+  ['adjective', 'green'],
+  ['adverb', 'purple'],
+  ['preposition', 'orange'],
+  ['conjunction', 'yellow'],
+  ['auxiliary', 'pink'],
+  ['phrase', 'gray'],
+].map(([key, colorScheme]) => ({ key, colorScheme, label: PART_OF_SPEECH_LABELS[key] }))
 
 function App() {
   const [words, setWords] = useState([]) // 全単語データ
@@ -85,6 +98,7 @@ function App() {
   const [endRange, setEndRange] = useState('')
   const [isRangeActive, setIsRangeActive] = useState(false)
   const [isCheckedOnlyActive, setIsCheckedOnlyActive] = useState(false)
+  const [selectedPartOfSpeech, setSelectedPartOfSpeech] = useState([])
   const [checkedWordIds, setCheckedWordIds] = useState(() => getCheckedWordIdsFromCookie())
   const [selectedParts, setSelectedParts] = useState([]) // ['part1', 'part2', ...] 複数選択可能
   const [isAutoPlay, setIsAutoPlay] = useState(false)
@@ -170,18 +184,42 @@ function App() {
     setUsedWordIds([])
     clearUsedWordIdsFromLocalStorage()
     resetNavigation()
-    // Partが選択されている場合は、Partの範囲を再適用
-    if (selectedParts.length > 0) {
-      const filtered = filterWordsBySelectedParts(importedWords, selectedParts, partRanges)
-      setFilteredWords(filtered)
-      selectRandomWord(filtered)
-    } else if (isRangeActive && startRange && endRange) {
-      // 詳細範囲が指定されている場合は、詳細範囲を再適用
-      applyRange(importedWords, parseInt(startRange), parseInt(endRange))
-    } else {
-      setFilteredWords(importedWords)
-      selectRandomWord(importedWords)
+    const filtered = getFilteredWords({ wordList: importedWords, checkedOnly: false })
+    if (filtered.length === 0) {
+      setError('現在の絞り込み条件に一致する単語がありませんでした。')
+      return
     }
+    setFilteredWords(filtered)
+    selectRandomWord(filtered)
+  }
+
+  const getFilteredWords = ({
+    wordList = words,
+    activeParts = selectedParts,
+    rangeActive = isRangeActive,
+    rangeStart = startRange,
+    rangeEnd = endRange,
+    checkedOnly = isCheckedOnlyActive,
+    checkedIds = checkedWordIds,
+    partOfSpeech = selectedPartOfSpeech,
+  } = {}) => {
+    return filterWordsByCriteria(wordList, {
+      selectedParts: activeParts,
+      isRangeActive: rangeActive,
+      startRange: rangeStart,
+      endRange: rangeEnd,
+      isCheckedOnlyActive: checkedOnly,
+      checkedWordIds: checkedIds,
+      selectedPartOfSpeech: partOfSpeech,
+      partRanges,
+    })
+  }
+
+  const useFilteredWords = (nextWords) => {
+    setFilteredWords(nextWords)
+    setError(null)
+    resetNavigation()
+    selectRandomWord(nextWords)
   }
 
   // 範囲を適用
@@ -200,6 +238,7 @@ function App() {
       setFilteredWords([thankYouWord])
       setIsRangeActive(true)
       setIsCheckedOnlyActive(false)
+      setSelectedPartOfSpeech([])
       setSelectedParts([])
       setError(null)
       setStartRange('2009')
@@ -209,14 +248,11 @@ function App() {
       return
     }
 
-    // Part4の場合、endNumがnullの場合は最大値を使用
     if (endNum === null && words.length > 0) {
       endNum = Math.max(...words.map(w => w.id))
     }
 
-    if (!startNum || !endNum) {
-      return
-    }
+    if (!startNum || !endNum) return
 
     if (startNum > endNum) {
       setError('開始No.は終了No.以下である必要があります。')
@@ -225,67 +261,62 @@ function App() {
 
     const minId = Math.min(startNum, endNum)
     const maxId = Math.max(startNum, endNum)
-
-    const rangeWords = wordList.filter(word => word.id >= minId && word.id <= maxId)
-    const filtered = isCheckedOnlyActive ? onlyChecked(rangeWords) : rangeWords
+    const filtered = getFilteredWords({
+      wordList,
+      activeParts: [],
+      rangeActive: true,
+      rangeStart: minId,
+      rangeEnd: maxId,
+    })
 
     if (filtered.length === 0) {
-      setError(`No. ${minId}～${maxId} の範囲に単語が見つかりませんでした。`)
+      setError(`No. ${minId}～${maxId} の条件に一致する単語がありませんでした。`)
       return
     }
 
-    setFilteredWords(filtered)
     setIsRangeActive(true)
-    setError(null)
+    setSelectedParts([])
     setStartRange(minId.toString())
     setEndRange(maxId.toString())
-    resetNavigation()
-    selectRandomWord(filtered)
+    useFilteredWords(filtered)
   }
 
   const toggleCurrentWordChecked = () => {
     if (!currentWord) return
 
-    setCheckedWordIds((ids) => {
-      const updatedIds = ids.includes(currentWord.id)
-        ? ids.filter((id) => id !== currentWord.id)
-        : [...ids, currentWord.id]
-      saveCheckedWordIdsToCookie(updatedIds)
-      return updatedIds
-    })
-  }
+    const updatedIds = checkedWordIds.includes(currentWord.id)
+      ? checkedWordIds.filter((id) => id !== currentWord.id)
+      : [...checkedWordIds, currentWord.id]
+    saveCheckedWordIdsToCookie(updatedIds)
+    setCheckedWordIds(updatedIds)
 
-  const getBaseWords = () => {
-    if (selectedParts.length > 0) {
-      return filterWordsBySelectedParts(words, selectedParts, partRanges)
-    }
+    if (!isCheckedOnlyActive) return
 
-    const start = Number(startRange)
-    const end = Number(endRange)
-    if (isRangeActive && start > 0 && end >= start) {
-      return words.filter((word) => word.id >= start && word.id <= end)
-    }
-
-    return words
-  }
-
-  const onlyChecked = (wordList) => wordList.filter((word) => checkedWordIds.includes(word.id))
-
-  const toggleCheckedOnly = () => {
-    if (isCheckedOnlyActive) {
-      const baseWords = getBaseWords()
-      setIsCheckedOnlyActive(false)
-      setFilteredWords(baseWords)
-      resetNavigation()
-      selectRandomWord(baseWords)
+    const filtered = getFilteredWords({ checkedIds: updatedIds })
+    if (filtered.length > 0) {
+      useFilteredWords(filtered)
       return
     }
 
-    const checkedWords = onlyChecked(getBaseWords())
+    const nextWords = getFilteredWords({ checkedOnly: false, checkedIds: updatedIds })
+    setIsCheckedOnlyActive(false)
+    toast({
+      title: '間違えた問題がなくなったため、絞り込みを解除しました',
+      status: 'info',
+      duration: 3000,
+      isClosable: true,
+      position: 'top',
+    })
+    useFilteredWords(nextWords)
+  }
 
-    if (checkedWords.length === 0) {
+  const toggleCheckedOnly = () => {
+    const nextCheckedOnly = !isCheckedOnlyActive
+    const filtered = getFilteredWords({ checkedOnly: nextCheckedOnly })
+
+    if (filtered.length === 0) {
       toast({
-        title: '間違えた問題がありません',
+        title: 'この条件に間違えた問題がありません',
         description: '単語カード左上のバツボタンから、出題したい問題を選んでください。',
         status: 'info',
         duration: 3000,
@@ -295,60 +326,71 @@ function App() {
       return
     }
 
-    setFilteredWords(checkedWords)
-    setIsCheckedOnlyActive(true)
-    setError(null)
-    resetNavigation()
-    selectRandomWord(checkedWords)
+    setIsCheckedOnlyActive(nextCheckedOnly)
+    useFilteredWords(filtered)
+  }
+
+  const togglePartOfSpeech = (partOfSpeech) => {
+    const nextPartOfSpeech = partOfSpeech
+      ? (selectedPartOfSpeech.includes(partOfSpeech)
+          ? selectedPartOfSpeech.filter((part) => part !== partOfSpeech)
+          : [...selectedPartOfSpeech, partOfSpeech])
+      : []
+    const filtered = getFilteredWords({ partOfSpeech: nextPartOfSpeech })
+
+    if (filtered.length === 0) {
+      toast({ title: 'この条件に一致する単語がありません', status: 'info', duration: 3000, isClosable: true, position: 'top' })
+      return
+    }
+
+    setSelectedPartOfSpeech(nextPartOfSpeech)
+    useFilteredWords(filtered)
   }
 
   // Partを選択/解除して範囲を適用
   const togglePart = (partKey) => {
-    const part = partRanges[partKey]
-    if (!part) return
+    if (!partRanges[partKey]) return
 
-    let newSelectedParts
-    if (selectedParts.includes(partKey)) {
-      // 既に選択されている場合は解除
-      newSelectedParts = selectedParts.filter(p => p !== partKey)
-    } else {
-      // 選択されていない場合は追加
-      newSelectedParts = [...selectedParts, partKey]
-    }
+    const nextSelectedParts = selectedParts.includes(partKey)
+      ? selectedParts.filter((part) => part !== partKey)
+      : [...selectedParts, partKey]
+    const filtered = getFilteredWords({
+      activeParts: nextSelectedParts,
+      rangeActive: nextSelectedParts.length > 0,
+      rangeStart: '',
+      rangeEnd: '',
+    })
 
-    // 選択がなくなった場合はリセット
-    if (newSelectedParts.length === 0) {
-      resetRange()
-      return
-    }
-
-    const partWords = filterWordsBySelectedParts(words, newSelectedParts, partRanges)
-    const filtered = isCheckedOnlyActive ? onlyChecked(partWords) : partWords
     if (filtered.length === 0) {
-      toast({ title: 'この範囲に間違えた問題がありません', status: 'info', duration: 3000, isClosable: true, position: 'top' })
+      toast({ title: 'この条件に一致する単語がありません', status: 'info', duration: 3000, isClosable: true, position: 'top' })
       return
     }
-    setSelectedParts(newSelectedParts)
-    setFilteredWords(filtered)
-    setIsRangeActive(true)
+
+    setSelectedParts(nextSelectedParts)
+    setIsRangeActive(nextSelectedParts.length > 0)
     setStartRange('')
     setEndRange('')
-    setError(null)
-    resetNavigation()
-    selectRandomWord(filtered)
+    useFilteredWords(filtered)
   }
 
-  // 範囲をリセット
+  // Partまたは番号の範囲だけをリセットする
   const resetRange = () => {
+    const nextWords = getFilteredWords({
+      activeParts: [],
+      rangeActive: false,
+      rangeStart: '',
+      rangeEnd: '',
+    })
+    if (nextWords.length === 0) {
+      toast({ title: '残っている絞り込み条件に一致する単語がありません', status: 'info', duration: 3000, isClosable: true, position: 'top' })
+      return
+    }
+
     setStartRange('')
     setEndRange('')
     setIsRangeActive(false)
     setSelectedParts([])
-    const nextWords = isCheckedOnlyActive ? onlyChecked(words) : words
-    setFilteredWords(nextWords)
-    setError(null)
-    resetNavigation()
-    selectRandomWord(nextWords)
+    useFilteredWords(nextWords)
   }
 
   // 出題履歴をリセット
@@ -621,6 +663,7 @@ function App() {
                   <>全{words.length}語からランダムに出題</>
                 )}
                 {isCheckedOnlyActive && <> ・ 間違えた問題のみ</>}
+                {selectedPartOfSpeech.length > 0 && <> ・ {selectedPartOfSpeech.map((part) => PART_OF_SPEECH_LABELS[part]).join('・')}</>}
             </Text>
             <HStack justify="center" spacing={3} mt={1} flexWrap="wrap">
               <Text color="teal.600" fontSize="sm" fontWeight="bold">
@@ -860,12 +903,15 @@ function App() {
             }}
             onResetRange={resetRange}
             onToggleCheckedOnly={toggleCheckedOnly}
+            onTogglePartOfSpeech={togglePartOfSpeech}
             onStartRangeChange={(value) => {
               setStartRange(value)
               setSelectedParts([])
             }}
             onTogglePart={togglePart}
+            partOfSpeechOptions={PART_OF_SPEECH_OPTIONS}
             partRanges={partRanges}
+            selectedPartOfSpeech={selectedPartOfSpeech}
             selectedParts={selectedParts}
             startRange={startRange}
           />
