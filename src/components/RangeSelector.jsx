@@ -34,9 +34,12 @@ export function RangeSelector({
   onEndRangeChange,
   onResetRange,
   onToggleCheckedOnly,
+  onTogglePartOfSpeech,
   onStartRangeChange,
   onTogglePart,
+  partOfSpeechOptions,
   partRanges,
+  selectedPartOfSpeech,
   selectedParts,
   startRange,
 }) {
@@ -55,6 +58,34 @@ export function RangeSelector({
             aria-label="間違えた問題のみの出題を切り替える"
           />
         </HStack>
+        <VStack align="stretch" spacing={3} mb={5} p={3} bg="blue.50" borderRadius="md">
+          <Box>
+            <Text fontSize="sm" fontWeight="bold">品詞で絞り込み</Text>
+            <Text fontSize="xs" color="gray.600">複数選択可。多義語は、選択した品詞を一つでも含めば表示します</Text>
+          </Box>
+          <SimpleGrid columns={{ base: 3, sm: 4, md: 5 }} spacing={2}>
+            {partOfSpeechOptions.map(({ key, label, colorScheme }) => {
+              const isSelected = selectedPartOfSpeech.includes(key)
+              return (
+                <Button
+                  key={key}
+                  onClick={() => onTogglePartOfSpeech(key)}
+                  colorScheme={isSelected ? colorScheme : 'gray'}
+                  variant={isSelected ? 'solid' : 'outline'}
+                  size="sm"
+                  aria-pressed={isSelected}
+                >
+                  {label}
+                </Button>
+              )
+            })}
+          </SimpleGrid>
+          {selectedPartOfSpeech.length > 0 && (
+            <Button onClick={() => onTogglePartOfSpeech()} size="sm" variant="ghost" alignSelf="flex-end">
+              品詞の絞り込みを解除
+            </Button>
+          )}
+        </VStack>
         <Tabs>
           <TabList>
             <Tab>Part選択</Tab>
