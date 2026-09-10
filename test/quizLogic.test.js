@@ -2,6 +2,8 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
   filterWordsBySelectedParts,
+  filterWordsByPartOfSpeech,
+  filterWordsByCriteria,
   formatMeaning,
   PART_RANGES,
   pickRandomUnusedWord,
@@ -17,6 +19,41 @@ test('formatMeaning renders one line for every structured sense', () => {
     { partOfSpeech: 'intransitive-verb', meaning: '賛成する' },
     { partOfSpeech: 'intransitive-verb', meaning: '意見が一致する' },
   ]), ['[自] 賛成する', '[自] 意見が一致する'])
+})
+
+test('filterWordsByPartOfSpeech includes a polysemous word when any meaning matches', () => {
+  const words = [
+    { id: 1, meanings: [{ partOfSpeech: 'noun' }, { partOfSpeech: 'transitive-verb' }] },
+    { id: 2, meanings: [{ partOfSpeech: 'adjective' }] },
+    { id: 3, meanings: [{ partOfSpeech: 'noun' }] },
+  ]
+
+  assert.deepEqual(
+    filterWordsByPartOfSpeech(words, ['transitive-verb', 'adjective']).map(({ id }) => id),
+    [1, 2],
+  )
+  assert.deepEqual(filterWordsByPartOfSpeech(words, []).map(({ id }) => id), [1, 2, 3])
+})
+
+test('filterWordsByCriteria intersects number range, mistake marks and part of speech', () => {
+  const words = [
+    { id: 100, meanings: [{ partOfSpeech: 'noun' }] },
+    { id: 200, meanings: [{ partOfSpeech: 'noun' }, { partOfSpeech: 'transitive-verb' }] },
+    { id: 300, meanings: [{ partOfSpeech: 'noun' }] },
+    { id: 400, meanings: [{ partOfSpeech: 'transitive-verb' }] },
+  ]
+
+  assert.deepEqual(
+    filterWordsByCriteria(words, {
+      isRangeActive: true,
+      startRange: 150,
+      endRange: 350,
+      isCheckedOnlyActive: true,
+      checkedWordIds: [100, 200, 400],
+      selectedPartOfSpeech: ['transitive-verb'],
+    }).map(({ id }) => id),
+    [200],
+  )
 })
 
 test('filterWordsBySelectedParts returns a union of non-adjacent parts', () => {
