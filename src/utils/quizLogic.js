@@ -70,6 +70,45 @@ export function filterWordsBySelectedParts(words, selectedParts, partRanges = PA
   )
 }
 
+/**
+ * Return words that have at least one selected part of speech.
+ * A polysemous word is included when any one of its meanings matches.
+ */
+export function filterWordsByPartOfSpeech(words, selectedPartOfSpeech) {
+  if (selectedPartOfSpeech.length === 0) return words
+
+  return words.filter((word) =>
+    Array.isArray(word.meanings) && word.meanings.some(({ partOfSpeech }) =>
+      selectedPartOfSpeech.includes(partOfSpeech),
+    ),
+  )
+}
+
+/** Apply the active base range, mistake marks, and part-of-speech filter together. */
+export function filterWordsByCriteria(words, {
+  selectedParts = [],
+  isRangeActive = false,
+  startRange = '',
+  endRange = '',
+  isCheckedOnlyActive = false,
+  checkedWordIds = [],
+  selectedPartOfSpeech = [],
+  partRanges = PART_RANGES,
+} = {}) {
+  const start = Number(startRange)
+  const end = Number(endRange)
+  const baseWords = selectedParts.length > 0
+    ? filterWordsBySelectedParts(words, selectedParts, partRanges)
+    : isRangeActive && start > 0 && end >= start
+      ? words.filter((word) => word.id >= start && word.id <= end)
+      : words
+  const checkedWords = isCheckedOnlyActive
+    ? baseWords.filter((word) => checkedWordIds.includes(word.id))
+    : baseWords
+
+  return filterWordsByPartOfSpeech(checkedWords, selectedPartOfSpeech)
+}
+
 export function searchEnglishWords(words, query, limit = 10) {
   const normalizedQuery = query.trim().toLocaleLowerCase('en')
   if (!normalizedQuery || !/[a-z]/.test(normalizedQuery)) return []
