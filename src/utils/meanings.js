@@ -11,6 +11,19 @@ export const PART_OF_SPEECH_TAGS = {
   phrase: '熟',
 }
 
+export const PART_OF_SPEECH_LABELS = {
+  noun: '名詞',
+  'transitive-verb': '他動詞',
+  'intransitive-verb': '自動詞',
+  verb: '動詞',
+  adjective: '形容詞',
+  adverb: '副詞',
+  preposition: '前置詞',
+  conjunction: '接続詞',
+  auxiliary: '助動詞',
+  phrase: '熟語',
+}
+
 const partsByTag = Object.fromEntries(
   Object.entries(PART_OF_SPEECH_TAGS).map(([part, tag]) => [tag, part]),
 )
