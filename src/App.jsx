@@ -98,6 +98,8 @@ function App() {
   const [endRange, setEndRange] = useState('')
   const [isRangeActive, setIsRangeActive] = useState(false)
   const [isCheckedOnlyActive, setIsCheckedOnlyActive] = useState(false)
+  // Keep quiz membership stable until the mistake-only filter is turned off.
+  const [checkedOnlyWordIds, setCheckedOnlyWordIds] = useState([])
   const [selectedPartOfSpeech, setSelectedPartOfSpeech] = useState([])
   const [checkedWordIds, setCheckedWordIds] = useState(() => getCheckedWordIdsFromCookie())
   const [selectedParts, setSelectedParts] = useState([]) // ['part1', 'part2', ...] 複数選択可能
@@ -175,6 +177,7 @@ function App() {
   const handleDataImported = (importedWords) => {
     setWords(importedWords)
     setError(null)
+    setCheckedOnlyWordIds([])
     setCheckedWordIds([])
     clearCheckedWordIdsFromCookie()
     setIsCheckedOnlyActive(false)
@@ -200,7 +203,7 @@ function App() {
     rangeStart = startRange,
     rangeEnd = endRange,
     checkedOnly = isCheckedOnlyActive,
-    checkedIds = checkedWordIds,
+    checkedIds = isCheckedOnlyActive ? checkedOnlyWordIds : checkedWordIds,
     partOfSpeech = selectedPartOfSpeech,
   } = {}) => {
     return filterWordsByCriteria(wordList, {
@@ -237,6 +240,7 @@ function App() {
 
       setFilteredWords([thankYouWord])
       setIsRangeActive(true)
+      setCheckedOnlyWordIds([])
       setIsCheckedOnlyActive(false)
       setSelectedPartOfSpeech([])
       setSelectedParts([])
@@ -290,29 +294,11 @@ function App() {
     saveCheckedWordIdsToCookie(updatedIds)
     setCheckedWordIds(updatedIds)
 
-    if (!isCheckedOnlyActive) return
-
-    const filtered = getFilteredWords({ checkedIds: updatedIds })
-    if (filtered.length > 0) {
-      useFilteredWords(filtered)
-      return
-    }
-
-    const nextWords = getFilteredWords({ checkedOnly: false, checkedIds: updatedIds })
-    setIsCheckedOnlyActive(false)
-    toast({
-      title: '間違えた問題がなくなったため、絞り込みを解除しました',
-      status: 'info',
-      duration: 3000,
-      isClosable: true,
-      position: 'top',
-    })
-    useFilteredWords(nextWords)
   }
 
   const toggleCheckedOnly = () => {
     const nextCheckedOnly = !isCheckedOnlyActive
-    const filtered = getFilteredWords({ checkedOnly: nextCheckedOnly })
+    const filtered = getFilteredWords({ checkedOnly: nextCheckedOnly, checkedIds: checkedWordIds })
 
     if (filtered.length === 0) {
       toast({
@@ -326,6 +312,7 @@ function App() {
       return
     }
 
+    setCheckedOnlyWordIds(nextCheckedOnly ? [...checkedWordIds] : [])
     setIsCheckedOnlyActive(nextCheckedOnly)
     useFilteredWords(filtered)
   }
