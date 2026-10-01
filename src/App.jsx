@@ -55,6 +55,7 @@ import {
   formatMeaning,
   PART_RANGES,
   pickRandomUnusedWord,
+  resetUsedWordIdsForWords,
 } from './utils/quizLogic'
 import { getPartOfSpeechTags, PART_OF_SPEECH_LABELS } from './utils/meanings'
 
@@ -408,14 +409,12 @@ function App() {
 
     // 現在の範囲内の全単語が出題済みの場合
     if (!nextUnusedWord) {
-      // すべて出題し切ったので、自動でキャッシュをリセットしてユーザーに通知
-      clearUsedWordIdsFromLocalStorage()
-      usedWordIdsRef.current = []
-      setUsedWordIds([])
+      // 現在の出題範囲だけをリセットし、範囲外の進捗を保持する
+      const remainingUsedIds = resetUsedWordIdsForWords(usedWordIdsRef.current, wordList)
 
       toast({
-        title: 'すべての単語を出題しました',
-        description: '履歴を削除して、同じ範囲から再度出題を開始します。',
+        title: 'この範囲の単語をすべて出題しました',
+        description: 'この範囲の出題済み履歴だけをリセットして、再度出題を開始します。',
         status: 'info',
         duration: 4000,
         isClosable: true,
@@ -428,8 +427,8 @@ function App() {
 
       showWord(nextWord, { addToHistory: true })
 
-      // 新しいキャッシュとして、この単語だけを出題済みとして保存
-      const updated = [nextWord.id]
+      // 範囲外の履歴と、新しいサイクルの最初の単語を保存する
+      const updated = [...remainingUsedIds, nextWord.id]
       usedWordIdsRef.current = updated
       setUsedWordIds(updated)
       saveUsedWordIdsToLocalStorage(updated)
