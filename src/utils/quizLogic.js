@@ -133,3 +133,9 @@ export function pickRandomUnusedWord(words, usedIds, random = Math.random) {
 
   return availableWords[Math.floor(random() * availableWords.length)]
 }
+
+/** Start a new cycle for these words while retaining progress outside the active pool. */
+export function resetUsedWordIdsForWords(usedIds, words) {
+  const wordIds = new Set(words.map((word) => word.id))
+  return usedIds.filter((id) => !wordIds.has(id))
+}
