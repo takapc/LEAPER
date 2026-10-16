@@ -11,6 +11,11 @@ the revised LEAP vocabulary book. The quiz is a client-side React application; a
 Function backed by Upstash Redis stores the anonymous global quiz count. There is no authentication.
 The bundled vocabulary data is the default source of truth at runtime.
 
+The product concept is: 「ログイン不要、モダンかつシンプルなUI・UXで、初めてでも感覚的な操作が可能」.
+Keep learning available without login and make controls understandable without a tutorial.
+Propose useful features and tags to the user as opportunities arise, while avoiding extra
+controls or complexity that dilute this concept.
+
 Prioritize, in this order:
 
 1. Correct quiz behavior and preservation of learning state.
@@ -89,6 +94,12 @@ Preserve these rules unless the user explicitly requests different behavior:
 - Exhausting the active range resets the used-word cycle and starts a new cycle in that same range.
 - Part selection supports a union of multiple parts. The detailed numeric range and Part selection
   are mutually exclusive base-range modes.
+- The タグ tab contains part-of-speech and 多義語 filters. A word must satisfy every selected
+  tag, together with the active base range and mistake filter. 多義語 means at least two
+  registered senses, including senses sharing the same part of speech.
+- Reject empty filter combinations with a clear message while preserving the prior selection,
+  card, navigation, progress, and counts. Editing numeric range inputs does not apply them;
+  only 適用 changes the active numeric range.
 - The "間違えた問題のみ" filter composes with the active base range. If the intersection is empty,
   keep the current usable state and explain the result to the user.
 - Changing the active dataset or range resets navigation so previous/next cannot surface a word

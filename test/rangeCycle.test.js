@@ -125,7 +125,7 @@ test('mistake and part-of-speech filters reset only words in their active inters
   const selected = quizLogic.filterWordsByCriteria(wordList, {
     selectedParts: ['part1'],
     isCheckedOnlyActive: true, checkedWordIds: [100, 200, 500],
-    selectedPartOfSpeech: ['noun'],
+    selectedTags: ['noun'],
   })
   const s = session(selected, [100, 200, 300, 500])
 

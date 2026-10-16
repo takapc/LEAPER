@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import {
   filterWordsBySelectedParts,
   filterWordsByPartOfSpeech,
+  filterWordsByTags,
   filterWordsByCriteria,
   formatMeaning,
   PART_RANGES,
@@ -13,6 +14,7 @@ import {
   getTotalQuizCountFromLocalStorage,
   saveTotalQuizCountToLocalStorage,
 } from '../src/utils/learningStats.js'
+import { normalizeWordMeanings } from '../src/utils/meanings.js'
 
 test('formatMeaning renders one line for every structured sense', () => {
   assert.deepEqual(formatMeaning([
@@ -21,7 +23,7 @@ test('formatMeaning renders one line for every structured sense', () => {
   ]), ['[自] 賛成する', '[自] 意見が一致する'])
 })
 
-test('filterWordsByPartOfSpeech includes a polysemous word when any meaning matches', () => {
+test('part-of-speech tags require every selected part, across different senses', () => {
   const words = [
     { id: 1, meanings: [{ partOfSpeech: 'noun' }, { partOfSpeech: 'transitive-verb' }] },
     { id: 2, meanings: [{ partOfSpeech: 'adjective' }] },
@@ -29,9 +31,11 @@ test('filterWordsByPartOfSpeech includes a polysemous word when any meaning matc
   ]
 
   assert.deepEqual(
-    filterWordsByPartOfSpeech(words, ['transitive-verb', 'adjective']).map(({ id }) => id),
-    [1, 2],
+    filterWordsByPartOfSpeech(words, ['noun', 'transitive-verb']).map(({ id }) => id),
+    [1],
   )
+  assert.deepEqual(filterWordsByPartOfSpeech(words, ['transitive-verb', 'adjective']), [])
+  assert.deepEqual(filterWordsByPartOfSpeech(words, ['noun']).map(({ id }) => id), [1, 3])
   assert.deepEqual(filterWordsByPartOfSpeech(words, []).map(({ id }) => id), [1, 2, 3])
 })
 
@@ -50,10 +54,57 @@ test('filterWordsByCriteria intersects number range, mistake marks and part of s
       endRange: 350,
       isCheckedOnlyActive: true,
       checkedWordIds: [100, 200, 400],
-      selectedPartOfSpeech: ['transitive-verb'],
+      selectedTags: ['transitive-verb'],
     }).map(({ id }) => id),
     [200],
   )
+})
+
+test('polysemy includes two senses of the same part of speech and untagged imported senses', () => {
+  const words = normalizeWordMeanings([
+    { id: 1, meaning: '[名] ①助言 ②先端' },
+    { id: 2, meaning: '[名] 記録 [他] 記録する' },
+    { id: 3, meaning: '[名] 単独の意味' },
+    { id: 4, meaning: '①意味その一 ②意味その二' },
+  ])
+  assert.deepEqual(filterWordsByTags(words, ['polysemous']).map(({ id }) => id), [1, 2, 4])
+  assert.deepEqual(filterWordsByTags(words, ['noun', 'polysemous']).map(({ id }) => id), [1, 2])
+  assert.deepEqual(filterWordsByTags(words, ['noun', 'transitive-verb', 'polysemous']).map(({ id }) => id), [2])
+  assert.deepEqual(filterWordsByTags(words, ['adjective', 'polysemous']), [])
+  assert.equal(filterWordsByTags(words, []), words)
+})
+
+test('tags reject absent meanings and unknown tags without mutating words or selection', () => {
+  const words = Object.freeze([
+    Object.freeze({ id: 1 }),
+    Object.freeze({ id: 2, meanings: [] }),
+    Object.freeze({ id: 3, meanings: [{ partOfSpeech: 'noun' }] }),
+  ])
+  const tags = Object.freeze(['noun', 'polysemous'])
+  assert.deepEqual(filterWordsByTags(words, tags), [])
+  assert.deepEqual(filterWordsByTags(words, ['unknown']), [])
+  assert.deepEqual(filterWordsByTags([], ['polysemous']), [])
+  assert.deepEqual(tags, ['noun', 'polysemous'])
+})
+
+test('all tags intersect Part unions, detailed ranges, and mistake marks', () => {
+  const meanings = [{ partOfSpeech: 'noun' }, { partOfSpeech: 'transitive-verb' }]
+  const words = [
+    { id: 100, meanings },
+    { id: 200, meanings: [{ partOfSpeech: 'noun' }] },
+    { id: 500, meanings },
+    { id: 1100, meanings },
+    { id: 1200, meanings },
+  ]
+  const selectedTags = ['noun', 'transitive-verb', 'polysemous']
+  assert.deepEqual(filterWordsByCriteria(words, {
+    selectedParts: ['part1', 'part3'], selectedTags,
+    isCheckedOnlyActive: true, checkedWordIds: [100, 200, 500, 1100],
+  }).map(({ id }) => id), [100, 1100])
+  assert.deepEqual(filterWordsByCriteria(words, {
+    isRangeActive: true, startRange: 200, endRange: 1100, selectedTags,
+    isCheckedOnlyActive: true, checkedWordIds: [100, 200, 1100, 1200],
+  }).map(({ id }) => id), [1100])
 })
 
 test('filterWordsBySelectedParts returns a union of non-adjacent parts', () => {

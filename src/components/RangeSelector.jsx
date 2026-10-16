@@ -1,4 +1,7 @@
 import {
+  Alert,
+  AlertIcon,
+  Badge,
   Box,
   Button,
   Card,
@@ -22,77 +25,50 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
+import { CheckIcon } from '@chakra-ui/icons'
+import { PART_OF_SPEECH_LABELS } from '../utils/meanings.js'
 
 export function RangeSelector({
   cardBg,
   checkedWordCount,
   endRange,
+  filterError,
   isRangeActive,
   isCheckedOnlyActive,
   maxWordId,
+  matchingWordCount,
   onApplyRange,
   onEndRangeChange,
   onResetRange,
   onToggleCheckedOnly,
-  onTogglePartOfSpeech,
+  onToggleTag,
   onStartRangeChange,
   onTogglePart,
-  partOfSpeechOptions,
   partRanges,
-  selectedPartOfSpeech,
+  selectedTags,
   selectedParts,
   startRange,
 }) {
   return (
     <Card bg={cardBg} boxShadow="md">
       <CardBody p={4}>
-        <HStack justify="space-between" mb={4} p={3} bg="gray.50" borderRadius="md">
-          <Box>
-            <Text fontSize="sm" fontWeight="bold">間違えた問題のみ</Text>
-            <Text fontSize="xs" color="gray.500">マーク済み {checkedWordCount}問に絞り込みます</Text>
-          </Box>
-          <Switch
-            colorScheme="red"
-            isChecked={isCheckedOnlyActive}
-            onChange={onToggleCheckedOnly}
-            aria-label="間違えた問題のみの出題を切り替える"
-          />
-        </HStack>
-        <VStack align="stretch" spacing={3} mb={5} p={3} bg="blue.50" borderRadius="md">
-          <Box>
-            <Text fontSize="sm" fontWeight="bold">品詞で絞り込み</Text>
-            <Text fontSize="xs" color="gray.600">複数選択可。多義語は、選択した品詞を一つでも含めば表示します</Text>
-          </Box>
-          <SimpleGrid columns={{ base: 3, sm: 4, md: 5 }} spacing={2}>
-            {partOfSpeechOptions.map(({ key, label, colorScheme }) => {
-              const isSelected = selectedPartOfSpeech.includes(key)
-              return (
-                <Button
-                  key={key}
-                  onClick={() => onTogglePartOfSpeech(key)}
-                  colorScheme={isSelected ? colorScheme : 'gray'}
-                  variant={isSelected ? 'solid' : 'outline'}
-                  size="sm"
-                  aria-pressed={isSelected}
-                >
-                  {label}
-                </Button>
-              )
-            })}
-          </SimpleGrid>
-          {selectedPartOfSpeech.length > 0 && (
-            <Button onClick={() => onTogglePartOfSpeech()} size="sm" variant="ghost" alignSelf="flex-end">
-              品詞の絞り込みを解除
-            </Button>
-          )}
-        </VStack>
-        <Tabs>
-          <TabList>
+        <Tabs isLazy colorScheme="blue">
+          <TabList aria-label="出題条件">
             <Tab>Part選択</Tab>
             <Tab>詳細範囲</Tab>
+            <Tab gap={2}>
+              タグ
+              {selectedTags.length > 0 && <Badge colorScheme="blue" borderRadius="full">{selectedTags.length}</Badge>}
+            </Tab>
           </TabList>
+          {filterError && (
+            <Alert status="warning" mt={4} borderRadius="md" fontSize="sm">
+              <AlertIcon />
+              {filterError}
+            </Alert>
+          )}
           <TabPanels>
-            <TabPanel>
+            <TabPanel px={0}>
               <VStack spacing={4} align="stretch">
                 <Text fontSize="sm" fontWeight="bold" color="gray.700">
                   Partを選択
@@ -107,6 +83,7 @@ export function RangeSelector({
                         colorScheme={isSelected ? 'blue' : 'gray'}
                         variant={isSelected ? 'solid' : 'outline'}
                         size="md"
+                        aria-pressed={isSelected}
                       >
                         {part.label}
                       </Button>
@@ -120,16 +97,16 @@ export function RangeSelector({
                 )}
               </VStack>
             </TabPanel>
-            <TabPanel>
+            <TabPanel px={0}>
               <VStack spacing={4} align="stretch">
                 <Text fontSize="sm" fontWeight="bold" color="gray.700">
                   出題範囲を指定（No.）
                 </Text>
                 <Stack direction={{ base: 'column', md: 'row' }} spacing={4} align={{ base: 'stretch', md: 'flex-end' }}>
                   <FormControl>
-                    <FormLabel fontSize="xs">開始No.</FormLabel>
+                    <FormLabel htmlFor="range-start" fontSize="xs">開始No.</FormLabel>
                     <NumberInput value={startRange} onChange={onStartRangeChange} min={1} max={maxWordId || 1}>
-                      <NumberInputField />
+                      <NumberInputField id="range-start" />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
@@ -138,9 +115,9 @@ export function RangeSelector({
                   </FormControl>
                   <Text textAlign="center">～</Text>
                   <FormControl>
-                    <FormLabel fontSize="xs">終了No.</FormLabel>
+                    <FormLabel htmlFor="range-end" fontSize="xs">終了No.</FormLabel>
                     <NumberInput value={endRange} onChange={onEndRangeChange} min={1} max={maxWordId || 1}>
-                      <NumberInputField />
+                      <NumberInputField id="range-end" />
                       <NumberInputStepper>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
@@ -167,7 +144,77 @@ export function RangeSelector({
                 )}
               </VStack>
             </TabPanel>
+            <TabPanel px={0}>
+              <VStack align="stretch" spacing={5}>
+                <Box>
+                  <Text fontSize="sm" fontWeight="bold">選んだタグをすべて満たす単語を出題</Text>
+                  <Text fontSize="xs" color="gray.600" mt={1}>Part・詳細範囲とも組み合わせられます。</Text>
+                </Box>
+                <Box role="group" aria-labelledby="part-of-speech-tags">
+                  <Text id="part-of-speech-tags" fontSize="sm" fontWeight="bold" mb={2}>品詞</Text>
+                  <SimpleGrid columns={{ base: 3, sm: 4, md: 5 }} spacing={2}>
+                    {Object.entries(PART_OF_SPEECH_LABELS).map(([key, label]) => {
+                      const isSelected = selectedTags.includes(key)
+                      return (
+                        <Button
+                          key={key}
+                          onClick={() => onToggleTag(key)}
+                          colorScheme={isSelected ? 'blue' : 'gray'}
+                          variant={isSelected ? 'solid' : 'outline'}
+                          size="sm"
+                          minH="44px"
+                          px={2}
+                          leftIcon={isSelected ? <CheckIcon boxSize={3} /> : undefined}
+                          aria-pressed={isSelected}
+                        >
+                          {label}
+                        </Button>
+                      )
+                    })}
+                  </SimpleGrid>
+                </Box>
+                <Box role="group" aria-labelledby="word-feature-tags">
+                  <Text id="word-feature-tags" fontSize="sm" fontWeight="bold" mb={2}>単語の特徴</Text>
+                  <Button
+                    onClick={() => onToggleTag('polysemous')}
+                    colorScheme={selectedTags.includes('polysemous') ? 'blue' : 'gray'}
+                    variant={selectedTags.includes('polysemous') ? 'solid' : 'outline'}
+                    size="sm"
+                    minH="44px"
+                    leftIcon={selectedTags.includes('polysemous') ? <CheckIcon boxSize={3} /> : undefined}
+                    aria-pressed={selectedTags.includes('polysemous')}
+                    aria-describedby="polysemous-help"
+                  >
+                    多義語
+                  </Button>
+                  <Text id="polysemous-help" fontSize="xs" color="gray.600" mt={2}>
+                    登録された意味が2つ以上ある単語。品詞が同じでも対象です。
+                  </Text>
+                </Box>
+                <HStack justify="space-between" p={3} bg="gray.50" borderRadius="md">
+                  <Box as="label" htmlFor="checked-only" cursor="pointer">
+                    <Text fontSize="sm" fontWeight="bold">間違えた問題のみ</Text>
+                    <Text fontSize="xs" color="gray.600">マーク済み {checkedWordCount}問に絞り込みます</Text>
+                  </Box>
+                  <Switch
+                    id="checked-only"
+                    colorScheme="red"
+                    isChecked={isCheckedOnlyActive}
+                    onChange={onToggleCheckedOnly}
+                    aria-label="間違えた問題のみの出題を切り替える"
+                  />
+                </HStack>
+                {selectedTags.length > 0 && (
+                  <Button onClick={() => onToggleTag()} minH="44px" size="sm" variant="ghost" alignSelf="flex-end">
+                    タグを解除
+                  </Button>
+                )}
+              </VStack>
+            </TabPanel>
           </TabPanels>
+          <Text fontSize="xs" color="gray.600" mt={1} aria-live="polite" aria-atomic="true">
+            出題対象 {matchingWordCount.toLocaleString()}語
+          </Text>
         </Tabs>
       </CardBody>
     </Card>

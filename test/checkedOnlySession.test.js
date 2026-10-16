@@ -16,7 +16,7 @@ function session(ids = [100, 200]) {
   const state = {
     words: [100, 200, 500].map((id) => ({ id, meanings: [{ partOfSpeech: 'noun' }] })),
     selectedParts: [], isRangeActive: false, startRange: '', endRange: '',
-    selectedPartOfSpeech: [], isCheckedOnlyActive: false,
+    selectedTags: [], isCheckedOnlyActive: false, appliedRange: { start: '', end: '' },
     checkedWordIds: ids, checkedOnlyWordIds: [], partRanges: PART_RANGES,
     filterWordsByCriteria, draws: 0, notices: [], saved: [],
   }
@@ -73,11 +73,11 @@ test('number, Part and speech filtering retain unmarked session words; recheckin
   s.toggleCurrentWordChecked()
   for (const criteria of [
     { rangeActive: true, rangeStart: 100, rangeEnd: 100 },
-    { activeParts: ['part1'], partOfSpeech: ['noun'] },
+    { activeParts: ['part1'], tags: ['noun'] },
   ]) {
     assert.ok(s.getFilteredWords(criteria).some((w) => w.id === 100))
   }
-  assert.deepEqual(s.getFilteredWords({ partOfSpeech: ['adjective'] }), [])
+  assert.deepEqual(s.getFilteredWords({ tags: ['adjective'] }), [])
   s.toggleCurrentWordChecked()
   assert.deepEqual(s.saved, [200, 100])
   assert.equal(s.draws, 1)

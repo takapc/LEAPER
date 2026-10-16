@@ -52,25 +52,13 @@ import { WordSearch } from './components/WordSearch'
 import packageJson from '../package.json'
 import {
   filterWordsByCriteria,
+  WORD_TAG_LABELS,
   formatMeaning,
   PART_RANGES,
   pickRandomUnusedWord,
   resetUsedWordIdsForWords,
 } from './utils/quizLogic'
-import { getPartOfSpeechTags, PART_OF_SPEECH_LABELS } from './utils/meanings'
-
-const PART_OF_SPEECH_OPTIONS = [
-  ['noun', 'blue'],
-  ['transitive-verb', 'red'],
-  ['intransitive-verb', 'teal'],
-  ['verb', 'cyan'],
-  ['adjective', 'green'],
-  ['adverb', 'purple'],
-  ['preposition', 'orange'],
-  ['conjunction', 'yellow'],
-  ['auxiliary', 'pink'],
-  ['phrase', 'gray'],
-].map(([key, colorScheme]) => ({ key, colorScheme, label: PART_OF_SPEECH_LABELS[key] }))
+import { getPartOfSpeechTags } from './utils/meanings'
 
 function App() {
   const [words, setWords] = useState([]) // 全単語データ
@@ -101,7 +89,9 @@ function App() {
   const [isCheckedOnlyActive, setIsCheckedOnlyActive] = useState(false)
   // Keep quiz membership stable until the mistake-only filter is turned off.
   const [checkedOnlyWordIds, setCheckedOnlyWordIds] = useState([])
-  const [selectedPartOfSpeech, setSelectedPartOfSpeech] = useState([])
+  const [selectedTags, setSelectedTags] = useState([])
+  const [filterError, setFilterError] = useState('')
+  const [appliedRange, setAppliedRange] = useState({ start: '', end: '' })
   const [checkedWordIds, setCheckedWordIds] = useState(() => getCheckedWordIdsFromCookie())
   const [selectedParts, setSelectedParts] = useState([]) // ['part1', 'part2', ...] 複数選択可能
   const [isAutoPlay, setIsAutoPlay] = useState(false)
@@ -201,11 +191,11 @@ function App() {
     wordList = words,
     activeParts = selectedParts,
     rangeActive = isRangeActive,
-    rangeStart = startRange,
-    rangeEnd = endRange,
+    rangeStart = appliedRange.start,
+    rangeEnd = appliedRange.end,
     checkedOnly = isCheckedOnlyActive,
     checkedIds = isCheckedOnlyActive ? checkedOnlyWordIds : checkedWordIds,
-    partOfSpeech = selectedPartOfSpeech,
+    tags = selectedTags,
   } = {}) => {
     return filterWordsByCriteria(wordList, {
       selectedParts: activeParts,
@@ -214,7 +204,7 @@ function App() {
       endRange: rangeEnd,
       isCheckedOnlyActive: checkedOnly,
       checkedWordIds: checkedIds,
-      selectedPartOfSpeech: partOfSpeech,
+      selectedTags: tags,
       partRanges,
     })
   }
@@ -222,6 +212,7 @@ function App() {
   const useFilteredWords = (nextWords) => {
     setFilteredWords(nextWords)
     setError(null)
+    setFilterError('')
     resetNavigation()
     selectRandomWord(nextWords)
   }
@@ -243,7 +234,9 @@ function App() {
       setIsRangeActive(true)
       setCheckedOnlyWordIds([])
       setIsCheckedOnlyActive(false)
-      setSelectedPartOfSpeech([])
+      setSelectedTags([])
+      setFilterError('')
+      setAppliedRange({ start: '2009', end: '213' })
       setSelectedParts([])
       setError(null)
       setStartRange('2009')
@@ -260,7 +253,7 @@ function App() {
     if (!startNum || !endNum) return
 
     if (startNum > endNum) {
-      setError('開始No.は終了No.以下である必要があります。')
+      setFilterError('開始No.は終了No.以下で指定してください。現在の出題条件は変更していません。')
       return
     }
 
@@ -275,11 +268,12 @@ function App() {
     })
 
     if (filtered.length === 0) {
-      setError(`No. ${minId}～${maxId} の条件に一致する単語がありませんでした。`)
+      setFilterError(`No. ${minId}～${maxId} と現在のタグに一致する単語がありません。出題条件は変更していません。`)
       return
     }
 
     setIsRangeActive(true)
+    setAppliedRange({ start: minId.toString(), end: maxId.toString() })
     setSelectedParts([])
     setStartRange(minId.toString())
     setEndRange(maxId.toString())
@@ -318,20 +312,20 @@ function App() {
     useFilteredWords(filtered)
   }
 
-  const togglePartOfSpeech = (partOfSpeech) => {
-    const nextPartOfSpeech = partOfSpeech
-      ? (selectedPartOfSpeech.includes(partOfSpeech)
-          ? selectedPartOfSpeech.filter((part) => part !== partOfSpeech)
-          : [...selectedPartOfSpeech, partOfSpeech])
+  const toggleTag = (tag) => {
+    const nextTags = tag
+      ? (selectedTags.includes(tag)
+          ? selectedTags.filter((selectedTag) => selectedTag !== tag)
+          : [...selectedTags, tag])
       : []
-    const filtered = getFilteredWords({ partOfSpeech: nextPartOfSpeech })
+    const filtered = getFilteredWords({ tags: nextTags })
 
     if (filtered.length === 0) {
-      toast({ title: 'この条件に一致する単語がありません', status: 'info', duration: 3000, isClosable: true, position: 'top' })
+      setFilterError('選択したタグをすべて満たす単語が、この出題範囲にありません。出題条件は変更していません。')
       return
     }
 
-    setSelectedPartOfSpeech(nextPartOfSpeech)
+    setSelectedTags(nextTags)
     useFilteredWords(filtered)
   }
 
@@ -350,12 +344,13 @@ function App() {
     })
 
     if (filtered.length === 0) {
-      toast({ title: 'この条件に一致する単語がありません', status: 'info', duration: 3000, isClosable: true, position: 'top' })
+      setFilterError('選択したPartと現在のタグに一致する単語がありません。出題条件は変更していません。')
       return
     }
 
     setSelectedParts(nextSelectedParts)
     setIsRangeActive(nextSelectedParts.length > 0)
+    setAppliedRange({ start: '', end: '' })
     setStartRange('')
     setEndRange('')
     useFilteredWords(filtered)
@@ -376,6 +371,7 @@ function App() {
 
     setStartRange('')
     setEndRange('')
+    setAppliedRange({ start: '', end: '' })
     setIsRangeActive(false)
     setSelectedParts([])
     useFilteredWords(nextWords)
@@ -641,7 +637,7 @@ function App() {
                       </>
                     ) : (
                       <>
-                        No. {startRange}～{endRange} ({filteredWords.length}語)
+                        No. {appliedRange.start}～{appliedRange.end} ({filteredWords.length}語)
                       </>
                     )}
                   </>
@@ -649,7 +645,7 @@ function App() {
                   <>全{words.length}語からランダムに出題</>
                 )}
                 {isCheckedOnlyActive && <> ・ 間違えた問題のみ</>}
-                {selectedPartOfSpeech.length > 0 && <> ・ {selectedPartOfSpeech.map((part) => PART_OF_SPEECH_LABELS[part]).join('・')}</>}
+                {selectedTags.length > 0 && <> ・ {selectedTags.map((tag) => WORD_TAG_LABELS[tag]).join('・')}</>}
             </Text>
             <HStack justify="center" spacing={3} mt={1} flexWrap="wrap">
               <Text color="teal.600" fontSize="sm" fontWeight="bold">
@@ -885,19 +881,18 @@ function App() {
             onApplyRange={() => applyRange()}
             onEndRangeChange={(value) => {
               setEndRange(value)
-              setSelectedParts([])
             }}
             onResetRange={resetRange}
             onToggleCheckedOnly={toggleCheckedOnly}
-            onTogglePartOfSpeech={togglePartOfSpeech}
+            onToggleTag={toggleTag}
             onStartRangeChange={(value) => {
               setStartRange(value)
-              setSelectedParts([])
             }}
             onTogglePart={togglePart}
-            partOfSpeechOptions={PART_OF_SPEECH_OPTIONS}
+            filterError={filterError}
+            matchingWordCount={totalInRange}
             partRanges={partRanges}
-            selectedPartOfSpeech={selectedPartOfSpeech}
+            selectedTags={selectedTags}
             selectedParts={selectedParts}
             startRange={startRange}
           />

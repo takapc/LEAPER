@@ -1,4 +1,9 @@
-import { meaningsToText } from './meanings.js'
+import { meaningsToText, PART_OF_SPEECH_LABELS } from './meanings.js'
+
+export const WORD_TAG_LABELS = {
+  ...PART_OF_SPEECH_LABELS,
+  polysemous: '多義語',
+}
 
 export const PART_RANGES = {
   part1: { start: 1, end: 400, label: 'Part 1' },
@@ -71,20 +76,27 @@ export function filterWordsBySelectedParts(words, selectedParts, partRanges = PA
 }
 
 /**
- * Return words that have at least one selected part of speech.
- * A polysemous word is included when any one of its meanings matches.
+ * Require every selected part of speech; different meanings can satisfy each tag.
  */
 export function filterWordsByPartOfSpeech(words, selectedPartOfSpeech) {
   if (selectedPartOfSpeech.length === 0) return words
 
   return words.filter((word) =>
-    Array.isArray(word.meanings) && word.meanings.some(({ partOfSpeech }) =>
-      selectedPartOfSpeech.includes(partOfSpeech),
+    Array.isArray(word.meanings) && selectedPartOfSpeech.every((selectedPart) =>
+      word.meanings.some(({ partOfSpeech }) => partOfSpeech === selectedPart),
     ),
   )
 }
 
-/** Apply the active base range, mistake marks, and part-of-speech filter together. */
+/** Polysemy counts individual registered senses, including senses of the same part of speech. */
+export function filterWordsByTags(words, selectedTags) {
+  const taggedWords = filterWordsByPartOfSpeech(words, selectedTags.filter((tag) => tag !== 'polysemous'))
+  return selectedTags.includes('polysemous')
+    ? taggedWords.filter((word) => Array.isArray(word.meanings) && word.meanings.length >= 2)
+    : taggedWords
+}
+
+/** Apply the active base range, mistake marks, and all selected tags together. */
 export function filterWordsByCriteria(words, {
   selectedParts = [],
   isRangeActive = false,
@@ -92,7 +104,7 @@ export function filterWordsByCriteria(words, {
   endRange = '',
   isCheckedOnlyActive = false,
   checkedWordIds = [],
-  selectedPartOfSpeech = [],
+  selectedTags = [],
   partRanges = PART_RANGES,
 } = {}) {
   const start = Number(startRange)
@@ -106,7 +118,7 @@ export function filterWordsByCriteria(words, {
     ? baseWords.filter((word) => checkedWordIds.includes(word.id))
     : baseWords
 
-  return filterWordsByPartOfSpeech(checkedWords, selectedPartOfSpeech)
+  return filterWordsByTags(checkedWords, selectedTags)
 }
 
 export function searchEnglishWords(words, query, limit = 10) {
