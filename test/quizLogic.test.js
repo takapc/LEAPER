@@ -87,6 +87,40 @@ test('tags reject absent meanings and unknown tags without mutating words or sel
   assert.deepEqual(tags, ['noun', 'polysemous'])
 })
 
+test('three-or-more-meanings counts senses across parts of speech and normalized imports', () => {
+  const words = normalizeWordMeanings([
+    { id: 1, meaning: '[名] 単独の意味' },
+    { id: 2, meaning: '[名] ①助言 ②先端' },
+    { id: 3, meaning: '[名] ①助言 ②先端 ③チップ' },
+    { id: 4, meaning: '[名] ①記録 ②成績 [他] 記録する' },
+    { id: 5, meaning: '①意味その一 ②意味その二 ③意味その三 ④意味その四' },
+  ])
+  const tags = Object.freeze(['three-or-more-meanings'])
+  assert.deepEqual(filterWordsByTags(words, tags).map(({ id }) => id), [3, 4, 5])
+  assert.deepEqual(filterWordsByTags(words, [...tags, 'polysemous']).map(({ id }) => id), [3, 4, 5])
+  assert.deepEqual(filterWordsByTags(words, [...tags, 'noun', 'transitive-verb']).map(({ id }) => id), [4])
+  assert.deepEqual(filterWordsByTags(words, [...tags, 'adjective']), [])
+  assert.deepEqual(filterWordsByTags([{ id: 6 }, { id: 7, meanings: [] }], tags), [])
+  assert.deepEqual(filterWordsByTags([], tags), [])
+  assert.equal(words[1].meanings.length, 2)
+  assert.deepEqual(tags, ['three-or-more-meanings'])
+})
+
+test('three-sense tags compose with range and stable mistake membership', () => {
+  const words = [100, 200, 500].map((id) => ({
+    id, meanings: Array.from({ length: id === 100 ? 2 : 3 }, () => ({ partOfSpeech: 'noun' })),
+  }))
+  for (const range of [
+    { selectedParts: ['part1'] },
+    { isRangeActive: true, startRange: 100, endRange: 400 },
+  ]) {
+    assert.deepEqual(filterWordsByCriteria(words, {
+      ...range, selectedTags: ['noun', 'three-or-more-meanings'],
+      isCheckedOnlyActive: true, checkedWordIds: [100, 200, 500],
+    }).map(({ id }) => id), [200])
+  }
+})
+
 test('all tags intersect Part unions, detailed ranges, and mistake marks', () => {
   const meanings = [{ partOfSpeech: 'noun' }, { partOfSpeech: 'transitive-verb' }]
   const words = [

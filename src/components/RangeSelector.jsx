@@ -27,6 +27,7 @@ import {
 } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons'
 import { PART_OF_SPEECH_LABELS } from '../utils/meanings.js'
+import { MEANING_COUNT_TAGS, WORD_TAG_LABELS } from '../utils/quizLogic.js'
 
 export function RangeSelector({
   cardBg,
@@ -54,9 +55,9 @@ export function RangeSelector({
       <CardBody p={4}>
         <Tabs isLazy colorScheme="blue">
           <TabList aria-label="出題条件">
-            <Tab>Part選択</Tab>
-            <Tab>詳細範囲</Tab>
-            <Tab gap={2}>
+            <Tab flex={1} minW={0} px={2} whiteSpace="nowrap">Part選択</Tab>
+            <Tab flex={1} minW={0} px={2} whiteSpace="nowrap">詳細範囲</Tab>
+            <Tab flex={1} minW={0} px={2} whiteSpace="nowrap" gap={2}>
               タグ
               {selectedTags.length > 0 && <Badge colorScheme="blue" borderRadius="full">{selectedTags.length}</Badge>}
             </Tab>
@@ -175,20 +176,28 @@ export function RangeSelector({
                 </Box>
                 <Box role="group" aria-labelledby="word-feature-tags">
                   <Text id="word-feature-tags" fontSize="sm" fontWeight="bold" mb={2}>単語の特徴</Text>
-                  <Button
-                    onClick={() => onToggleTag('polysemous')}
-                    colorScheme={selectedTags.includes('polysemous') ? 'blue' : 'gray'}
-                    variant={selectedTags.includes('polysemous') ? 'solid' : 'outline'}
-                    size="sm"
-                    minH="44px"
-                    leftIcon={selectedTags.includes('polysemous') ? <CheckIcon boxSize={3} /> : undefined}
-                    aria-pressed={selectedTags.includes('polysemous')}
-                    aria-describedby="polysemous-help"
-                  >
-                    多義語
-                  </Button>
-                  <Text id="polysemous-help" fontSize="xs" color="gray.600" mt={2}>
-                    登録された意味が2つ以上ある単語。品詞が同じでも対象です。
+                  <HStack spacing={2} flexWrap="wrap">
+                    {Object.keys(MEANING_COUNT_TAGS).map((key) => {
+                      const isSelected = selectedTags.includes(key)
+                      return (
+                        <Button
+                          key={key}
+                          onClick={() => onToggleTag(key)}
+                          colorScheme={isSelected ? 'blue' : 'gray'}
+                          variant={isSelected ? 'solid' : 'outline'}
+                          size="sm"
+                          minH="44px"
+                          leftIcon={isSelected ? <CheckIcon boxSize={3} /> : undefined}
+                          aria-pressed={isSelected}
+                          aria-describedby="meaning-count-help"
+                        >
+                          {WORD_TAG_LABELS[key]}
+                        </Button>
+                      )
+                    })}
+                  </HStack>
+                  <Text id="meaning-count-help" fontSize="xs" color="gray.600" mt={2}>
+                    多義語は登録された意味が2つ以上。同じ品詞の意味も数えます。
                   </Text>
                 </Box>
                 <HStack justify="space-between" p={3} bg="gray.50" borderRadius="md">

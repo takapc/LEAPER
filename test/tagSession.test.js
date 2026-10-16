@@ -143,3 +143,28 @@ test('invalid numeric order keeps the quiz usable; the thank-you shortcut clears
   assert.equal(s.currentWord.id, 2009213)
   assert.equal(s.filterError, '')
 })
+
+test('three-sense tag resets history on success and preserves state when no word matches', () => {
+  const s = session()
+  s.words = s.words.map((word) => word.id === 200
+    ? { ...word, meanings: [...word.meanings, { partOfSpeech: 'noun' }] }
+    : word)
+  s.togglePart('part1')
+  s.toggleTag('three-or-more-meanings')
+  assert.deepEqual(ids(s.filteredWords), [200])
+  assert.deepEqual(ids(s.wordHistory), [200])
+  assert.equal(s.canGoPrevious, false)
+  s.toggleTag('polysemous')
+  assert.deepEqual(ids(s.filteredWords), [200])
+  s.toggleTag('three-or-more-meanings')
+  assert.deepEqual(ids(s.filteredWords), [100, 200])
+
+  const empty = session()
+  empty.toggleTag('polysemous')
+  const { currentWord, filteredWords, selectedTags, wordHistory, draws } = empty
+  empty.toggleTag('three-or-more-meanings')
+  assert.match(empty.filterError, /すべて満たす単語.*ありません/)
+  for (const [key, value] of Object.entries({ currentWord, filteredWords, selectedTags, wordHistory, draws })) {
+    assert.equal(empty[key], value, key)
+  }
+})

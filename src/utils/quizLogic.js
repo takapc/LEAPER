@@ -1,8 +1,14 @@
 import { meaningsToText, PART_OF_SPEECH_LABELS } from './meanings.js'
 
+export const MEANING_COUNT_TAGS = {
+  polysemous: 2,
+  'three-or-more-meanings': 3,
+}
+
 export const WORD_TAG_LABELS = {
   ...PART_OF_SPEECH_LABELS,
   polysemous: '多義語',
+  'three-or-more-meanings': '意味が3つ以上',
 }
 
 export const PART_RANGES = {
@@ -90,9 +96,11 @@ export function filterWordsByPartOfSpeech(words, selectedPartOfSpeech) {
 
 /** Polysemy counts individual registered senses, including senses of the same part of speech. */
 export function filterWordsByTags(words, selectedTags) {
-  const taggedWords = filterWordsByPartOfSpeech(words, selectedTags.filter((tag) => tag !== 'polysemous'))
-  return selectedTags.includes('polysemous')
-    ? taggedWords.filter((word) => Array.isArray(word.meanings) && word.meanings.length >= 2)
+  const isMeaningCountTag = (tag) => Object.hasOwn(MEANING_COUNT_TAGS, tag)
+  const minimumMeanings = Math.max(0, ...selectedTags.filter(isMeaningCountTag).map((tag) => MEANING_COUNT_TAGS[tag]))
+  const taggedWords = filterWordsByPartOfSpeech(words, selectedTags.filter((tag) => !isMeaningCountTag(tag)))
+  return minimumMeanings > 0
+    ? taggedWords.filter((word) => Array.isArray(word.meanings) && word.meanings.length >= minimumMeanings)
     : taggedWords
 }
 

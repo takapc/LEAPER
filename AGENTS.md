@@ -97,6 +97,8 @@ Preserve these rules unless the user explicitly requests different behavior:
 - The タグ tab contains part-of-speech and 多義語 filters. A word must satisfy every selected
   tag, together with the active base range and mistake filter. 多義語 means at least two
   registered senses, including senses sharing the same part of speech.
+  意味が3つ以上 requires at least three registered senses; selecting both sense-count tags
+  keeps the stricter three-sense minimum.
 - Reject empty filter combinations with a clear message while preserving the prior selection,
   card, navigation, progress, and counts. Editing numeric range inputs does not apply them;
   only 適用 changes the active numeric range.
