@@ -7,7 +7,7 @@ import packageJson from '../../package.json'
 
 const emptySession = () => ({ history: [], index: -1, usedIds: [] })
 
-export function SvlQuiz({ level }) {
+export function SvlQuiz({ level, restoreOnly = false }) {
   const [words, setWords] = useState([])
   const [session, setSession] = useState(emptySession)
   const sessionRef = useRef(session)
@@ -19,12 +19,12 @@ export function SvlQuiz({ level }) {
   const bg = useColorModeValue('gray.50', 'gray.900')
   const cardBg = useColorModeValue('white', 'gray.800')
 
-  const next = (list) => {
+  const next = (list, { record = true } = {}) => {
     const updated = advanceSvlSession(sessionRef.current, list)
     sessionRef.current = updated
     setSession(updated)
     setRevealed(false)
-    if (updated.isNewDraw) {
+    if (updated.isNewDraw && record) {
       const count = getTotalQuizCountFromLocalStorage()
       queueInitialGlobalQuizCount(count)
       saveTotalQuizCountToLocalStorage(count + 1)
@@ -45,7 +45,7 @@ export function SvlQuiz({ level }) {
     loadSvlLevel(level).then((loaded) => {
       if (!active) return
       setWords(loaded)
-      next(loaded)
+      next(loaded, { record: !restoreOnly })
       setLoading(false)
     }).catch(() => {
       if (!active) return

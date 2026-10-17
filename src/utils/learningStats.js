@@ -1,3 +1,5 @@
+import { notifyStudyChange } from './syncEvents.js'
+
 const TOTAL_QUIZ_COUNT_KEY = 'leapTotalQuizCount'
 
 /**
@@ -19,6 +21,7 @@ export function saveTotalQuizCountToLocalStorage(count) {
   try {
     const safeCount = Number.isSafeInteger(count) && count >= 0 ? count : 0
     localStorage.setItem(TOTAL_QUIZ_COUNT_KEY, safeCount.toString())
+    notifyStudyChange()
   } catch (error) {
     console.error('累計語数の保存に失敗しました:', error)
   }

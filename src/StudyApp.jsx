@@ -1,16 +1,34 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Badge, Box, Button, IconButton, FormControl, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Select, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { SettingsIcon } from '@chakra-ui/icons'
 import App from './App'
 import { SvlQuiz } from './components/SvlQuiz'
 import { levelLabel, readStudySettings, saveStudySettings, SVL_LEVELS } from './utils/svlData'
+import { BrowserSyncSettings } from './components/BrowserSyncSettings'
+import { browserSyncClient } from './utils/browserSync.js'
+import { REMOTE_STUDY_CHANGE } from './utils/syncEvents.js'
 
 export default function StudyApp() {
   const [settings, setSettings] = useState(readStudySettings)
   const [draft, setDraft] = useState(settings)
   const [isOpen, setIsOpen] = useState(false)
+  const [restoreOnly, setRestoreOnly] = useState(false)
   const initialFocusRef = useRef()
+  const currentSettings = useRef(settings)
+  currentSettings.current = settings
   const bg = useColorModeValue('gray.50', 'gray.900')
+  useEffect(() => browserSyncClient.start(), [])
+  useEffect(() => {
+    const receive = (event) => {
+      const incoming = event.detail.settings.study
+      if (incoming.mode === currentSettings.current.mode && incoming.level === currentSettings.current.level) return
+      setRestoreOnly(true)
+      setSettings(event.detail.settings.study)
+      setDraft(event.detail.settings.study)
+    }
+    window.addEventListener(REMOTE_STUDY_CHANGE, receive)
+    return () => window.removeEventListener(REMOTE_STUDY_CHANGE, receive)
+  }, [])
   return (
     <Box bg={bg} position="relative">
       <IconButton
@@ -27,12 +45,12 @@ export default function StudyApp() {
           setIsOpen(true)
         }}
       />
-      {settings.mode === 'leap' ? <App /> : <SvlQuiz key={settings.level} level={settings.level} />}
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} initialFocusRef={initialFocusRef} isCentered>
+      {settings.mode === 'leap' ? <App restoreOnly={restoreOnly} /> : <SvlQuiz key={settings.level} level={settings.level} restoreOnly={restoreOnly} />}
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} initialFocusRef={initialFocusRef} isCentered scrollBehavior="inside">
         <ModalOverlay />
         <ModalContent mx={4}>
           <ModalHeader>設定</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton aria-label="設定を閉じる" />
           <ModalBody>
             <Stack spacing={6}>
               <FormControl as="fieldset">
@@ -53,12 +71,14 @@ export default function StudyApp() {
                 </FormControl>
                 <Text fontSize="sm" color="gray.600">試験提供中です。単語と意味だけで学習できます。初回の読み込みには通信が必要です。</Text>
               </>}
+              <BrowserSyncSettings />
             </Stack>
           </ModalBody>
           <ModalFooter gap={3}>
             <Button variant="ghost" onClick={() => setIsOpen(false)}>キャンセル</Button>
             <Button colorScheme="teal" onClick={() => {
               saveStudySettings(draft)
+              setRestoreOnly(false)
               setSettings(draft)
               setIsOpen(false)
             }}>変更する</Button>

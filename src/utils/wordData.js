@@ -3,6 +3,8 @@
  */
 import wordsJson from '../data/words.json'
 import { normalizeMeanings, normalizeWordMeanings } from './meanings.js'
+import { notifyStudyChange } from './syncEvents.js'
+import { isImportedDataset } from './studyDataset.js'
 
 /**
  * HTMLテーブルから単語データを抽出
@@ -128,7 +130,8 @@ export function getWordDataFromLocalStorage() {
 export function saveUsedWordIdsToLocalStorage(usedIds) {
   try {
     // 配列のみ保存する（余計な情報は持たない）
-    localStorage.setItem('leapUsedWordIds', JSON.stringify(usedIds || []));
+    localStorage.setItem(isImportedDataset() ? 'leaperImportedUsedWordIds' : 'leapUsedWordIds', JSON.stringify(usedIds || []));
+    notifyStudyChange()
   } catch (error) {
     console.error('出題済み単語IDの保存に失敗しました:', error);
   }
@@ -140,7 +143,7 @@ export function saveUsedWordIdsToLocalStorage(usedIds) {
  */
 export function getUsedWordIdsFromLocalStorage() {
   try {
-    const data = localStorage.getItem('leapUsedWordIds');
+    const data = localStorage.getItem(isImportedDataset() ? 'leaperImportedUsedWordIds' : 'leapUsedWordIds');
     if (!data) return [];
 
     const parsed = JSON.parse(data);
@@ -163,7 +166,8 @@ export function getUsedWordIdsFromLocalStorage() {
  */
 export function clearUsedWordIdsFromLocalStorage() {
   try {
-    localStorage.removeItem('leapUsedWordIds');
+    localStorage.removeItem(isImportedDataset() ? 'leaperImportedUsedWordIds' : 'leapUsedWordIds');
+    notifyStudyChange()
   } catch (error) {
     console.error('出題済み単語IDキャッシュのクリアに失敗しました:', error);
   }
@@ -173,6 +177,16 @@ const CHECKED_WORD_IDS_COOKIE = 'leapCheckedWordIds'
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365
 
 export function getCheckedWordIdsFromCookie() {
+  if (isImportedDataset()) {
+    try {
+      const ids = JSON.parse(localStorage.getItem('leaperImportedCheckedWordIds'))
+      return Array.isArray(ids) ? ids.filter((id) => Number.isInteger(id) && id > 0) : []
+    } catch { return [] }
+  }
+  try {
+    const stored = JSON.parse(localStorage.getItem(CHECKED_WORD_IDS_COOKIE))
+    if (Array.isArray(stored)) return stored.filter((id) => Number.isInteger(id) && id > 0)
+  } catch { /* Read the legacy cookie when storage is unavailable. */ }
   try {
     const cookie = document.cookie
       .split('; ')
@@ -193,6 +207,12 @@ export function getCheckedWordIdsFromCookie() {
 }
 
 export function saveCheckedWordIdsToCookie(ids) {
+  if (isImportedDataset()) {
+    try { localStorage.setItem('leaperImportedCheckedWordIds', JSON.stringify(ids || [])) } catch { /* Keep in-memory marks. */ }
+    return
+  }
+  try { localStorage.setItem(CHECKED_WORD_IDS_COOKIE, JSON.stringify(ids || [])) } catch { /* Keep the cookie fallback. */ }
+  notifyStudyChange()
   try {
     const value = encodeURIComponent(JSON.stringify(ids || []))
     document.cookie = `${CHECKED_WORD_IDS_COOKIE}=${value}; Max-Age=${ONE_YEAR_IN_SECONDS}; Path=/; SameSite=Lax`
@@ -202,6 +222,12 @@ export function saveCheckedWordIdsToCookie(ids) {
 }
 
 export function clearCheckedWordIdsFromCookie() {
+  if (isImportedDataset()) {
+    try { localStorage.setItem('leaperImportedCheckedWordIds', '[]') } catch { /* Keep in-memory marks. */ }
+    return
+  }
+  try { localStorage.setItem(CHECKED_WORD_IDS_COOKIE, '[]') } catch { /* Cookie-only mode. */ }
+  notifyStudyChange()
   document.cookie = `${CHECKED_WORD_IDS_COOKIE}=; Max-Age=0; Path=/; SameSite=Lax`
 }
 

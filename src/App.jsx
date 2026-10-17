@@ -59,13 +59,18 @@ import {
   resetUsedWordIdsForWords,
 } from './utils/quizLogic'
 import { getPartOfSpeechTags } from './utils/meanings'
+import { defaultFilters, FILTER_PREFERENCES_KEY, readFilterPreferences, validateFilters } from './utils/browserData.js'
+import { notifyStudyChange, REMOTE_STUDY_CHANGE } from './utils/syncEvents.js'
+import { isImportedDataset, setImportedDataset } from './utils/studyDataset.js'
 
-function App() {
+function App({ restoreOnly = false } = {}) {
+  const [initialPreferences] = useState(readFilterPreferences)
+  const activePreferences = useRef(initialPreferences)
   const [words, setWords] = useState([]) // 全単語データ
   const [filteredWords, setFilteredWords] = useState([]) // フィルタリングされた単語データ
   const [currentWord, setCurrentWord] = useState(null)
   const [showAnswer, setShowAnswer] = useState(false)
-  const [isPartOfSpeechHintEnabled, setIsPartOfSpeechHintEnabled] = useState(false)
+  const [isPartOfSpeechHintEnabled, setIsPartOfSpeechHintEnabled] = useState(initialPreferences.hint)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [usedWordIds, setUsedWordIds] = useState(() => {
@@ -83,17 +88,17 @@ function App() {
   const toast = useToast() // モダンなトースト通知用
 
   // 範囲指定の状態
-  const [startRange, setStartRange] = useState('')
-  const [endRange, setEndRange] = useState('')
-  const [isRangeActive, setIsRangeActive] = useState(false)
-  const [isCheckedOnlyActive, setIsCheckedOnlyActive] = useState(false)
+  const [startRange, setStartRange] = useState(initialPreferences.range?.start.toString() || '')
+  const [endRange, setEndRange] = useState(initialPreferences.range?.end.toString() || '')
+  const [isRangeActive, setIsRangeActive] = useState(initialPreferences.selectedParts.length > 0 || Boolean(initialPreferences.range))
+  const [isCheckedOnlyActive, setIsCheckedOnlyActive] = useState(initialPreferences.checkedOnly)
   // Keep quiz membership stable until the mistake-only filter is turned off.
-  const [checkedOnlyWordIds, setCheckedOnlyWordIds] = useState([])
-  const [selectedTags, setSelectedTags] = useState([])
+  const [checkedOnlyWordIds, setCheckedOnlyWordIds] = useState(initialPreferences.checkedPoolIds)
+  const [selectedTags, setSelectedTags] = useState(initialPreferences.selectedTags)
   const [filterError, setFilterError] = useState('')
-  const [appliedRange, setAppliedRange] = useState({ start: '', end: '' })
+  const [appliedRange, setAppliedRange] = useState({ start: initialPreferences.range?.start.toString() || '', end: initialPreferences.range?.end.toString() || '' })
   const [checkedWordIds, setCheckedWordIds] = useState(() => getCheckedWordIdsFromCookie())
-  const [selectedParts, setSelectedParts] = useState([]) // ['part1', 'part2', ...] 複数選択可能
+  const [selectedParts, setSelectedParts] = useState(initialPreferences.selectedParts) // ['part1', 'part2', ...] 複数選択可能
   const [isAutoPlay, setIsAutoPlay] = useState(false)
   const [autoPlayProgress, setAutoPlayProgress] = useState(0)
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false)
@@ -108,6 +113,73 @@ function App() {
   // 背景色とテキスト色の設定
   const bgColor = useColorModeValue('gray.50', 'gray.900')
   const cardBg = useColorModeValue('white', 'gray.800')
+
+  useEffect(() => () => setImportedDataset(false), [])
+
+  // Persist applied conditions only; unfinished numeric input stays local to this screen.
+  useEffect(() => {
+    if (isImportedDataset()) return
+    try {
+      const preferences = validateFilters({
+        selectedParts, selectedTags,
+        range: selectedParts.length === 0 && isRangeActive
+          ? { start: Number(appliedRange.start), end: Number(appliedRange.end) } : null,
+        checkedOnly: isCheckedOnlyActive, checkedPoolIds: isCheckedOnlyActive ? checkedOnlyWordIds : [],
+        hint: isPartOfSpeechHintEnabled,
+      })
+      activePreferences.current = preferences
+      const value = JSON.stringify(preferences)
+      if (localStorage.getItem(FILTER_PREFERENCES_KEY) !== value) {
+        localStorage.setItem(FILTER_PREFERENCES_KEY, value)
+        notifyStudyChange()
+      }
+    } catch { /* Storage may be blocked; special cards are not saved as ordinary ranges. */ }
+  }, [selectedParts, selectedTags, isRangeActive, appliedRange, isCheckedOnlyActive, checkedOnlyWordIds, isPartOfSpeechHintEnabled])
+
+  useEffect(() => {
+    const receive = (event) => {
+      if (!words.length) return
+      const data = event.detail
+      if (isImportedDataset()) { setTotalQuizCount(data.totalCount); return }
+      let preferences = data.settings.filters
+      let nextWords = filterWordsByCriteria(words, {
+        selectedParts: preferences.selectedParts, selectedTags: preferences.selectedTags,
+        isRangeActive: Boolean(preferences.range), startRange: preferences.range?.start,
+        endRange: preferences.range?.end, isCheckedOnlyActive: preferences.checkedOnly,
+        checkedWordIds: preferences.checkedPoolIds,
+      })
+      if (!nextWords.length) {
+        preferences = defaultFilters()
+        nextWords = words
+        setFilterError('受け取った条件に一致する単語がないため、絞り込みを解除しました。')
+      }
+      usedWordIdsRef.current = data.usedIds
+      setUsedWordIds(data.usedIds)
+      setCheckedWordIds(data.checkedIds)
+      setTotalQuizCount(data.totalCount)
+      if (JSON.stringify(activePreferences.current) !== JSON.stringify(preferences)) {
+        activePreferences.current = preferences
+        setSelectedParts(preferences.selectedParts)
+        setSelectedTags(preferences.selectedTags)
+        setAppliedRange({ start: preferences.range?.start.toString() || '', end: preferences.range?.end.toString() || '' })
+        setStartRange(preferences.range?.start.toString() || '')
+        setEndRange(preferences.range?.end.toString() || '')
+        setIsRangeActive(Boolean(preferences.range) || preferences.selectedParts.length > 0)
+        setIsCheckedOnlyActive(preferences.checkedOnly)
+        setCheckedOnlyWordIds(preferences.checkedPoolIds)
+        setIsPartOfSpeechHintEnabled(preferences.hint)
+      }
+      if (nextWords.map((word) => word.id).join(',') !== filteredWords.map((word) => word.id).join(',')) {
+        setIsAutoPlay(false)
+        setFilteredWords(nextWords)
+        resetNavigation()
+        const card = nextWords.find((word) => word.id === currentWord?.id) || nextWords[0]
+        showWord(card, { addToHistory: true }) // Receiving data is not a new quiz draw.
+      }
+    }
+    window.addEventListener(REMOTE_STUDY_CHANGE, receive)
+    return () => window.removeEventListener(REMOTE_STUDY_CHANGE, receive)
+  }, [words, filteredWords, currentWord])
 
   // 単語データの読み込み
   useEffect(() => {
@@ -141,6 +213,10 @@ function App() {
   }, [])
 
   const loadWordData = async () => {
+    setImportedDataset(false)
+    const storedUsedIds = getUsedWordIdsFromLocalStorage()
+    usedWordIdsRef.current = storedUsedIds
+    setUsedWordIds(storedUsedIds)
     setLoading(true)
     setError(null)
 
@@ -150,9 +226,24 @@ function App() {
 
       if (loadedData && loadedData.length > 0) {
         setWords(loadedData)
-        setFilteredWords(loadedData)
-        // 現在のキャッシュ情報に基づいて最初の単語をランダムに選択
-        selectRandomWord(loadedData)
+        let initialWords = getFilteredWords({ wordList: loadedData })
+        if (!initialWords.length) {
+          initialWords = loadedData
+          setSelectedParts([])
+          setSelectedTags([])
+          setIsRangeActive(false)
+          setAppliedRange({ start: '', end: '' })
+          setStartRange('')
+          setEndRange('')
+          setIsCheckedOnlyActive(false)
+          setCheckedOnlyWordIds([])
+          setFilterError('保存された条件に一致する単語がないため、絞り込みを解除しました。')
+        }
+        setFilteredWords(initialWords)
+        if (restoreOnly) {
+          resetNavigation()
+          showWord(initialWords[0], { addToHistory: true })
+        } else selectRandomWord(initialWords)
       } else {
         setError('単語データを取得できませんでした。')
       }
@@ -166,6 +257,7 @@ function App() {
 
   // データインポート後のコールバック
   const handleDataImported = (importedWords) => {
+    setImportedDataset(true)
     setWords(importedWords)
     setError(null)
     setCheckedOnlyWordIds([])

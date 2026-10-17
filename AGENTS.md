@@ -7,8 +7,9 @@ existing behavior unless the request explicitly changes it.
 ## Product overview
 
 LEAPER is a Japanese, mobile-first flash-card application for studying the 2,300 words in
-the revised LEAP vocabulary book. The quiz is a client-side React application; a single Vercel
-Function backed by Upstash Redis stores the anonymous global quiz count. There is no authentication.
+the revised LEAP vocabulary book. The quiz is a client-side React application; Vercel Functions
+backed by Upstash Redis store the anonymous global quiz count and optional browser-sync data.
+There are no user accounts or login screens. Linked browsers use a random secret stored locally.
 The bundled vocabulary data is the default source of truth at runtime.
 
 The product concept is: 「ログイン不要、モダンかつシンプルなUI・UXで、初めてでも感覚的な操作が可能」.
@@ -35,6 +36,10 @@ or other large dependency unless the user explicitly asks for it or approves the
 - `src/utils/learningStats.js`: cumulative learning-count persistence.
 - `src/utils/globalQuizCount.js`: durable client queue and global-count synchronization.
 - `api/global-quiz-count.js`: idempotent global-count Vercel Function backed by Upstash Redis.
+- `api/browser-sync.js`: anonymous browser groups, expiring one-time codes, and atomic sync updates.
+- `src/utils/browserData.js`: validated shared data, set deltas, and safe persistence boundaries.
+- `src/utils/browserSync.js`: durable sync retries, rebasing, and browser lifecycle events.
+- `src/components/BrowserSyncSettings.jsx`: code generation, pairing, sync status, and disconnect UI.
 - `src/data/words.json`: bundled production vocabulary dataset.
 - `src/data/RELATED_WORDS_NOTICE.md`: attribution for lexical-relation data.
 - `test/`: Node.js unit and dataset-integrity tests.
@@ -112,6 +117,18 @@ Preserve these rules unless the user explicitly requests different behavior:
   stop when the user toggles the current word's mistake mark.
 - The related-words control is absent when a word has no related words.
 - Browser storage and cookie failures must degrade safely instead of crashing the app.
+- Browser pairing codes expire after five minutes and admit only one new browser. Retrying that
+  same join after a lost response is idempotent. Regenerating a code invalidates the prior code.
+- Initial pairing unions LEAP progress and mistake marks, takes the larger cumulative count,
+  and adopts the issuing browser's settings. Subsequent draws add per-browser deltas exactly once.
+- Never copy a browser-link secret or the global-count queue to another data field, URL, or log.
+  Receiving shared totals must not queue them as fresh global increments. Apply remote changes
+  without a new draw, and preserve local changes made while a request was in flight.
+- Keep the active mistake-only pool stable when marks are removed, including across sync. Persist
+  applied filters, not unfinished numeric input. Count-only sync must preserve unsaved UI input.
+- Disconnect requires confirmation and retains local study data and the other browsers' links.
+- Imported words can reuse LEAP IDs. Keep their used IDs, marks and filters separate from shared
+  standard LEAP progress; remote progress must not replace an active imported quiz.
 
 When changing any of these flows, inspect both the React state and the persistence helper involved.
 Avoid stale-state bugs: pass the exact newly computed list into selection/filter functions instead

@@ -1,4 +1,5 @@
 import { pickRandomUnusedWord } from './quizLogic.js'
+import { notifyStudyChange } from './syncEvents.js'
 
 export const SVL_SOURCE = 'https://github.com/kim0051/word-levels-db/tree/master/level-csv'
 export const SVL_LEVELS = Array.from({ length: 12 }, (_, index) => index + 1)
@@ -107,5 +108,5 @@ export function readStudySettings() {
 }
 
 export function saveStudySettings(settings) {
-  try { localStorage.setItem('leaperStudySettings', JSON.stringify(settings)) } catch { /* Settings remain usable in memory. */ }
+  try { localStorage.setItem('leaperStudySettings', JSON.stringify(settings)); notifyStudyChange() } catch { /* Settings remain usable in memory. */ }
 }
