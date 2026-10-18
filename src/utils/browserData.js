@@ -50,6 +50,11 @@ export function validateBrowserData(value) {
 export function validatePatch(value) {
   if (!object(value) || !object(value.settings) || !safeCount(value.totalDelta)) throw new Error('Invalid change')
   const patch = { settings: {}, totalDelta: value.totalDelta }
+  if (Object.hasOwn(value, 'totalOverride')) {
+    if (!object(value.totalOverride) || !safeCount(value.totalOverride.count) || value.totalDelta !== 0 ||
+      typeof value.totalOverride.grant !== 'string' || value.totalOverride.grant.length > 512) throw new Error('Invalid total override')
+    patch.totalOverride = { count: value.totalOverride.count, grant: value.totalOverride.grant }
+  }
   if (Object.hasOwn(value.settings, 'study')) patch.settings.study = validateStudy(value.settings.study)
   if (Object.hasOwn(value.settings, 'filters')) patch.settings.filters = validateFilters(value.settings.filters)
   for (const key of ['used', 'checked']) {
@@ -71,12 +76,12 @@ export function diffBrowserData(base, next) {
 }
 
 export function hasBrowserChanges(patch) {
-  return patch.totalDelta > 0 || Object.keys(patch.settings).length > 0 ||
+  return Boolean(patch.totalOverride) || patch.totalDelta > 0 || Object.keys(patch.settings).length > 0 ||
     ['used', 'checked'].some((key) => patch[key].add.length > 0 || patch[key].remove.length > 0)
 }
 
 export function applyBrowserPatch(data, patch) {
-  const next = { ...data, settings: { ...data.settings, ...patch.settings }, totalCount: data.totalCount + patch.totalDelta }
+  const next = { ...data, settings: { ...data.settings, ...patch.settings }, totalCount: patch.totalOverride?.count ?? data.totalCount + patch.totalDelta }
   for (const [key, field] of [['used', 'usedIds'], ['checked', 'checkedIds']]) {
     const removed = new Set(patch[key].remove)
     next[field] = canonicalIds([...data[field].filter((id) => !removed.has(id)), ...patch[key].add])
@@ -86,7 +91,7 @@ export function applyBrowserPatch(data, patch) {
 
 export function mergeJoiningData(source, joining) {
   return validateBrowserData({ ...source, usedIds: canonicalIds([...source.usedIds, ...joining.usedIds]),
-    checkedIds: canonicalIds([...source.checkedIds, ...joining.checkedIds]), totalCount: Math.max(source.totalCount, joining.totalCount) })
+    checkedIds: canonicalIds([...source.checkedIds, ...joining.checkedIds]), totalCount: source.totalCount + joining.totalCount })
 }
 
 function json(storage, key, fallback) {

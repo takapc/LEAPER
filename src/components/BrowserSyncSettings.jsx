@@ -86,7 +86,7 @@ export function BrowserSyncSettings() {
             <FormLabel htmlFor="browser-code" fontSize="sm">別のブラウザで発行したコード</FormLabel>
             <Input id="browser-code" value={code} onChange={(event) => setCode(event.target.value.toUpperCase())} placeholder="ABCD-1234-EF56" maxLength={20} autoComplete="off" autoCapitalize="characters" spellCheck={false} fontFamily="mono" />
           </FormControl>
-          <Text fontSize="xs" color="gray.600" mt={2}>発行元の設定を引き継ぎ、履歴と間違いマークをまとめます。初回の累計は大きい方を引き継ぎます。</Text>
+          <Text fontSize="xs" color="gray.600" mt={2}>発行元の設定を引き継ぎ、履歴と間違いマークをまとめます。初回の累計は両方の語数を合算します。解除後につなぎ直す場合も合算されます。</Text>
           <Button type="submit" mt={3} w="full" colorScheme="teal" variant="outline" isLoading={busy} isDisabled={code.replace(/[\s-]/g, '').length !== 12} minH="44px">コードで連携する</Button>
         </Box>
       )}

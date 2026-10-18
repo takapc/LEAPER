@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto'
 import { Redis } from '@upstash/redis'
 import { applyBrowserPatch, mergeJoiningData, validateBrowserData, validatePatch } from '../src/utils/browserData.js'
+import { verifyCountGrant } from '../server/adminAuth.js'
 
 export const LINK_TTL_SECONDS = 180 * 24 * 60 * 60
 export const CODE_TTL_SECONDS = 5 * 60
@@ -38,7 +39,7 @@ function validated(validate, value) {
   try { return validate(value) } catch { throw new SyncError(400, '連携データの形式が正しくありません。') }
 }
 
-export function createBrowserSyncHandler(redis, { now = Date.now } = {}) {
+export function createBrowserSyncHandler(redis, { now = Date.now, getAdminPassword = () => process.env.ADMIN_PASSWORD } = {}) {
   const cas = redis.createScript(compareAndSwapScript)
   const rateLimit = redis.createScript(rateLimitScript)
   const expired = () => new SyncError(410, '連携コードが無効か、有効期限が切れています。新しいコードを発行してください。')
@@ -151,6 +152,10 @@ export function createBrowserSyncHandler(redis, { now = Date.now } = {}) {
         authorize(current)
         if (body.seq <= current.clients[deviceId]) return current // Retry after a lost response.
         if (body.seq !== current.clients[deviceId] + 1) throw new SyncError(409, '同期の順序が一致しません。再試行してください。')
+        if (patch.totalOverride && !verifyCountGrant(patch.totalOverride.grant,
+          { token, deviceId, seq: body.seq, count: patch.totalOverride.count }, getAdminPassword())) {
+          throw new SyncError(403, '累計の変更には管理者の認証が必要です。')
+        }
         const data = validated((value) => applyBrowserPatch(current.data, value), patch)
         return { ...current, data, clients: { ...current.clients, [deviceId]: body.seq } }
       })

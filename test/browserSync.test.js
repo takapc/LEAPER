@@ -3,6 +3,10 @@ import assert from 'node:assert/strict'
 import { createBrowserSyncHandler, compareAndSwapScript } from '../api/browser-sync.js'
 import { defaultBrowserData, diffBrowserData, readBrowserData, writeBrowserData } from '../src/utils/browserData.js'
 import { BROWSER_LINK_KEY, createBrowserSyncClient } from '../src/utils/browserSync.js'
+import { createAdminHandler } from '../api/admin.js'
+import { getPendingGlobalQuizCount, queueGlobalQuizIncrement, queueInitialGlobalQuizCount } from '../src/utils/globalQuizCount.js'
+
+const adminPassword = 'test-only-admin-password'
 
 // Redis boundary fake. The actual Lua transaction is also exercised against local Redis.
 class MemoryRedis {
@@ -44,15 +48,17 @@ class MemoryRedis {
 const id = (number) => number.toString(16).padStart(32, '0')
 function api() {
   const redis = new MemoryRedis()
-  const handler = createBrowserSyncHandler(redis, { now: () => redis.clock })
-  const call = async (body, token, extra = {}) => {
+  const now = () => 1700000000000 + redis.clock
+  const handler = createBrowserSyncHandler(redis, { now, getAdminPassword: () => adminPassword })
+  const adminHandler = createAdminHandler({ getRedis: () => redis, getPassword: () => adminPassword, now })
+  const call = async (body, token, extra = {}, endpoint = '/api/browser-sync') => {
     const response = { headers: {}, status(code) { this.statusCode = code; return this },
       setHeader(key, value) { this.headers[key] = value }, json(data) { this.data = data; return this } }
-    await handler({ method: 'POST', headers: { 'content-type': 'application/json', host: 'leaper.test', origin: 'https://leaper.test',
+    await (endpoint === '/api/admin' ? adminHandler : handler)({ method: 'POST', headers: { 'content-type': 'application/json', host: 'leaper.test', origin: 'https://leaper.test',
       ...(token ? { authorization: `Bearer ${token}` } : {}), ...extra.headers }, body, ...extra, }, response)
     return response
   }
-  return { redis, call }
+  return { redis, call, admin: (body, token, extra) => call(body, token, extra, '/api/admin') }
 }
 
 async function group(service, data = defaultBrowserData()) {
@@ -115,11 +121,11 @@ function browser(service, initial = defaultBrowserData(), options = {}) {
   const document = { cookie: '' }
   writeBrowserData(store, document, initial)
   const faults = { action: null, before: false, after: false, pause: null }
-  const request = async (_url, request) => {
+  const request = async (url, request) => {
     const body = JSON.parse(request.body)
     if (faults.action === body.action && faults.before) { faults.before = false; throw new TypeError('offline') }
     const token = request.headers.Authorization?.slice(7)
-    const response = await service.call(body, token)
+    const response = await service.call(body, token, {}, url)
     if (faults.pause) await faults.pause(body)
     if (faults.action === body.action && faults.after) { faults.after = false; throw new TypeError('lost response') }
     return { ok: response.statusCode === 200, status: response.statusCode, json: async () => response.data }
@@ -141,14 +147,14 @@ test('two browsers join, auto-sync changes in both directions, and remote totals
   await target.client.join(invite.code)
   await source.client.sync()
   assert.deepEqual(source.read(), target.read())
-  assert.equal(target.read().totalCount, 20)
+  assert.equal(target.read().totalCount, 24)
   assert.equal(target.store.getItem('leapGlobalQuizCountQueue'), '{"pending":4}')
-  source.write({ ...source.read(), usedIds: [1, 3], totalCount: 21 })
-  target.write({ ...target.read(), checkedIds: [2, 4], totalCount: 22 })
+  source.write({ ...source.read(), usedIds: [1, 3], totalCount: 25 })
+  target.write({ ...target.read(), checkedIds: [2, 4], totalCount: 26 })
   await Promise.all([source.client.sync(), target.client.sync()])
   await Promise.all([source.client.sync(), target.client.sync()])
   assert.deepEqual(source.read(), target.read())
-  assert.equal(source.read().totalCount, 23)
+  assert.equal(source.read().totalCount, 27)
   assert.deepEqual(source.read().checkedIds, [2, 4])
   assert.deepEqual(source.read().usedIds, [1, 3])
 })
@@ -230,4 +236,143 @@ test('unavailable browser storage and malformed codes fail without creating a li
   const blocked = createBrowserSyncClient({ getStorage() { throw new Error('blocked') } })
   await assert.rejects(blocked.issueCode(), /保存できません/)
   assert.equal(source.link(), null)
+})
+
+test('a lost join sums the original contribution once and preserves later local draws', async () => {
+  const service = api()
+  const source = browser(service, { ...defaultBrowserData(), totalCount: 10 })
+  const target = browser(service, { ...defaultBrowserData(), totalCount: 5 })
+  const invite = await source.client.issueCode()
+  target.faults.action = 'join'
+  target.faults.after = true
+  await assert.rejects(target.client.join(invite.code))
+  target.write({ ...target.read(), totalCount: 7 })
+  await target.create().join(invite.code)
+  await source.client.sync()
+  assert.equal(target.read().totalCount, 17)
+  assert.equal(source.read().totalCount, 17)
+  await target.client.sync()
+  assert.equal(target.read().totalCount, 17)
+})
+
+test('authenticated count commands can increase, reduce and zero a linked total without touching history or global queues', async () => {
+  const service = api()
+  const source = browser(service, { ...defaultBrowserData(), totalCount: 20, usedIds: [1], checkedIds: [2] })
+  const target = browser(service, { ...defaultBrowserData(), totalCount: 4 })
+  const invite = await source.client.issueCode()
+  await target.client.join(invite.code)
+  source.store.setItem('leapGlobalQuizCountQueue', '{"pending":2}')
+  const auth = await source.client.authenticateAdmin(adminPassword)
+  for (const count of [100, 10, 0]) {
+    await source.client.setTotalCount(`set-total ${count}`, auth.session)
+    await target.client.sync()
+    assert.equal(source.read().totalCount, count)
+    assert.equal(target.read().totalCount, count)
+    assert.deepEqual(source.read().usedIds, [1])
+    assert.deepEqual(source.read().checkedIds, [2])
+  }
+  assert.equal(source.store.getItem('leapGlobalQuizCountQueue'), '{"pending":2}')
+  assert.ok(!JSON.stringify(source.link()).includes(auth.session))
+})
+
+test('unlinked count commands preserve in-flight draws and do not create a group or alter global queues', async () => {
+  const service = api()
+  const source = browser(service, { ...defaultBrowserData(), totalCount: 20 })
+  source.store.setItem('leapGlobalQuizCountQueue', '{"pending":3}')
+  const auth = await source.client.authenticateAdmin(adminPassword)
+  source.faults.pause = async (body) => {
+    if (body.action === 'command') source.write({ ...source.read(), totalCount: 22 })
+  }
+  await source.client.setTotalCount('set-total 5', auth.session)
+  assert.equal(source.read().totalCount, 7)
+  assert.equal(source.received.at(-1).totalCount, 7)
+  assert.equal(source.link(), null)
+  assert.equal(source.store.getItem('leapGlobalQuizCountQueue'), '{"pending":3}')
+  source.faults.pause = null
+  await assert.rejects(source.client.setTotalCount('set-total 9', 'invalid'), /認証/)
+  assert.equal(source.read().totalCount, 7)
+})
+
+test('a lost count-command response remains durable and retries once after admin expiry and later remote draws', async () => {
+  const service = api()
+  const source = browser(service, { ...defaultBrowserData(), totalCount: 20 })
+  const target = browser(service)
+  const invite = await source.client.issueCode()
+  await target.client.join(invite.code)
+  const auth = await source.client.authenticateAdmin(adminPassword)
+  source.faults.action = 'sync'
+  source.faults.after = true
+  await assert.rejects(source.client.setTotalCount('set-total 5', auth.session))
+  assert.equal(source.link().pending.patch.totalOverride.count, 5)
+  assert.ok(!JSON.stringify(source.link()).includes(auth.session))
+  await target.client.sync()
+  target.write({ ...target.read(), totalCount: 7 })
+  await target.client.sync()
+  source.write({ ...source.read(), totalCount: 21 })
+  service.redis.clock += 16 * 60 * 1000
+  await source.create().sync()
+  await target.client.sync()
+  assert.equal(source.read().totalCount, 8)
+  assert.equal(target.read().totalCount, 8)
+  assert.equal(source.link().pending, null)
+})
+
+test('signed commands preserve local draws during authorization and server writes', async () => {
+  const service = api()
+  const source = browser(service, { ...defaultBrowserData(), totalCount: 20 })
+  await source.client.issueCode()
+  const auth = await source.client.authenticateAdmin(adminPassword)
+  let increments = 0
+  source.faults.pause = async (body) => {
+    if ((body.action === 'command' || body.patch?.totalOverride) && increments < 2) {
+      source.write({ ...source.read(), totalCount: source.read().totalCount + 1 })
+      increments += 1
+    }
+  }
+  await source.client.setTotalCount('set-total 10', auth.session)
+  assert.equal(source.read().totalCount, 12)
+  const check = await service.call({ action: 'read', deviceId: source.link().deviceId }, source.link().token)
+  assert.equal(check.data.data.totalCount, 12)
+})
+
+test('count overrides reject missing or tampered grants and cannot be reused for a different count or sequence', async () => {
+  const service = api()
+  const link = await group(service, { ...defaultBrowserData(), totalCount: 10 })
+  const auth = await service.admin({ action: 'authenticate', password: adminPassword })
+  const authorization = await service.admin({ action: 'command', command: 'set-total 5', link: { token: link.token, deviceId: id(1), seq: 1 } }, auth.data.session)
+  const patch = { ...diffBrowserData(defaultBrowserData(), defaultBrowserData()), totalOverride: { count: 5, grant: authorization.data.grant } }
+  const sync = (seq, value = patch) => service.call({ action: 'sync', deviceId: id(1), seq, patch: value }, link.token)
+  assert.equal((await sync(1, { ...patch, totalOverride: { ...patch.totalOverride, count: 6 } })).statusCode, 403)
+  assert.equal((await sync(1, { ...patch, totalOverride: { count: 5, grant: '' } })).statusCode, 403)
+  assert.equal((await sync(1)).data.data.totalCount, 5)
+  assert.equal((await sync(1)).data.data.totalCount, 5)
+  assert.equal((await sync(2)).statusCode, 403)
+})
+
+test('real global-count queue excludes admin corrections, including initial migration, reload and subsequent draws', async () => {
+  for (const linked of [false, true]) {
+    const service = api()
+    const source = browser(service, { ...defaultBrowserData(), totalCount: 20 },
+      { beforeRemoteApply: (data) => queueInitialGlobalQuizCount(data.totalCount) })
+    const previous = globalThis.localStorage
+    globalThis.localStorage = source.store
+    try {
+      if (linked) await source.client.issueCode()
+      const auth = await source.client.authenticateAdmin(adminPassword)
+      await source.client.setTotalCount('set-total 1000', auth.session)
+      assert.equal(getPendingGlobalQuizCount(), 20) // Only the original, unmigrated study total.
+      queueInitialGlobalQuizCount(source.read().totalCount) // Remount / reload.
+      assert.equal(getPendingGlobalQuizCount(), 20)
+      await source.client.setTotalCount('set-total 0', auth.session)
+      assert.equal(getPendingGlobalQuizCount(), 20)
+      source.write({ ...source.read(), totalCount: 1 })
+      queueInitialGlobalQuizCount(0)
+      queueGlobalQuizIncrement()
+      if (linked) await source.client.sync()
+      assert.equal(getPendingGlobalQuizCount(), 21)
+    } finally {
+      if (previous === undefined) delete globalThis.localStorage
+      else globalThis.localStorage = previous
+    }
+  }
 })

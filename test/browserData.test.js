@@ -7,7 +7,7 @@ function storage() {
   return { values, getItem: (key) => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: (key) => values.delete(key) }
 }
 
-test('joining preserves source settings, unions progress and marks, and takes the larger initial count', () => {
+test('joining preserves source settings, unions progress and marks, and sums both initial counts', () => {
   const source = defaultBrowserData()
   source.usedIds = [1, 2]
   source.checkedIds = [5]
@@ -20,9 +20,10 @@ test('joining preserves source settings, unions progress and marks, and takes th
   const result = mergeJoiningData(source, other)
   assert.deepEqual(result.usedIds, [1, 2, 3])
   assert.deepEqual(result.checkedIds, [4, 5])
-  assert.equal(result.totalCount, 30)
+  assert.equal(result.totalCount, 42)
   assert.deepEqual(result.settings, source.settings)
   assert.deepEqual(source.usedIds, [1, 2])
+  assert.throws(() => mergeJoiningData({ ...source, totalCount: Number.MAX_SAFE_INTEGER }, other))
 })
 
 test('concurrent changes apply deltas without losing other devices additions or counting remote totals twice', () => {

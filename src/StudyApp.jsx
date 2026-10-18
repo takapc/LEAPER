@@ -5,6 +5,7 @@ import App from './App'
 import { SvlQuiz } from './components/SvlQuiz'
 import { levelLabel, readStudySettings, saveStudySettings, SVL_LEVELS } from './utils/svlData'
 import { BrowserSyncSettings } from './components/BrowserSyncSettings'
+import { AdminSettings } from './components/AdminSettings'
 import { browserSyncClient } from './utils/browserSync.js'
 import { REMOTE_STUDY_CHANGE } from './utils/syncEvents.js'
 
@@ -72,6 +73,7 @@ export default function StudyApp() {
                 <Text fontSize="sm" color="gray.600">試験提供中です。単語と意味だけで学習できます。初回の読み込みには通信が必要です。</Text>
               </>}
               <BrowserSyncSettings />
+              <AdminSettings />
             </Stack>
           </ModalBody>
           <ModalFooter gap={3}>

@@ -45,11 +45,11 @@ export function createBrowserSyncClient({
       throw new Error('このブラウザでデータを保存できません。ブラウザの保存設定を確認してください。')
     }
   }
-  async function request(action, body, link) {
+  async function request(action, body, link, endpoint = '/api/browser-sync') {
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), 15000)
     try {
-      const response = await fetchImpl('/api/browser-sync', {
+      const response = await fetchImpl(endpoint, {
         method: 'POST', cache: 'no-store', signal: controller.signal,
         headers: { 'Content-Type': 'application/json', ...(link ? { Authorization: `Bearer ${link.token}` } : {}) },
         body: JSON.stringify({ action, ...body }),
@@ -109,18 +109,52 @@ export function createBrowserSyncClient({
     }
   }
 
+  function runExclusive(operation, reportError = true) {
+    const previous = inFlight
+    const task = Promise.resolve(previous).catch(() => {}).then(() => lock(operation)).catch((error) => {
+      if (reportError || status.state === 'syncing') updateStatus({ state: 'error', error: error.message })
+      throw error
+    }).finally(() => { if (inFlight === task) inFlight = null })
+    inFlight = task
+    return task
+  }
+
   const client = {
     getStatus: () => ({ ...status, linked: Boolean(readLink()) }),
     subscribe(notify) { subscribers.add(notify); return () => subscribers.delete(notify) },
     sync() {
       if (!readLink()) return Promise.resolve()
-      if (!inFlight) {
-        inFlight = Promise.resolve().then(() => lock(runSync)).catch((error) => {
-          updateStatus({ state: 'error', error: error.message })
-          throw error
-        }).finally(() => { inFlight = null })
-      }
-      return inFlight
+      return inFlight || runExclusive(runSync)
+    },
+    authenticateAdmin(password) {
+      return request('authenticate', { password }, null, '/api/admin')
+    },
+    setTotalCount(command, session) {
+      return runExclusive(async () => {
+        requireStorage()
+        await runSync()
+        const link = readLink()
+        if (link?.pending) throw new Error('同期が完了してから、もう一度実行してください。')
+        const snapshot = capture()
+        const result = await request('command', { command,
+          ...(link ? { link: { token: link.token, deviceId: link.deviceId, seq: link.seq + 1 } } : {}),
+        }, { token: session }, '/api/admin')
+        if (!Number.isSafeInteger(result.count) || result.count < 0) throw new Error('累計の変更結果が正しくありません。')
+        if (readLink()?.token !== link?.token || readLink()?.deviceId !== link?.deviceId) throw new Error('連携状態が変わりました。もう一度実行してください。')
+        if (link) {
+          if (typeof result.grant !== 'string') throw new Error('管理者の認証結果が正しくありません。')
+          const patch = diffBrowserData(link.base, snapshot)
+          patch.totalDelta = 0
+          patch.totalOverride = { count: result.count, grant: result.grant }
+          saveLink({ ...link, pending: { seq: link.seq + 1, patch, snapshot } })
+          await runSync()
+        } else {
+          beforeRemoteApply(snapshot)
+          applyRemote({ ...snapshot, totalCount: result.count }, snapshot)
+          updateStatus({ state: 'idle', error: '' })
+        }
+        return result.count
+      }, false)
     },
     async issueCode() {
       requireStorage()
@@ -146,10 +180,10 @@ export function createBrowserSyncClient({
       if (!/^[A-F0-9]{12}$/.test(normalized)) throw new Error('12文字の連携コードを入力してください。')
       let attempt = readJSON(JOIN_ATTEMPT_KEY)
       if (attempt?.code !== normalized) {
-        attempt = { code: normalized, deviceId: newId() }
+        attempt = { code: normalized, deviceId: newId(), snapshot: capture() }
         getStorage().setItem(JOIN_ATTEMPT_KEY, JSON.stringify(attempt))
       }
-      const snapshot = capture()
+      const snapshot = validateBrowserData(attempt.snapshot || capture())
       const result = await request('join', { code: normalized, deviceId: attempt.deviceId, data: snapshot })
       const data = validateBrowserData(result.data)
       if (!/^[a-f0-9]{64}$/.test(result.token || '')) throw new Error('連携の応答が正しくありません。')

@@ -37,6 +37,7 @@ or other large dependency unless the user explicitly asks for it or approves the
 - `src/utils/globalQuizCount.js`: durable client queue and global-count synchronization.
 - `api/global-quiz-count.js`: idempotent global-count Vercel Function backed by Upstash Redis.
 - `api/browser-sync.js`: anonymous browser groups, expiring one-time codes, and atomic sync updates.
+- `api/admin.js` / `server/adminAuth.js`: server-only admin password, temporary sessions and count-change grants.
 - `src/utils/browserData.js`: validated shared data, set deltas, and safe persistence boundaries.
 - `src/utils/browserSync.js`: durable sync retries, rebasing, and browser lifecycle events.
 - `src/components/BrowserSyncSettings.jsx`: code generation, pairing, sync status, and disconnect UI.
@@ -119,8 +120,13 @@ Preserve these rules unless the user explicitly requests different behavior:
 - Browser storage and cookie failures must degrade safely instead of crashing the app.
 - Browser pairing codes expire after five minutes and admit only one new browser. Retrying that
   same join after a lost response is idempotent. Regenerating a code invalidates the prior code.
-- Initial pairing unions LEAP progress and mistake marks, takes the larger cumulative count,
+- Initial pairing unions LEAP progress and mistake marks, sums both cumulative counts,
   and adopts the issuing browser's settings. Subsequent draws add per-browser deltas exactly once.
+- Admin `set-total` changes only the personal/group total, including decreases and zero. Never
+  enqueue the correction into the global counter, including after reload or initial migration.
+  Validate the password server-side via `ADMIN_PASSWORD`; never expose it through `VITE_` variables.
+  Persist only a single-command grant bound to the browser group, device, sequence and target count;
+  keep the 15-minute admin session in memory. Retries must not reset subsequent study increments.
 - Never copy a browser-link secret or the global-count queue to another data field, URL, or log.
   Receiving shared totals must not queue them as fresh global increments. Apply remote changes
   without a new draw, and preserve local changes made while a request was in flight.
