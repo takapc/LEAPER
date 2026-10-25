@@ -9,13 +9,13 @@
   "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "/leaper-icon.png",
+      "src": "/leaper-icon.png?v=1.9.4",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/leaper-icon-512.png",
+      "src": "/leaper-icon-512.png?v=1.9.4",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"

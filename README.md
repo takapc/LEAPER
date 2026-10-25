@@ -228,6 +228,8 @@ Vercelの対象プロジェクトで「Analytics」→「Enable」を選び、�
 `public/leaper-icon.png` の画像を、ブラウザのタブとホーム画面用のアイコンに使います。
 タブ用は `favicon.ico`（16・32・48px）と `favicon-32x32.png`、iPhone用は
 `apple-touch-icon.png`（180px）、Webアプリ用は192pxと512pxを `manifest.webmanifest` で指定しています。
+絵柄と文字を同じ中心線に揃え、左右の余白を確保します。画像の差し替え時は、HTMLとmanifestの
+アイコンURLの `v` も更新し、ブラウザに古いアイコンが残らないようにしてください。
 
 ## 単語データの更新
 
