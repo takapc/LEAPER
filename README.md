@@ -223,6 +223,12 @@ Vercelの対象プロジェクトで「Analytics」→「Enable」を選び、�
 開発モードでは実際のアクセスを集計しません。学習語数・間違いマーク・連携情報・管理者コマンドを
 カスタムイベントとして送る処理も追加していません。計測スクリプトを取得できない場合も学習は継続できます。
 
+## サイトアイコン
+
+`public/leaper-icon.png` の画像を、ブラウザのタブとホーム画面用のアイコンに使います。
+タブ用は `favicon.ico`（16・32・48px）と `favicon-32x32.png`、iPhone用は
+`apple-touch-icon.png`（180px）、Webアプリ用は192pxと512pxを `manifest.webmanifest` で指定しています。
+
 ## 単語データの更新
 
 ```bash
