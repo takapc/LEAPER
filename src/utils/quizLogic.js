@@ -7,6 +7,7 @@ export const MEANING_COUNT_TAGS = {
 
 export const WORD_TAG_LABELS = {
   ...PART_OF_SPEECH_LABELS,
+  pronoun: '代名詞', interjection: '感動詞', determiner: '限定詞', other: 'その他',
   polysemous: '多義語',
   'three-or-more-meanings': '意味が3つ以上',
 }
@@ -89,7 +90,7 @@ export function filterWordsByPartOfSpeech(words, selectedPartOfSpeech) {
 
   return words.filter((word) =>
     Array.isArray(word.meanings) && selectedPartOfSpeech.every((selectedPart) =>
-      word.meanings.some(({ partOfSpeech }) => partOfSpeech === selectedPart),
+      word.meanings.some(({ partOfSpeech, filterParts }) => filterParts ? filterParts.includes(selectedPart) : partOfSpeech === selectedPart),
     ),
   )
 }

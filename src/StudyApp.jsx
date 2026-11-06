@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Badge, Box, Button, IconButton, FormControl, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, RadioGroup, Select, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { SettingsIcon } from '@chakra-ui/icons'
 import App from './App'
+import { KikutanQuiz } from './components/KikutanQuiz'
 import { SvlQuiz } from './components/SvlQuiz'
 import { levelLabel, readStudySettings, saveStudySettings, SVL_LEVELS } from './utils/svlData'
 import { BrowserSyncSettings } from './components/BrowserSyncSettings'
@@ -46,7 +47,7 @@ export default function StudyApp() {
           setIsOpen(true)
         }}
       />
-      {settings.mode === 'leap' ? <App restoreOnly={restoreOnly} /> : <SvlQuiz key={settings.level} level={settings.level} restoreOnly={restoreOnly} />}
+      {settings.mode === 'leap' ? <App restoreOnly={restoreOnly} /> : settings.mode === 'kikutan-super' ? <KikutanQuiz restoreOnly={restoreOnly} /> : <SvlQuiz key={settings.level} level={settings.level} restoreOnly={restoreOnly} />}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} initialFocusRef={initialFocusRef} isCentered scrollBehavior="inside">
         <ModalOverlay />
         <ModalContent mx={4}>
@@ -59,6 +60,7 @@ export default function StudyApp() {
                 <RadioGroup value={draft.mode} onChange={(mode) => setDraft((value) => ({ ...value, mode }))}>
                   <Stack spacing={4}>
                     <Radio value="leap" ref={initialFocusRef}>LEAP</Radio>
+                    <Radio value="kikutan-super">キクタンSuper</Radio>
                     <Radio value="svl"><HStack><Text>SVL12000</Text><Badge colorScheme="purple">ベータ</Badge></HStack></Radio>
                   </Stack>
                 </RadioGroup>

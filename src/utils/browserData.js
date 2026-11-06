@@ -36,7 +36,7 @@ export function validateFilters(value) {
 }
 
 function validateStudy(value) {
-  if (!object(value) || !['leap', 'svl'].includes(value.mode) || !Number.isInteger(value.level) || value.level < 1 || value.level > 12) throw new Error('Invalid study settings')
+  if (!object(value) || !['leap', 'svl', 'kikutan-super'].includes(value.mode) || !Number.isInteger(value.level) || value.level < 1 || value.level > 12) throw new Error('Invalid study settings')
   return { mode: value.mode, level: value.level }
 }
 

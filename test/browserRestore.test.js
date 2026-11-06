@@ -15,7 +15,7 @@ function actualHandler(path, name, state) {
 
 test('restoring LEAP after a remote mode change displays a card without counting or marking a fresh draw', async () => {
   const state = {
-    restoreOnly: true, usedWordIdsRef: { current: [] }, draws: 0, resets: 0,
+    dataset: null, restoreOnly: true, usedWordIdsRef: { current: [] }, draws: 0, resets: 0,
     setImportedDataset() {}, getUsedWordIdsFromLocalStorage: () => [2], setUsedWordIds() {},
     setLoading() {}, setError() {}, setWords() {}, setFilteredWords() {},
     getLocalWordData: () => [{ id: 1 }, { id: 2 }], getFilteredWords: ({ wordList }) => wordList,

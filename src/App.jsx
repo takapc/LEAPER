@@ -63,7 +63,20 @@ import { defaultFilters, FILTER_PREFERENCES_KEY, readFilterPreferences, validate
 import { notifyStudyChange, REMOTE_STUDY_CHANGE } from './utils/syncEvents.js'
 import { isImportedDataset, setImportedDataset } from './utils/studyDataset.js'
 
-function App({ restoreOnly = false } = {}) {
+const defaultServices = {
+  getUsedWordIdsFromLocalStorage, saveUsedWordIdsToLocalStorage, clearUsedWordIdsFromLocalStorage,
+  getCheckedWordIdsFromCookie, saveCheckedWordIdsToCookie,
+  getTotalQuizCountFromLocalStorage, saveTotalQuizCountToLocalStorage,
+  readFilterPreferences, validateFilters, FILTER_PREFERENCES_KEY,
+}
+
+function App({ restoreOnly = false, dataset = null, dataControl = null } = {}) {
+  const {
+    getUsedWordIdsFromLocalStorage, saveUsedWordIdsToLocalStorage, clearUsedWordIdsFromLocalStorage,
+    getCheckedWordIdsFromCookie, saveCheckedWordIdsToCookie,
+    getTotalQuizCountFromLocalStorage, saveTotalQuizCountToLocalStorage,
+    readFilterPreferences, validateFilters, FILTER_PREFERENCES_KEY,
+  } = dataset?.services ?? defaultServices
   const [initialPreferences] = useState(readFilterPreferences)
   const activePreferences = useRef(initialPreferences)
   const [words, setWords] = useState([]) // 全単語データ
@@ -108,7 +121,7 @@ function App({ restoreOnly = false } = {}) {
   const AUTO_PLAY_MS = 3000
   const AUTO_PLAY_REVEAL_MS = 1500
 
-  const partRanges = PART_RANGES
+  const partRanges = dataset ? {} : PART_RANGES
 
   // 背景色とテキスト色の設定
   const bgColor = useColorModeValue('gray.50', 'gray.900')
@@ -131,14 +144,14 @@ function App({ restoreOnly = false } = {}) {
       const value = JSON.stringify(preferences)
       if (localStorage.getItem(FILTER_PREFERENCES_KEY) !== value) {
         localStorage.setItem(FILTER_PREFERENCES_KEY, value)
-        notifyStudyChange()
+        if (!dataset) notifyStudyChange()
       }
     } catch { /* Storage may be blocked; special cards are not saved as ordinary ranges. */ }
   }, [selectedParts, selectedTags, isRangeActive, appliedRange, isCheckedOnlyActive, checkedOnlyWordIds, isPartOfSpeechHintEnabled])
 
   useEffect(() => {
     const receive = (event) => {
-      if (!words.length) return
+      if (dataset || !words.length) return
       const data = event.detail
       if (isImportedDataset()) { setTotalQuizCount(data.totalCount); return }
       let preferences = data.settings.filters
@@ -201,7 +214,7 @@ function App({ restoreOnly = false } = {}) {
 
   useEffect(() => {
     // 既存ユーザーの端末内累計も、初回だけ共有カウンターへ移す。
-    queueInitialGlobalQuizCount(totalQuizCount)
+    if (!dataset) queueInitialGlobalQuizCount(totalQuizCount)
     refreshGlobalQuizCount()
 
     const handleOnline = () => refreshGlobalQuizCount()
@@ -222,7 +235,7 @@ function App({ restoreOnly = false } = {}) {
 
     try {
       // CORS の影響を受けないように、ローカルの JSON からデータを読み込む
-      const loadedData = getLocalWordData()
+      const loadedData = dataset ? dataset.words : getLocalWordData()
 
       if (loadedData && loadedData.length > 0) {
         setWords(loadedData)
@@ -315,7 +328,7 @@ function App({ restoreOnly = false } = {}) {
     let endNum = end !== null ? end : parseInt(endRange)
 
     // 裏技: 開始2009 / 終了213 で感謝カードを表示
-    if (startNum === 2009 && endNum === 213) {
+    if (!dataset && startNum === 2009 && endNum === 213) {
       const thankYouWord = {
         id: 2009213,
         word: 'Thank you for using!',
@@ -703,7 +716,7 @@ function App({ restoreOnly = false } = {}) {
               <Button onClick={loadWordData} colorScheme="blue">
                 再試行
               </Button>
-              <DataImporter onDataImported={handleDataImported} />
+              {dataset ? dataControl : <DataImporter onDataImported={handleDataImported} />}
             </HStack>
           </VStack>
         </Container>
@@ -718,7 +731,7 @@ function App({ restoreOnly = false } = {}) {
           {/* ヘッダー */}
           <Box textAlign="center">
             <Heading as="h1" size={{ base: 'lg', md: 'xl' }} mb={2} pr={{ base: 12, md: 16 }} minH="44px">
-              LEAP 英単語クイズ
+              {dataset ? 'キクタンSuper' : 'LEAP 英単語クイズ'}
             </Heading>
             <Text color="gray.600" fontSize="sm">
                 {isRangeActive ? (
@@ -846,7 +859,7 @@ function App({ restoreOnly = false } = {}) {
                         <Text fontSize="sm" color="gray.500" mb={2}>
                           意味
                         </Text>
-                        <Box flex="1" overflowY="auto">
+                        <Box flex="1" overflowY="auto" overflowWrap="anywhere">
                           <VStack align="stretch" spacing={2}>
                             {formatMeaning(currentWord.meanings).map((line, index) => (
                               <Text
@@ -866,7 +879,7 @@ function App({ restoreOnly = false } = {}) {
                           <Text fontSize="sm" color="gray.500" mb={2}>
                             品詞（タップで意味を表示）
                           </Text>
-                          <Box flex="1" overflowY="auto">
+                          <Box flex="1" overflowY="auto" overflowWrap="anywhere">
                             <VStack align="stretch" spacing={2}>
                               {currentPartOfSpeechTags.map((tag, index) => (
                                 <Text
@@ -964,6 +977,7 @@ function App({ restoreOnly = false } = {}) {
 
           {/* 範囲指定パネル */}
           <RangeSelector
+            partOfSpeechLabels={dataset?.partOfSpeechLabels}
             cardBg={cardBg}
             checkedWordCount={checkedWordIds.length}
             endRange={endRange}
@@ -1038,12 +1052,12 @@ function App({ restoreOnly = false } = {}) {
 
           {/* フッター情報 */}
           <VStack spacing={2} textAlign="center" mt={4}>
-            <DataImporter onDataImported={handleDataImported} />
+            {dataset ? dataControl : <DataImporter onDataImported={handleDataImported} />}
             <Text fontSize="xs" color="gray.500">
-              データを更新する場合は「データをインポート」からJSONファイルを読み込めます
+              {dataset ? '追加データは上のファイル選択から読み込めます' : 'データを更新する場合は「データをインポート」からJSONファイルを読み込めます'}
             </Text>
             <Text fontSize="xs" color="gray.500">
-              データ出典: 受かる英語 - LEAP 改訂版 単語一覧
+              {dataset ? 'データ出典: キクタンSuper（端末内のJSON）' : 'データ出典: 受かる英語 - LEAP 改訂版 単語一覧'}
             </Text>
             <Text fontSize="xs" color="gray.500" fontWeight="semibold">
               LEAPER ver{packageJson.version}

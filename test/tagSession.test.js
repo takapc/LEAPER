@@ -15,7 +15,7 @@ function session() {
     { id: 500, meanings: [{ partOfSpeech: 'noun' }, { partOfSpeech: 'transitive-verb' }] },
   ]
   const state = {
-    ...quizLogic, words, filteredWords: words, selectedTags: [], selectedParts: [],
+    ...quizLogic, dataset: null, words, filteredWords: words, selectedTags: [], selectedParts: [],
     appliedRange: { start: '', end: '' }, startRange: '', endRange: '', isRangeActive: false,
     isCheckedOnlyActive: false, checkedWordIds: [], checkedOnlyWordIds: [],
     filterError: '', error: null, partRanges: quizLogic.PART_RANGES,
