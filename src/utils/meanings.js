@@ -1,4 +1,8 @@
 export const PART_OF_SPEECH_TAGS = {
+  pronoun: '代',
+  interjection: '感',
+  determiner: '限',
+  other: '他品詞',
   'intransitive-verb': '自',
   'transitive-verb': '他',
   noun: '名',
@@ -112,15 +116,15 @@ export function normalizeMeanings(value) {
 export function meaningsToText(value) {
   if (typeof value === 'string') return value
   if (!Array.isArray(value)) return ''
-  return value.map(({ partOfSpeech, meaning }) => {
-    const tag = PART_OF_SPEECH_TAGS[partOfSpeech]
+  return value.map(({ partOfSpeech, meaning, verbType }) => {
+    const tag = verbType === 'both' ? '自・他' : PART_OF_SPEECH_TAGS[partOfSpeech]
     return tag ? `[${tag}] ${meaning}` : meaning
   }).join(' ')
 }
 
 export function getPartOfSpeechTags(meanings) {
   if (!Array.isArray(meanings)) return []
-  return meanings.map(({ partOfSpeech }) => PART_OF_SPEECH_TAGS[partOfSpeech] ?? '')
+  return meanings.map(({ partOfSpeech, verbType }) => verbType === 'both' ? '自・他' : PART_OF_SPEECH_TAGS[partOfSpeech] ?? '')
 }
 
 export function normalizeWordMeanings(words) {

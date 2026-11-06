@@ -103,7 +103,7 @@ export function advanceSvlSession(session, words, random = Math.random) {
 export function readStudySettings() {
   try {
     const value = JSON.parse(localStorage.getItem('leaperStudySettings'))
-    return { mode: value?.mode === 'svl' ? 'svl' : 'leap', level: SVL_LEVELS.includes(value?.level) ? value.level : 1 }
+    return { mode: ['svl', 'kikutan-super'].includes(value?.mode) ? value.mode : 'leap', level: SVL_LEVELS.includes(value?.level) ? value.level : 1 }
   } catch { return { mode: 'leap', level: 1 } }
 }
 
