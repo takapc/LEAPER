@@ -47,6 +47,7 @@ export function RangeSelector({
   onStartRangeChange,
   onTogglePart,
   partRanges,
+  rangeGroupLabel = 'Part',
   selectedTags,
   selectedParts,
   startRange,
@@ -56,7 +57,7 @@ export function RangeSelector({
       <CardBody p={4}>
         <Tabs isLazy colorScheme="blue">
           <TabList aria-label="出題条件">
-            {Object.keys(partRanges).length > 0 && <Tab flex={1} minW={0} px={2} whiteSpace="nowrap">Part選択</Tab>}
+            {Object.keys(partRanges).length > 0 && <Tab flex={1} minW={0} px={2} whiteSpace="nowrap">{rangeGroupLabel}選択</Tab>}
             <Tab flex={1} minW={0} px={2} whiteSpace="nowrap">詳細範囲</Tab>
             <Tab flex={1} minW={0} px={2} whiteSpace="nowrap" gap={2}>
               タグ
@@ -73,7 +74,7 @@ export function RangeSelector({
             {Object.keys(partRanges).length > 0 && <TabPanel px={0}>
               <VStack spacing={4} align="stretch">
                 <Text fontSize="sm" fontWeight="bold" color="gray.700">
-                  Partを選択
+                  {rangeGroupLabel}を選択
                 </Text>
                 <SimpleGrid columns={{ base: 2, md: 5 }} spacing={3}>
                   {Object.entries(partRanges).map(([key, part]) => {
@@ -85,6 +86,7 @@ export function RangeSelector({
                         colorScheme={isSelected ? 'blue' : 'gray'}
                         variant={isSelected ? 'solid' : 'outline'}
                         size="md"
+                        minH="44px"
                         aria-pressed={isSelected}
                       >
                         {part.label}
@@ -150,7 +152,7 @@ export function RangeSelector({
               <VStack align="stretch" spacing={5}>
                 <Box>
                   <Text fontSize="sm" fontWeight="bold">選んだタグをすべて満たす単語を出題</Text>
-                  <Text fontSize="xs" color="gray.600" mt={1}>{Object.keys(partRanges).length ? 'Part・詳細範囲とも組み合わせられます。' : '番号の詳細範囲と組み合わせられます。'}</Text>
+                  <Text fontSize="xs" color="gray.600" mt={1}>{Object.keys(partRanges).length ? `${rangeGroupLabel}・詳細範囲とも組み合わせられます。` : '番号の詳細範囲と組み合わせられます。'}</Text>
                 </Box>
                 <Box role="group" aria-labelledby="part-of-speech-tags">
                   <Text id="part-of-speech-tags" fontSize="sm" fontWeight="bold" mb={2}>品詞</Text>

@@ -1,6 +1,7 @@
 import { defaultFilters, validateFilters } from './browserData.js'
 
 export const KIKUTAN_PREFIX = 'leaper:kikutan-super:'
+export const KIKUTAN_WORDS_PER_WEEK = 112
 export const KIKUTAN_POS = ['noun', 'verb', 'adjective', 'adverb', 'pronoun', 'preposition', 'conjunction', 'interjection', 'determiner', 'auxiliary', 'other']
 const verbTypes = ['transitive', 'intransitive', 'both']
 const keysAre = (value, keys) => value && typeof value === 'object' && !Array.isArray(value) &&
@@ -57,13 +58,25 @@ export function adaptKikutanData(data) {
   })).sort((a, b) => a.id - b.id)
 }
 
+export function getKikutanWeekRanges(data) {
+  const weeks = [...new Set(data.map(({ number }) => Math.ceil(number / KIKUTAN_WORDS_PER_WEEK)))].sort((a, b) => a - b)
+  const maxNumber = data.reduce((max, { number }) => Math.max(max, number), 0)
+  return Object.fromEntries(weeks.map((week) => [`week${week}`, {
+    start: (week - 1) * KIKUTAN_WORDS_PER_WEEK + 1,
+    end: Math.min(week * KIKUTAN_WORDS_PER_WEEK, maxNumber),
+    label: `Week ${week}`,
+  }]))
+}
+
 export function validateKikutanFilters(value) {
   // Reuse tag validation, without LEAP's fixed Part / ID constraints.
   validateFilters({ ...value, selectedParts: [], range: null, checkedPoolIds: [] })
-  if (!Array.isArray(value.selectedParts) || value.selectedParts.length || !Array.isArray(value.checkedPoolIds) ||
+  if (!Array.isArray(value.selectedParts) || !value.selectedParts.every((key) =>
+    typeof key === 'string' && /^week[1-9]\d*$/.test(key) && Number.isSafeInteger(Number(key.slice(4)))) ||
+    !Array.isArray(value.checkedPoolIds) ||
     !value.checkedPoolIds.every((id) => Number.isSafeInteger(id) && id > 0) ||
     (value.range !== null && (!Number.isSafeInteger(value.range?.start) || !Number.isSafeInteger(value.range?.end) ||
-      value.range.start < 1 || value.range.end < value.range.start))) throw new Error('Invalid Kikutan filters')
+      value.range.start < 1 || value.range.end < value.range.start || value.selectedParts.length > 0))) throw new Error('Invalid Kikutan filters')
   return value
 }
 
@@ -99,7 +112,11 @@ export function createKikutanStore(getStorage = () => localStorage) {
     },
     saveTotalQuizCountToLocalStorage: (value) => safeWrite('total', value),
     readFilterPreferences: () => {
-      try { return validateKikutanFilters(read('filters', defaultFilters())) } catch { return defaultFilters() }
+      try {
+        const preferences = validateKikutanFilters(read('filters', defaultFilters()))
+        const ranges = getKikutanWeekRanges(read('data', []))
+        return { ...preferences, selectedParts: preferences.selectedParts.filter((key) => Object.hasOwn(ranges, key)) }
+      } catch { return defaultFilters() }
     },
     validateFilters: validateKikutanFilters,
     FILTER_PREFERENCES_KEY: KIKUTAN_PREFIX + 'filters',

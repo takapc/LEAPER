@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { createContext, runInContext } from 'node:vm'
 import * as quizLogic from '../src/utils/quizLogic.js'
+import { getKikutanWeekRanges } from '../src/utils/kikutanData.js'
 
 const source = readFileSync(new URL('../src/App.jsx', import.meta.url), 'utf8').replaceAll('\r\n', '\n')
 
@@ -18,7 +19,7 @@ function session() {
     ...quizLogic, dataset: null, words, filteredWords: words, selectedTags: [], selectedParts: [],
     appliedRange: { start: '', end: '' }, startRange: '', endRange: '', isRangeActive: false,
     isCheckedOnlyActive: false, checkedWordIds: [], checkedOnlyWordIds: [],
-    filterError: '', error: null, partRanges: quizLogic.PART_RANGES,
+    filterError: '', error: null, partRanges: quizLogic.PART_RANGES, rangeGroupLabel: 'Part',
     currentWord: words[2], wordHistory: [words[2]], historyIndex: 0,
     usedWordIdsRef: { current: [300] }, usedWordIds: [300], draws: 0, notices: [],
     pickRandomUnusedWord: (pool, used) => quizLogic.pickRandomUnusedWord(pool, used, () => 0),
@@ -52,6 +53,35 @@ function session() {
 }
 
 const ids = (words) => Array.from(words, ({ id }) => id)
+
+test('Week changes reuse navigation, numeric-range exclusivity and empty-intersection protection', () => {
+  const s = session()
+  s.rangeGroupLabel = 'Week'
+  s.partRanges = getKikutanWeekRanges(s.words.map(({ id }) => ({ number: id })))
+  s.togglePart('week1')
+  s.togglePart('week3')
+  assert.deepEqual(ids(s.filteredWords), [100, 300])
+  assert.equal(s.canGoPrevious, false)
+  s.toggleTag('noun')
+  const { currentWord, wordHistory, draws, selectedParts } = s
+  s.togglePart('week1')
+  assert.match(s.filterError, /選択したWeek.*ありません/)
+  assert.equal(s.currentWord, currentWord)
+  assert.equal(s.wordHistory, wordHistory)
+  assert.equal(s.draws, draws)
+  assert.equal(s.selectedParts, selectedParts)
+  s.startRange = '500'
+  s.endRange = '500'
+  s.applyRange()
+  assert.deepEqual(ids(s.filteredWords), [500])
+  assert.deepEqual(Array.from(s.selectedParts), [])
+  s.togglePart('week2')
+  assert.deepEqual(ids(s.filteredWords), [200])
+  assert.equal(s.appliedRange.start, '')
+  assert.equal(s.startRange, '')
+  assert.equal(s.endRange, '')
+  assert.deepEqual(Array.from(s.selectedTags), ['noun'])
+})
 
 test('tag changes reset navigation to the intersection; history movement does not count draws', () => {
   const s = session()

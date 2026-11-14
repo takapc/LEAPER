@@ -121,7 +121,8 @@ function App({ restoreOnly = false, dataset = null, dataControl = null } = {}) {
   const AUTO_PLAY_MS = 3000
   const AUTO_PLAY_REVEAL_MS = 1500
 
-  const partRanges = dataset ? {} : PART_RANGES
+  const partRanges = dataset?.partRanges ?? (dataset ? {} : PART_RANGES)
+  const rangeGroupLabel = dataset?.rangeGroupLabel ?? 'Part'
 
   // 背景色とテキスト色の設定
   const bgColor = useColorModeValue('gray.50', 'gray.900')
@@ -449,7 +450,7 @@ function App({ restoreOnly = false, dataset = null, dataControl = null } = {}) {
     })
 
     if (filtered.length === 0) {
-      setFilterError('選択したPartと現在のタグに一致する単語がありません。出題条件は変更していません。')
+      setFilterError(`選択した${rangeGroupLabel}と現在のタグに一致する単語がありません。出題条件は変更していません。`)
       return
     }
 
@@ -998,6 +999,7 @@ function App({ restoreOnly = false, dataset = null, dataControl = null } = {}) {
             filterError={filterError}
             matchingWordCount={totalInRange}
             partRanges={partRanges}
+            rangeGroupLabel={rangeGroupLabel}
             selectedTags={selectedTags}
             selectedParts={selectedParts}
             startRange={startRange}

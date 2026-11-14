@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Alert, AlertIcon, Box, Container, FormControl, FormLabel, Heading, Input, Text, VStack } from '@chakra-ui/react'
 import App from '../App'
 import { PART_OF_SPEECH_LABELS } from '../utils/meanings.js'
-import { adaptKikutanData, createKikutanStore } from '../utils/kikutanData.js'
+import { adaptKikutanData, createKikutanStore, getKikutanWeekRanges } from '../utils/kikutanData.js'
 
 export function KikutanQuiz({ restoreOnly = false }) {
   const [store] = useState(() => createKikutanStore())
@@ -45,5 +45,5 @@ export function KikutanQuiz({ restoreOnly = false }) {
     </VStack></Container>
   </Box>
   return <App key={revision} restoreOnly={restoreOnly || revision > 0}
-    dataset={{ words: adaptKikutanData(data), services: store, partOfSpeechLabels: { ...Object.fromEntries(Object.entries(PART_OF_SPEECH_LABELS).filter(([key]) => key !== 'phrase')), pronoun: '代名詞', interjection: '感動詞', determiner: '限定詞', other: 'その他' } }} dataControl={control} />
+    dataset={{ words: adaptKikutanData(data), services: store, partRanges: getKikutanWeekRanges(data), rangeGroupLabel: 'Week', partOfSpeechLabels: { ...Object.fromEntries(Object.entries(PART_OF_SPEECH_LABELS).filter(([key]) => key !== 'phrase')), pronoun: '代名詞', interjection: '感動詞', determiner: '限定詞', other: 'その他' } }} dataControl={control} />
 }

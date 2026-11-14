@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { adaptKikutanData, createKikutanStore, inspectKikutanData, mergeKikutanData, validateKikutanData, validateKikutanFilters } from '../src/utils/kikutanData.js'
+import { adaptKikutanData, createKikutanStore, getKikutanWeekRanges, inspectKikutanData, mergeKikutanData, validateKikutanData, validateKikutanFilters } from '../src/utils/kikutanData.js'
 import { defaultFilters, readBrowserData, validateBrowserData } from '../src/utils/browserData.js'
 import { filterWordsByCriteria, formatMeaning, pickRandomUnusedWord } from '../src/utils/quizLogic.js'
 import { readStudySettings, saveStudySettings } from '../src/utils/svlData.js'
@@ -79,6 +79,64 @@ test('blocked storage degrades safely; failed imports are surfaced', () => {
   assert.doesNotThrow(() => store.saveCheckedWordIdsToCookie([1]))
   assert.throws(() => store.importData([row(1)]), /blocked/)
   assert.doesNotThrow(() => validateKikutanFilters({ ...defaultFilters(), range: { start: 1, end: 5000 } }))
+})
+
+test('Weeks follow book numbers across boundaries and omit empty Weeks, including partial future additions', () => {
+  assert.deepEqual(getKikutanWeekRanges([]), {})
+  const data = [row(672), row(113), row(1), row(112), row(224), row(225)]
+  const ranges = getKikutanWeekRanges(data)
+  assert.deepEqual(ranges, {
+    week1: { start: 1, end: 112, label: 'Week 1' },
+    week2: { start: 113, end: 224, label: 'Week 2' },
+    week3: { start: 225, end: 336, label: 'Week 3' },
+    week6: { start: 561, end: 672, label: 'Week 6' },
+  })
+  assert.deepEqual(getKikutanWeekRanges([...data, row(1100)]).week10, { start: 1009, end: 1100, label: 'Week 10' })
+  assert.deepEqual(getKikutanWeekRanges([row(449)]), { week5: { start: 449, end: 449, label: 'Week 5' } })
+})
+
+test('non-adjacent Weeks compose with tags and mistakes and safely exclude unregistered numbers', () => {
+  const data = [row(1), row(112, 'verb'), row(113), row(224), row(225), row(336, 'verb')]
+  const words = adaptKikutanData(data)
+  const criteria = { partRanges: getKikutanWeekRanges(data), selectedParts: ['week1', 'week3'] }
+  const ids = (pool) => pool.map(({ id }) => id)
+  assert.deepEqual(ids(filterWordsByCriteria(words, criteria)), [1, 112, 225, 336])
+  assert.deepEqual(ids(filterWordsByCriteria(words, { ...criteria, selectedTags: ['verb'] })), [112, 336])
+  assert.deepEqual(ids(filterWordsByCriteria(words, { ...criteria, isCheckedOnlyActive: true, checkedWordIds: [1, 113, 225] })), [1, 225])
+  assert.deepEqual(filterWordsByCriteria(words, { ...criteria, selectedParts: ['week4'] }), [])
+})
+
+test('Week preferences survive reloads and imports without touching LEAP progress or filters', () => {
+  const storage = memory()
+  const leapFilters = { ...defaultFilters(), selectedParts: ['part2'] }
+  storage.setItem('leaperFilterPreferences', JSON.stringify(leapFilters))
+  storage.setItem('leapUsedWordIds', '[113]')
+  const leapBefore = readBrowserData(storage)
+  let store = createKikutanStore(() => storage)
+  store.importData([row(1), row(113)])
+  const preferences = { ...defaultFilters(), selectedParts: ['week1', 'week2'] }
+  storage.setItem(store.FILTER_PREFERENCES_KEY, JSON.stringify(preferences))
+  store.saveUsedWordIdsToLocalStorage([1])
+  store.saveCheckedWordIdsToCookie([113])
+  store.saveTotalQuizCountToLocalStorage(5)
+  store.importData([row(225)])
+  store = createKikutanStore(() => storage)
+  assert.deepEqual(store.readFilterPreferences(), preferences)
+  assert.deepEqual(store.getUsedWordIdsFromLocalStorage(), [1])
+  assert.deepEqual(store.getCheckedWordIdsFromCookie(), [113])
+  assert.equal(store.getTotalQuizCountFromLocalStorage(), 5)
+  assert.deepEqual(readBrowserData(storage), leapBefore)
+  storage.setItem(store.FILTER_PREFERENCES_KEY, JSON.stringify({ ...preferences, selectedParts: ['week1', 'week10'] }))
+  assert.deepEqual(store.readFilterPreferences().selectedParts, ['week1'])
+})
+
+test('Week filter validation supports more than five Weeks and rejects LEAP keys or simultaneous numeric ranges', () => {
+  const preferences = { ...defaultFilters(), selectedParts: Array.from({ length: 10 }, (_, i) => `week${i + 1}`) }
+  assert.doesNotThrow(() => validateKikutanFilters(preferences))
+  for (const key of ['part1', 'week0', 'week01', 'week-1', 'week1.5', 'week9007199254740992', 1]) {
+    assert.throws(() => validateKikutanFilters({ ...defaultFilters(), selectedParts: [key] }))
+  }
+  assert.throws(() => validateKikutanFilters({ ...preferences, range: { start: 1, end: 112 } }))
 })
 
 
