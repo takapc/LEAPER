@@ -1,5 +1,6 @@
 import { PART_RANGES, WORD_TAG_LABELS } from './quizLogic.js'
 
+export const STUDY_MODES = ['leap', 'svl', 'kikutan-super', 'inorganic']
 export const FILTER_PREFERENCES_KEY = 'leaperFilterPreferences'
 export const SHARED_STORAGE_KEYS = ['leaperStudySettings', FILTER_PREFERENCES_KEY, 'leapUsedWordIds', 'leapCheckedWordIds', 'leapTotalQuizCount']
 
@@ -36,7 +37,7 @@ export function validateFilters(value) {
 }
 
 function validateStudy(value) {
-  if (!object(value) || !['leap', 'svl', 'kikutan-super'].includes(value.mode) || !Number.isInteger(value.level) || value.level < 1 || value.level > 12) throw new Error('Invalid study settings')
+  if (!object(value) || !STUDY_MODES.includes(value.mode) || !Number.isInteger(value.level) || value.level < 1 || value.level > 12) throw new Error('Invalid study settings')
   return { mode: value.mode, level: value.level }
 }
 

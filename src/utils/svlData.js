@@ -1,4 +1,5 @@
 import { pickRandomUnusedWord } from './quizLogic.js'
+import { STUDY_MODES } from './browserData.js'
 import { notifyStudyChange } from './syncEvents.js'
 
 export const SVL_SOURCE = 'https://github.com/kim0051/word-levels-db/tree/master/level-csv'
@@ -103,7 +104,7 @@ export function advanceSvlSession(session, words, random = Math.random) {
 export function readStudySettings() {
   try {
     const value = JSON.parse(localStorage.getItem('leaperStudySettings'))
-    return { mode: ['svl', 'kikutan-super'].includes(value?.mode) ? value.mode : 'leap', level: SVL_LEVELS.includes(value?.level) ? value.level : 1 }
+    return { mode: STUDY_MODES.includes(value?.mode) ? value.mode : 'leap', level: SVL_LEVELS.includes(value?.level) ? value.level : 1 }
   } catch { return { mode: 'leap', level: 1 } }
 }
 

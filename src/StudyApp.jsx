@@ -4,6 +4,7 @@ import { SettingsIcon } from '@chakra-ui/icons'
 import App from './App'
 import { KikutanQuiz } from './components/KikutanQuiz'
 import { SvlQuiz } from './components/SvlQuiz'
+import { InorganicQuiz } from './components/InorganicQuiz'
 import { levelLabel, readStudySettings, saveStudySettings, SVL_LEVELS } from './utils/svlData'
 import { BrowserSyncSettings } from './components/BrowserSyncSettings'
 import { AdminSettings } from './components/AdminSettings'
@@ -31,6 +32,13 @@ export default function StudyApp() {
     window.addEventListener(REMOTE_STUDY_CHANGE, receive)
     return () => window.removeEventListener(REMOTE_STUDY_CHANGE, receive)
   }, [])
+  const quiz = {
+    leap: <App restoreOnly={restoreOnly} />,
+    'kikutan-super': <KikutanQuiz restoreOnly={restoreOnly} />,
+    svl: <SvlQuiz key={settings.level} level={settings.level} restoreOnly={restoreOnly} />,
+    inorganic: <InorganicQuiz />,
+  }[settings.mode]
+
   return (
     <Box bg={bg} position="relative">
       <IconButton
@@ -47,7 +55,7 @@ export default function StudyApp() {
           setIsOpen(true)
         }}
       />
-      {settings.mode === 'leap' ? <App restoreOnly={restoreOnly} /> : settings.mode === 'kikutan-super' ? <KikutanQuiz restoreOnly={restoreOnly} /> : <SvlQuiz key={settings.level} level={settings.level} restoreOnly={restoreOnly} />}
+      {quiz}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} initialFocusRef={initialFocusRef} isCentered scrollBehavior="inside">
         <ModalOverlay />
         <ModalContent mx={4}>
@@ -62,6 +70,7 @@ export default function StudyApp() {
                     <Radio value="leap" ref={initialFocusRef}>LEAP</Radio>
                     <Radio value="kikutan-super">キクタンSuper</Radio>
                     <Radio value="svl"><HStack><Text>SVL12000</Text><Badge colorScheme="purple">ベータ</Badge></HStack></Radio>
+                    <Radio value="inorganic">無機化学</Radio>
                   </Stack>
                 </RadioGroup>
               </FormControl>
