@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Box, Button, Card, CardBody, Container, Heading, HStack, Text, VStack, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, Card, CardBody, Container, Heading, HStack, Radio, RadioGroup, Text, VStack, useColorModeValue } from '@chakra-ui/react'
 import reactions from '../data/inorganicReactions.json'
+import { advanceInorganicSession, readInorganicSession, saveInorganicSession, selectInorganicOrder } from '../utils/inorganicSession'
 import packageJson from '../../package.json'
 
-const POSITION_KEY = 'leaper:inorganic:position'
 const subscripts = '₀₁₂₃₄₅₆₇₈₉'
 
 function formatEquation(equation) {
@@ -11,27 +11,20 @@ function formatEquation(equation) {
     symbol + Array.from(digits, (digit) => subscripts[Number(digit)]).join(''))
 }
 
-function restorePosition() {
-  try {
-    const position = Number(localStorage.getItem(POSITION_KEY))
-    if (Number.isInteger(position) && position >= 0 && position < reactions.length) return position
-  } catch { /* The quiz works without browser storage. */ }
-  return 0
-}
-
 export function InorganicQuiz() {
-  const [position, setPosition] = useState(restorePosition)
+  const [session, setSession] = useState(() => readInorganicSession(reactions.length))
   const [revealed, setRevealed] = useState(false)
-  const question = reactions[position]
+  const shuffled = session.order === 'random'
+  const position = shuffled ? session.random.position : session.orderedPosition
+  const question = reactions[shuffled ? session.random.order[position] : position]
   const muted = useColorModeValue('gray.600', 'gray.300')
   const answerBg = useColorModeValue('teal.50', 'whiteAlpha.100')
   const answerAccent = useColorModeValue('teal.700', 'teal.200')
 
-  const nextQuestion = () => {
-    const next = (position + 1) % reactions.length
-    setPosition(next)
+  const showQuestion = (next) => {
+    setSession(next)
     setRevealed(false)
-    try { localStorage.setItem(POSITION_KEY, String(next)) } catch { /* Keep the current position in memory. */ }
+    saveInorganicSession(next)
   }
 
   return (
@@ -42,6 +35,16 @@ export function InorganicQuiz() {
             <Text color={answerAccent} fontSize="sm" fontWeight="bold" letterSpacing="wider">LEAPER</Text>
             <Heading as="h1" size="lg" mt={1}>無機化学モード</Heading>
           </Box>
+          <RadioGroup
+            aria-label="出題順"
+            value={session.order}
+            onChange={(order) => showQuestion(selectInorganicOrder(session, order, reactions.length))}
+          >
+            <HStack spacing={5}>
+              <Radio value="source" minH={11} colorScheme="teal">資料順</Radio>
+              <Radio value="random" minH={11} colorScheme="teal">ランダム</Radio>
+            </HStack>
+          </RadioGroup>
           <Card>
             <CardBody p={{ base: 4, md: 6 }}>
               <Box h={{ base: '10rem', sm: '8rem' }} overflowY="auto" mb={3} aria-live="polite">
@@ -89,7 +92,7 @@ export function InorganicQuiz() {
                   <Box as="span" aria-hidden="true">{revealed ? '隠す' : '？'}</Box>
                 </Button>
               </Box>
-              <Button w="full" minH="44px" colorScheme="teal" onClick={nextQuestion}>次の問題</Button>
+              <Button w="full" minH="44px" colorScheme="teal" onClick={() => showQuestion(advanceInorganicSession(session, reactions.length))}>次の問題</Button>
             </CardBody>
           </Card>
           <Text textAlign="center" color={muted} fontSize="sm">LEAPER ver{packageJson.version}</Text>
